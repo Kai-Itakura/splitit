@@ -1,0 +1,6 @@
+{
+  "name": "nest-project",
+  "dockerComposeFile": ["../compose.yml"],
+  "service": "api",
+  "workspaceFolder": "/app"
+}
