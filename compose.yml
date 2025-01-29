@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     working_dir: /app
     ports:
-      - '3000:3000'
+      - '3005:3005'
       - '5555:5555'
     volumes:
       - .:/app
