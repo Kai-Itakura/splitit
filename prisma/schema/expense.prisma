@@ -1,0 +1,13 @@
+model Expense {
+  id     Int    @id @default(autoincrement())
+  title  String
+  amount Int
+
+  payerId Int
+  payer   User @relation(fields: [payerId], references: [id])
+
+  groupId Int
+  group   Group @relation(fields: [groupId], references: [id])
+
+  expneseShares ExpenseShare[]
+}
