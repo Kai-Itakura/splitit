@@ -13,10 +13,4 @@ export class UserService {
     const user = await this.userRepository.create(dto.email, hashedPassword);
     return plainToInstance(UserDTO, user);
   }
-
-  // private omitPassword(user: User): Omit<User, 'password'> {
-  //   const userWithoutPassword: Omit<User, 'password'> = { ...user };
-  //   delete userWithoutPassword.password;
-  //   return userWithoutPassword;
-  // }
 }
