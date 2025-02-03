@@ -4,7 +4,7 @@ model User {
   password String
   name     String?
 
-  UserGroups    Group[]
+  UserGroups    EventGroup[]
   Expenses      Expense[]
   ExpenseShares ExpenseShare[]
   refreshTokens RefreshToken[]

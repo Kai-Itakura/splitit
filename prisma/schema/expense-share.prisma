@@ -2,8 +2,8 @@ model ExpenseShare {
   id     Int @id @default(autoincrement())
   amount Int
 
-  expneseId Int
-  expense   Expense @relation(fields: [expneseId], references: [id])
+  expenseId Int
+  expense   Expense @relation(fields: [expenseId], references: [id])
 
   receiverId Int
   user       User @relation(fields: [receiverId], references: [id])

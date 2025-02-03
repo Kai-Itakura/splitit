@@ -1,8 +1,10 @@
-model Group {
+model EventGroup {
   id       Int     @id @default(autoincrement())
   name     String
   currency String?
 
   member   User[]
-  expneses Expense[]
+  expenses Expense[]
+
+  @@map("Group")
 }

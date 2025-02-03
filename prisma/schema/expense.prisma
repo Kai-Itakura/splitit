@@ -7,7 +7,7 @@ model Expense {
   payer   User @relation(fields: [payerId], references: [id])
 
   groupId Int
-  group   Group @relation(fields: [groupId], references: [id])
+  group   EventGroup @relation(fields: [groupId], references: [id])
 
-  expneseShares ExpenseShare[]
+  expensesShares ExpenseShare[]
 }
