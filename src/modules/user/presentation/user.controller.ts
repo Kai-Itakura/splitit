@@ -7,6 +7,7 @@ import {
   Post,
   UseInterceptors,
 } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import { CreateUserDTO } from '../application/dto/create-user.dto';
 import { ReturnUserDTO } from '../application/dto/return-user.dto';
 import { UserService } from '../application/usecases/user.service';
@@ -20,11 +21,6 @@ export class UserController {
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() dto: CreateUserDTO): Promise<ReturnUserDTO> {
     const newUser = await this.userService.create(dto);
-    return new ReturnUserDTO(
-      newUser.id,
-      newUser.email,
-      newUser.passwordHash,
-      newUser.name,
-    );
+    return plainToInstance(ReturnUserDTO, newUser);
   }
 }

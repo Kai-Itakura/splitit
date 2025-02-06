@@ -1,7 +1,10 @@
 import { Exclude } from 'class-transformer';
-import { User } from '../../domain/entities/user.entity';
 
-export class ReturnUserDTO extends User {
+export class ReturnUserDTO {
+  id: string;
+  email: string;
+  name?: string;
+
   @Exclude({ toPlainOnly: true })
   passwordHash: string;
 }
