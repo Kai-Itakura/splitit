@@ -5,6 +5,6 @@ model ExpenseShare {
   expenseId Int
   expense   Expense @relation(fields: [expenseId], references: [id])
 
-  receiverId Int
-  user       User @relation(fields: [receiverId], references: [id])
+  receiverId String
+  user       User   @relation(fields: [receiverId], references: [id])
 }

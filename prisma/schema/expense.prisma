@@ -3,8 +3,8 @@ model Expense {
   title  String
   amount Int
 
-  payerId Int
-  payer   User @relation(fields: [payerId], references: [id])
+  payerId String
+  payer   User   @relation(fields: [payerId], references: [id])
 
   groupId Int
   group   EventGroup @relation(fields: [groupId], references: [id])
