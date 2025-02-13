@@ -1,10 +1,15 @@
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 
 export class ReturnUserDTO {
-  id: string;
-  email: string;
-  name?: string;
+  @Expose({ name: 'id' })
+  _id: string;
+
+  @Expose({ name: 'email' })
+  _email: string;
+
+  @Expose({ name: 'name' })
+  _name?: string;
 
   @Exclude({ toPlainOnly: true })
-  passwordHash: string;
+  _passwordHash: string;
 }

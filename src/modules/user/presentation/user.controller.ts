@@ -2,25 +2,54 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
-  HttpCode,
-  HttpStatus,
+  Delete,
+  Get,
   Post,
+  Put,
   UseInterceptors,
 } from '@nestjs/common';
-import { plainToInstance } from 'class-transformer';
+import { Message } from '../../type';
 import { CreateUserDTO } from '../application/dto/create-user.dto';
+import { GetUserDTO } from '../application/dto/get-user-dto';
 import { ReturnUserDTO } from '../application/dto/return-user.dto';
-import { UserService } from '../application/usecases/user.service';
+import { UpdateUserNameDTO } from '../application/dto/update-user.dto';
+import { UserService } from '../application/use-cases/user.service';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseInterceptors(ClassSerializerInterceptor)
+  /**
+   * 作成
+   */
   @Post()
-  @HttpCode(HttpStatus.CREATED)
   async create(@Body() dto: CreateUserDTO): Promise<ReturnUserDTO> {
-    const newUser = await this.userService.create(dto);
-    return plainToInstance(ReturnUserDTO, newUser);
+    return this.userService.create(dto);
+  }
+
+  /**
+   * 更新
+   */
+  @Put()
+  async updateUserName(@Body() dto: UpdateUserNameDTO): Promise<ReturnUserDTO> {
+    return this.userService.changeName(dto);
+  }
+
+  /**
+   * 取得
+   */
+  @Get()
+  async findById(@Body() dto: GetUserDTO): Promise<ReturnUserDTO> {
+    return this.userService.findById(dto.id);
+  }
+
+  /**
+   * 削除
+   */
+  @Delete()
+  async delete(@Body() dto: GetUserDTO): Promise<Message> {
+    await this.userService.delete(dto.id);
+    return { message: 'Successfully deleted!' };
   }
 }
