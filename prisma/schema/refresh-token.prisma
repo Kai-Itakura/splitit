@@ -1,5 +1,5 @@
 model RefreshToken {
-  id         Int      @id @default(autoincrement())
+  id         Int      @id
   token      String   @unique
   expires_at DateTime
   used       Boolean  @default(false)
