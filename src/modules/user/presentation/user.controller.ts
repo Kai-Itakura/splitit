@@ -8,7 +8,7 @@ import {
   Put,
   UseInterceptors,
 } from '@nestjs/common';
-import { Message } from '../../type';
+import { Message } from '../../shared/type';
 import { CreateUserDTO } from '../application/dto/create-user.dto';
 import { GetUserDTO } from '../application/dto/get-user-dto';
 import { ReturnUserDTO } from '../application/dto/return-user.dto';
