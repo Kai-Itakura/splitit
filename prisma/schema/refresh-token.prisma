@@ -1,8 +1,8 @@
 model RefreshToken {
-  id         Int      @id
-  token      String   @unique
-  expires_at DateTime
-  used       Boolean  @default(false)
-  userId     String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String   @id
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
