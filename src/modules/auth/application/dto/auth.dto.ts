@@ -1,10 +1,10 @@
-import { IsEmail, IsInt, IsString } from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
 
 export class AuthDTO {
-  @IsInt()
-  userId: number;
-
   @IsEmail()
   @IsString()
   email: string;
+
+  @IsString()
+  password: string;
 }

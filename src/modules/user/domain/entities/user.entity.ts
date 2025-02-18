@@ -1,17 +1,17 @@
 import { compare, hash } from 'bcrypt';
-import { v4 as uuidV4 } from 'uuid';
+import { Id } from 'src/modules/shared/value-objects/id';
 import { CreateUserDTO } from '../../application/dto/create-user.dto';
 
 export class User {
   private constructor(
-    private readonly _id: string,
+    private readonly _id: Id,
     private readonly _email: string,
     private readonly _passwordHash: string,
     private _name?: string,
   ) {}
 
   get id(): string {
-    return this._id;
+    return this._id.value;
   }
 
   get email(): string {
@@ -30,9 +30,8 @@ export class User {
    * 作成
    */
   static async create(dto: CreateUserDTO): Promise<User> {
-    const id = uuidV4();
     const passwordHash = await hash(dto.password, 10);
-    return new User(id, dto.email, passwordHash);
+    return new User(Id.create(), dto.email, passwordHash);
   }
 
   /**
@@ -44,7 +43,7 @@ export class User {
     passwordHash: string,
     name?: string,
   ): User {
-    return new User(id, email, passwordHash, name);
+    return new User(Id.reconstruct(id), email, passwordHash, name);
   }
 
   /**
