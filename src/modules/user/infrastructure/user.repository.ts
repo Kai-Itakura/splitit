@@ -59,7 +59,7 @@ export class UserRepository implements IUserRepository {
       return null;
     }
 
-    return User.reconstitute(
+    return User.reconstruct(
       user.id,
       user.email,
       user.password,

@@ -37,7 +37,7 @@ export class User {
   /**
    * 再構築
    */
-  static reconstitute(
+  static reconstruct(
     id: string,
     email: string,
     passwordHash: string,

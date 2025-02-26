@@ -6,8 +6,8 @@ import {
 import { Prisma } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
-import { AuthUser } from '../domain/entities/auth-user.entity';
-import { IAuthUserRepository } from '../domain/repositories/auth-user.repository.interface';
+import { AuthUser } from '../../domain/entities/auth-user.entity';
+import { IAuthUserRepository } from '../../domain/repositories/auth-user.repository.interface';
 
 @Injectable()
 export class AuthUserRepository implements IAuthUserRepository {
