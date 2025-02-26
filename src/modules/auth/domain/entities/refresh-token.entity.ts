@@ -37,4 +37,18 @@ export class RefreshToken {
   get userId(): string {
     return this._userId;
   }
+
+  static reconstruct(
+    id: string,
+    token: string,
+    expiresAt: Date,
+    used: boolean,
+    userId: string,
+  ): RefreshToken {
+    return new RefreshToken(Id.reconstruct(id), token, expiresAt, used, userId);
+  }
+
+  isExpired(): boolean {
+    return this.expiresAt < new Date();
+  }
 }

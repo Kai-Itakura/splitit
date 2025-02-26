@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import ms, { StringValue } from 'ms';
 import { AuthUser } from '../../domain/entities/auth-user.entity';
 import { RefreshToken } from '../../domain/entities/refresh-token.entity';
 import {
@@ -13,17 +12,13 @@ import {
   IRefreshTokenRepositoryToken,
 } from '../../domain/repositories/refresh-token.repository.interface';
 import { AuthDTO } from '../dto/auth.dto';
+import {
+  ITokenGenerator,
+  TokenPair,
+} from '../interfaces/token-generator.interface';
 
 export interface JwtPayload {
   id: string;
-}
-
-export interface TokenPair {
-  accessToken: string;
-  refreshToken: {
-    value: string;
-    exp: number;
-  };
 }
 
 @Injectable()
@@ -33,6 +28,7 @@ export class SigninUseCase {
     private readonly authUserRepository: IAuthUserRepository,
     @Inject(IRefreshTokenRepositoryToken)
     private readonly refreshTokenRepository: IRefreshTokenRepository,
+    @Inject(ITokenGenerator) private readonly tokenGenerator: ITokenGenerator,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
@@ -43,38 +39,18 @@ export class SigninUseCase {
     await this.authUserRepository.create(authUser);
 
     // JWT生成
-    const payload = { id: authUser.id };
-    const [accessToken, refreshToken] = await this.generateTokenPair(payload);
-    const refreshTokenExp = ms(
-      this.configService.get<StringValue>('REFRESH_TOKEN_EXP')!,
-    );
+    const tokenPair = await this.tokenGenerator.generateTokenPair({
+      userId: authUser.id,
+    });
 
     // リフレッシュトークンの保存
-    const expiresAt = new Date();
-    expiresAt.setMilliseconds(expiresAt.getMilliseconds() + refreshTokenExp);
     const newRefreshToken = RefreshToken.create(
-      refreshToken,
-      expiresAt,
+      tokenPair.refreshToken.value,
+      tokenPair.refreshToken.expiresAt,
       authUser.id,
     );
     await this.refreshTokenRepository.create(newRefreshToken);
 
-    return {
-      accessToken,
-      refreshToken: { value: refreshToken, exp: refreshTokenExp },
-    };
-  }
-
-  private async generateTokenPair(payload: JwtPayload) {
-    return Promise.all([
-      this.jwtService.signAsync(payload, {
-        expiresIn: this.configService.get('ACCESS_TOKEN_EXP'),
-        secret: this.configService.get('JWT_SECRET'),
-      }),
-      this.jwtService.signAsync(payload, {
-        expiresIn: this.configService.get('REFRESH_TOKEN_EXP'),
-        secret: this.configService.get('REFRESH_JWT_SECRET'),
-      }),
-    ]);
+    return tokenPair;
   }
 }
