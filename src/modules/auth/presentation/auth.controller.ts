@@ -4,13 +4,16 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { AuthDTO } from '../application/dto/auth.dto';
 import { TokenPair } from '../application/interfaces/token-generator.interface';
 import { LoginUseCase } from '../application/use-cases/login.use-case';
 import { SigninUseCase } from '../application/use-cases/signin.use-case';
+import { RefreshJwtGuard } from '../guards/refresh-jwt.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -20,15 +23,9 @@ export class AuthController {
   ) {}
 
   @Post('signin')
-  async signin(
-    @Body() dto: AuthDTO,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<{ accessToken: string }> {
-    const { accessToken, refreshToken } = await this.signinUseCase.execute(dto);
-
-    this.setAuthCookie(res, refreshToken);
-
-    return { accessToken: accessToken.value };
+  async signin(@Body() dto: AuthDTO): Promise<{ message: string }> {
+    await this.signinUseCase.execute(dto);
+    return { message: 'Successfully Signin!' };
   }
 
   @HttpCode(HttpStatus.OK)
@@ -43,6 +40,14 @@ export class AuthController {
 
     return { accessToken: newTokenPair.accessToken.value };
   }
+
+  @UseGuards(RefreshJwtGuard)
+  @HttpCode(HttpStatus.OK)
+  @Post('logout')
+  async logout(@Req() req: Request) {}
+
+  @Post('refresh')
+  async refresh(@Req() req: Request) {}
 
   private setAuthCookie(
     res: Response,

@@ -6,8 +6,10 @@ import {
   Get,
   Post,
   Put,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { JWTGuard } from 'src/modules/auth/guards/jwt.guard';
 import { Message } from '../../shared/type';
 import { CreateUserDTO } from '../application/dto/create-user.dto';
 import { GetUserDTO } from '../application/dto/get-user-dto';
@@ -15,6 +17,7 @@ import { ReturnUserDTO } from '../application/dto/return-user.dto';
 import { UpdateUserNameDTO } from '../application/dto/update-user.dto';
 import { UserService } from '../application/use-cases/user.service';
 
+@UseGuards(JWTGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UserController {

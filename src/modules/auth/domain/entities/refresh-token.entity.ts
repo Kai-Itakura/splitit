@@ -5,17 +5,10 @@ export class RefreshToken {
     private readonly _id: Id,
     private readonly _token: string,
     private readonly _expiresAt: Date,
-    private readonly _used: boolean,
-    private readonly _userId: string,
   ) {}
 
-  static create(
-    token: string,
-    expiresAt: Date,
-    userId: string,
-    used: boolean = false,
-  ): RefreshToken {
-    return new RefreshToken(Id.create(), token, expiresAt, used, userId);
+  static create(token: string, expiresAt: Date): RefreshToken {
+    return new RefreshToken(Id.create(), token, expiresAt);
   }
 
   get id(): string {
@@ -30,22 +23,8 @@ export class RefreshToken {
     return this._expiresAt;
   }
 
-  get used(): boolean {
-    return this._used;
-  }
-
-  get userId(): string {
-    return this._userId;
-  }
-
-  static reconstruct(
-    id: string,
-    token: string,
-    expiresAt: Date,
-    used: boolean,
-    userId: string,
-  ): RefreshToken {
-    return new RefreshToken(Id.reconstruct(id), token, expiresAt, used, userId);
+  static reconstruct(id: string, token: string, expiresAt: Date): RefreshToken {
+    return new RefreshToken(Id.reconstruct(id), token, expiresAt);
   }
 
   isExpired(): boolean {

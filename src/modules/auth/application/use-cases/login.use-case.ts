@@ -25,10 +25,15 @@ export class LoginUseCase {
     const isValid = await authUser.isValidPassword(dto.password);
     if (!isValid) throw new UnauthorizedException('Password is invalid!');
 
-    // 新しいトークンペアを作成
+    // トークンペアを作成
     const tokenPair = await this.tokenGenerator.generateTokenPair({
       userId: authUser.id,
     });
+    authUser.addRefreshToken(
+      tokenPair.refreshToken.value,
+      tokenPair.refreshToken.expiresAt,
+    );
+    await this.authUserRepository.update(authUser);
 
     return tokenPair;
   }

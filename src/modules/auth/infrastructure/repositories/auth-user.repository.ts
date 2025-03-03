@@ -39,10 +39,73 @@ export class AuthUserRepository implements IAuthUserRepository {
   async findByEmail(email: string): Promise<AuthUser> {
     const authUser = await this.prismaUser.findUnique({
       where: { email },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+        refreshTokens: {
+          select: {
+            id: true,
+            token: true,
+            expiresAt: true,
+          },
+        },
+      },
     });
 
     if (!authUser) throw new ForbiddenException('User not found!');
 
-    return AuthUser.reconstruct(authUser.id, authUser.email, authUser.password);
+    return AuthUser.reconstruct(
+      authUser.id,
+      authUser.email,
+      authUser.password,
+      authUser.refreshTokens,
+    );
+  }
+
+  async findById(id: string): Promise<AuthUser> {
+    const authUser = await this.prismaUser.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+        refreshTokens: {
+          select: {
+            id: true,
+            token: true,
+            expiresAt: true,
+          },
+        },
+      },
+    });
+
+    if (!authUser) throw new ForbiddenException('User not found!');
+
+    return AuthUser.reconstruct(
+      authUser.id,
+      authUser.email,
+      authUser.password,
+      authUser.refreshTokens,
+    );
+  }
+
+  async update(authUser: AuthUser) {
+    await this.prismaUser.update({
+      where: { id: authUser.id },
+      data: {
+        email: authUser.email,
+        password: authUser.passwordHash,
+        refreshTokens: {
+          createMany: {
+            data: authUser.newRefreshTokens.map(({ id, token, expiresAt }) => ({
+              id,
+              token,
+              expiresAt,
+            })),
+          },
+        },
+      },
+    });
   }
 }
