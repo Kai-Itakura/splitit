@@ -4,7 +4,9 @@ import { PasswordHash } from '../value-objects/password-hash';
 import { RefreshToken } from './refresh-token.entity';
 
 export class AuthUser {
-  private readonly _newRefreshTokens: RefreshToken[] = [];
+  private _newRefreshToken: RefreshToken;
+  private _allRefreshTokensRemoved: boolean;
+  private _removedRefreshTokenId: string;
 
   private constructor(
     private readonly _id: Id,
@@ -60,10 +62,39 @@ export class AuthUser {
   addRefreshToken(token: string, expiresAt: Date): void {
     const newRefreshToken = RefreshToken.create(token, expiresAt);
     this._refreshTokens.push(newRefreshToken);
-    this._newRefreshTokens.push(newRefreshToken);
+    this._newRefreshToken = newRefreshToken;
   }
 
-  get newRefreshTokens(): RefreshToken[] {
-    return this._newRefreshTokens;
+  getRefreshToken(token: string): RefreshToken | undefined {
+    return this._refreshTokens.find(
+      (refreshToken) => refreshToken.value === token,
+    );
+  }
+
+  removeRefreshToken(token: string): void {
+    const index = this._refreshTokens.findIndex(
+      (refreshToken) => refreshToken.value === token,
+    );
+
+    if (index !== -1) {
+      const removedRefreshToken = this._refreshTokens.splice(index, 1)[0];
+      this._removedRefreshTokenId = removedRefreshToken.id;
+    }
+  }
+
+  removeAllRefreshTokens(): void {
+    this._refreshTokens.length = 0;
+    this._allRefreshTokensRemoved = true;
+  }
+
+  // 変更追跡用
+  get newRefreshToken(): RefreshToken {
+    return this._newRefreshToken;
+  }
+  get allRefreshTokensRemoved(): boolean {
+    return this._allRefreshTokensRemoved;
+  }
+  get removedRefreshTokenId(): string {
+    return this._removedRefreshTokenId;
   }
 }

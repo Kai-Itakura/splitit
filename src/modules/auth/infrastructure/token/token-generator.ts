@@ -6,6 +6,7 @@ import {
   ITokenGenerator,
   TokenPair,
 } from '../../application/interfaces/token-generator.interface';
+import { CurrentUser } from '../../decorators/types/current-user.type';
 
 @Injectable()
 export class TokenGenerator implements ITokenGenerator {
@@ -14,7 +15,7 @@ export class TokenGenerator implements ITokenGenerator {
     private readonly configService: ConfigService,
   ) {}
 
-  async generateTokenPair(payload: { userId: string }): Promise<TokenPair> {
+  async generateTokenPair(payload: CurrentUser): Promise<TokenPair> {
     const accessToken = await this.jwtService.signAsync(payload, {
       expiresIn: this.configService.get('ACCESS_TOKEN_EXP'),
       secret: this.configService.get('JWT_SECRET'),

@@ -3,7 +3,7 @@ import { Id } from 'src/modules/shared/value-objects/id';
 export class RefreshToken {
   private constructor(
     private readonly _id: Id,
-    private readonly _token: string,
+    private readonly _value: string,
     private readonly _expiresAt: Date,
   ) {}
 
@@ -15,8 +15,8 @@ export class RefreshToken {
     return this._id.value;
   }
 
-  get token(): string {
-    return this._token;
+  get value(): string {
+    return this._value;
   }
 
   get expiresAt(): Date {

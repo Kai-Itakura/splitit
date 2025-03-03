@@ -6,6 +6,7 @@ import {
 import { AuthDTO } from '../dto/auth.dto';
 import {
   ITokenGenerator,
+  ITokenGeneratorToken,
   TokenPair,
 } from '../interfaces/token-generator.interface';
 
@@ -14,7 +15,8 @@ export class LoginUseCase {
   constructor(
     @Inject(IAuthUserRepositoryToken)
     private readonly authUserRepository: IAuthUserRepository,
-    @Inject(ITokenGenerator) private readonly tokenGenerator: ITokenGenerator,
+    @Inject(ITokenGeneratorToken)
+    private readonly tokenGenerator: ITokenGenerator,
   ) {}
 
   async execute(dto: AuthDTO): Promise<TokenPair> {

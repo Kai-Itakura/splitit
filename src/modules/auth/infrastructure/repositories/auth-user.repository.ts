@@ -12,9 +12,11 @@ import { IAuthUserRepository } from '../../domain/repositories/auth-user.reposit
 @Injectable()
 export class AuthUserRepository implements IAuthUserRepository {
   private readonly prismaUser: Prisma.UserDelegate;
+  private readonly prismaRefreshToken: Prisma.RefreshTokenDelegate;
 
-  constructor(private readonly _prismaService: PrismaService) {
-    this.prismaUser = _prismaService.user;
+  constructor(prismaService: PrismaService) {
+    this.prismaUser = prismaService.user;
+    this.prismaRefreshToken = prismaService.refreshToken;
   }
 
   async create(authUser: AuthUser): Promise<void> {
@@ -90,22 +92,38 @@ export class AuthUserRepository implements IAuthUserRepository {
     );
   }
 
-  async update(authUser: AuthUser) {
-    await this.prismaUser.update({
-      where: { id: authUser.id },
-      data: {
-        email: authUser.email,
-        password: authUser.passwordHash,
-        refreshTokens: {
-          createMany: {
-            data: authUser.newRefreshTokens.map(({ id, token, expiresAt }) => ({
-              id,
-              token,
-              expiresAt,
-            })),
-          },
+  async update(authUser: AuthUser): Promise<void> {
+    if (authUser.allRefreshTokensRemoved) {
+      await this.prismaRefreshToken.deleteMany({
+        where: {
+          userId: authUser.id,
         },
-      },
-    });
+      });
+    } else if (authUser.newRefreshToken) {
+      await this.prismaRefreshToken.create({
+        data: {
+          id: authUser.newRefreshToken.id,
+          token: authUser.newRefreshToken.value,
+          expiresAt: authUser.newRefreshToken.expiresAt,
+          userId: authUser.id,
+        },
+      });
+    } else if (authUser.removedRefreshTokenId) {
+      await this.prismaRefreshToken.delete({
+        where: {
+          id: authUser.removedRefreshTokenId,
+        },
+      });
+    } else {
+      await this.prismaUser.update({
+        where: {
+          id: authUser.id,
+        },
+        data: {
+          email: authUser.email,
+          password: authUser.passwordHash,
+        },
+      });
+    }
   }
 }

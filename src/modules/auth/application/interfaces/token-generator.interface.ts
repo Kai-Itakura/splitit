@@ -1,3 +1,5 @@
+import { CurrentUser } from '../../decorators/types/current-user.type';
+
 export interface TokenPair {
   accessToken: {
     value: string;
@@ -9,7 +11,7 @@ export interface TokenPair {
 }
 
 export interface ITokenGenerator {
-  generateTokenPair(payload: { userId: string }): Promise<TokenPair>;
+  generateTokenPair(payload: CurrentUser): Promise<TokenPair>;
 }
 
-export const ITokenGenerator = Symbol('ITokenGenerator');
+export const ITokenGeneratorToken = Symbol('ITokenGenerator');
