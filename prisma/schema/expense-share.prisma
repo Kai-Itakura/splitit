@@ -1,10 +1,9 @@
 model ExpenseShare {
-  id     Int @id @default(autoincrement())
-  amount Int
+  id String @id
 
-  expenseId Int
+  expenseId String
   expense   Expense @relation(fields: [expenseId], references: [id])
 
-  receiverId String
-  user       User   @relation(fields: [receiverId], references: [id])
+  payeeId String
+  user    User   @relation(fields: [payeeId], references: [id])
 }

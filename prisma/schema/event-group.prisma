@@ -1,6 +1,6 @@
 model EventGroup {
-  id       Int     @id
-  name     String
+  id       String  @id
+  title    String
   currency String?
 
   member   User[]

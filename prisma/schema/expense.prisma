@@ -1,12 +1,12 @@
 model Expense {
-  id     Int    @id @default(autoincrement())
+  id     String @id
   title  String
   amount Int
 
   payerId String
   payer   User   @relation(fields: [payerId], references: [id])
 
-  groupId Int
+  groupId String
   group   EventGroup @relation(fields: [groupId], references: [id])
 
   expensesShares ExpenseShare[]
