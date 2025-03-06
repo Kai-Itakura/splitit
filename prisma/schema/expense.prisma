@@ -8,6 +8,4 @@ model Expense {
 
   groupId String
   group   EventGroup @relation(fields: [groupId], references: [id])
-
-  expensesShares ExpenseShare[]
 }

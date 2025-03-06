@@ -1,9 +1,0 @@
-model ExpenseShare {
-  id String @id
-
-  expenseId String
-  expense   Expense @relation(fields: [expenseId], references: [id])
-
-  payeeId String
-  user    User   @relation(fields: [payeeId], references: [id])
-}

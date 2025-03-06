@@ -8,6 +8,8 @@ model User {
 
   UserGroups    EventGroup[]
   Expenses      Expense[]
-  ExpenseShares ExpenseShare[]
   refreshTokens RefreshToken[]
+
+  ReceiverSettlement Settlement[] @relation("receiver")
+  PayerSettlement    Settlement[] @relation("payer")
 }

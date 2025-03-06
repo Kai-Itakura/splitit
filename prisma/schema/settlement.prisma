@@ -1,0 +1,15 @@
+model Settlement {
+  id String @id
+
+  groupId String
+  group   EventGroup @relation(fields: [groupId], references: [id])
+
+  receiverId String
+  receiver   User   @relation(fields: [receiverId], references: [id], name: "receiver")
+
+  payerId String
+  payer   User   @relation(fields: [payerId], references: [id], name: "payer")
+
+  amount Int
+  paid   Boolean @default(false)
+}

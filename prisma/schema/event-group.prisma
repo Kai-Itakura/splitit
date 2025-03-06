@@ -1,10 +1,11 @@
 model EventGroup {
-  id       String  @id
+  id       String @id
   title    String
-  currency String?
+  currency String
 
-  member   User[]
-  expenses Expense[]
+  member     User[]
+  expenses   Expense[]
+  settlement Settlement[]
 
   @@map("Group")
 }
