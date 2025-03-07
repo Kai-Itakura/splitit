@@ -1,21 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CurrentUser } from '../../decorators/types/current-user.type';
 import {
+  AuthUserRepositoryToken,
   IAuthUserRepository,
-  IAuthUserRepositoryToken,
 } from '../../domain/repositories/auth-user.repository.interface';
 import {
   ITokenGenerator,
-  ITokenGeneratorToken,
+  TokenGeneratorToken,
   TokenPair,
 } from '../interfaces/token-generator.interface';
 
 @Injectable()
 export class RefreshTokenPairUseCase {
   constructor(
-    @Inject(ITokenGeneratorToken)
+    @Inject(TokenGeneratorToken)
     private readonly tokenGenerator: ITokenGenerator,
-    @Inject(IAuthUserRepositoryToken)
+    @Inject(AuthUserRepositoryToken)
     private readonly authUserRepository: IAuthUserRepository,
   ) {}
 

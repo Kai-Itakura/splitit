@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AuthUser } from '../../domain/entities/auth-user.entity';
 import {
+  AuthUserRepositoryToken,
   IAuthUserRepository,
-  IAuthUserRepositoryToken,
 } from '../../domain/repositories/auth-user.repository.interface';
-import { AuthDTO } from '../dto/auth.dto';
+import { AuthDTO } from '../../presentation/dto/auth.dto';
 
 export interface JwtPayload {
   id: string;
@@ -13,7 +13,7 @@ export interface JwtPayload {
 @Injectable()
 export class SigninUseCase {
   constructor(
-    @Inject(IAuthUserRepositoryToken)
+    @Inject(AuthUserRepositoryToken)
     private readonly authUserRepository: IAuthUserRepository,
   ) {}
 

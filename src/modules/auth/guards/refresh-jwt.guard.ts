@@ -9,15 +9,15 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import {
+  AuthUserRepositoryToken,
   IAuthUserRepository,
-  IAuthUserRepositoryToken,
 } from '../domain/repositories/auth-user.repository.interface';
 import { JwtRequestPayload } from '../strategy/type';
 
 @Injectable()
 export class RefreshJwtGuard implements CanActivate {
   constructor(
-    @Inject(IAuthUserRepositoryToken)
+    @Inject(AuthUserRepositoryToken)
     private readonly authUserRepository: IAuthUserRepository,
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,

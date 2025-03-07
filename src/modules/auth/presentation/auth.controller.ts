@@ -8,7 +8,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { AuthDTO } from '../application/dto/auth.dto';
 import { TokenPair } from '../application/interfaces/token-generator.interface';
 import { LoginUseCase } from '../application/use-cases/login.use-case';
 import { RefreshTokenPairUseCase } from '../application/use-cases/refresh-token-pair.use-case';
@@ -16,6 +15,7 @@ import { SigninUseCase } from '../application/use-cases/signin.use-case';
 import { currentUser } from '../decorators/current-user.decorator';
 import { CurrentUser } from '../decorators/types/current-user.type';
 import { RefreshJwtGuard } from '../guards/refresh-jwt.guard';
+import { AuthDTO } from './dto/auth.dto';
 
 @Controller('auth')
 export class AuthController {

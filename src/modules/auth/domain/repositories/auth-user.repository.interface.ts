@@ -7,4 +7,4 @@ export interface IAuthUserRepository {
   update(authUser: AuthUser): Promise<void>;
 }
 
-export const IAuthUserRepositoryToken = Symbol('IAuthUserRepository');
+export const AuthUserRepositoryToken = Symbol('IAuthUserRepository');

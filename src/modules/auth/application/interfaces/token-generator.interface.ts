@@ -14,4 +14,4 @@ export interface ITokenGenerator {
   generateTokenPair(payload: CurrentUser): Promise<TokenPair>;
 }
 
-export const ITokenGeneratorToken = Symbol('ITokenGenerator');
+export const TokenGeneratorToken = Symbol('ITokenGenerator');

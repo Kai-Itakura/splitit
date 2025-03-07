@@ -1,21 +1,21 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import {
+  AuthUserRepositoryToken,
   IAuthUserRepository,
-  IAuthUserRepositoryToken,
 } from '../../domain/repositories/auth-user.repository.interface';
-import { AuthDTO } from '../dto/auth.dto';
+import { AuthDTO } from '../../presentation/dto/auth.dto';
 import {
   ITokenGenerator,
-  ITokenGeneratorToken,
+  TokenGeneratorToken,
   TokenPair,
 } from '../interfaces/token-generator.interface';
 
 @Injectable()
 export class LoginUseCase {
   constructor(
-    @Inject(IAuthUserRepositoryToken)
+    @Inject(AuthUserRepositoryToken)
     private readonly authUserRepository: IAuthUserRepository,
-    @Inject(ITokenGeneratorToken)
+    @Inject(TokenGeneratorToken)
     private readonly tokenGenerator: ITokenGenerator,
   ) {}
 
