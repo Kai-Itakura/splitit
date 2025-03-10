@@ -1,6 +1,6 @@
 import { compare, hash } from 'bcrypt';
 import { Id } from 'src/modules/shared/value-objects/id';
-import { CreateUserDTO } from '../../application/dto/create-user.dto';
+import { CreateUserDTO } from '../../presentation/dto/create-user.dto';
 
 export class User {
   private constructor(

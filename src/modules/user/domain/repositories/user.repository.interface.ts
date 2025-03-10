@@ -14,7 +14,7 @@ export interface IUserRepository {
   /**
    * 取得
    */
-  findById(id: string): Promise<User | null>;
+  findByEmail(email: string): Promise<User | null>;
 
   /**
    * 削除
@@ -22,4 +22,4 @@ export interface IUserRepository {
   delete(id: string): Promise<void>;
 }
 
-export const IUserRepository = Symbol('IUserRepository');
+export const UserRepositoryToken = Symbol('IUserRepository');

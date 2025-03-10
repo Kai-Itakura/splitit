@@ -50,9 +50,9 @@ export class UserRepository implements IUserRepository {
   /**
    * ユーザーの取得
    */
-  async findById(id: string): Promise<User | null> {
+  async findByEmail(email: string): Promise<User | null> {
     const user = await this.prismaUser.findUnique({
-      where: { id },
+      where: { email },
     });
 
     if (!user) {
