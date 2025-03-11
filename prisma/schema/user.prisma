@@ -6,7 +6,7 @@ model User {
   updatedAt DateTime @updatedAt()
   name      String?
 
-  UserGroups    EventGroup[]
+  EventGroups    EventGroup[]
   Expenses      Expense[]
   refreshTokens RefreshToken[]
 

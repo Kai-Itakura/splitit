@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CurrentUser } from 'src/modules/auth/decorators/types/current-user.type';
+import { CurrentUserType } from 'src/modules/auth/decorators/types/current-user.type';
 import { EventGroup } from '../../domain/entities/event-group.entity';
 import {
   EventGroupRepositoryToken,
@@ -8,13 +8,16 @@ import {
 import { CreateEventGroupDto } from '../../presentation/dto/create-event-group.dto';
 
 @Injectable()
-export class createEventGroupUseCase {
+export class CreateEventGroupUseCase {
   constructor(
     @Inject(EventGroupRepositoryToken)
     private readonly eventGroupRepository: IEventGroupRepository,
   ) {}
 
-  async execute(dto: CreateEventGroupDto, user: CurrentUser): Promise<void> {
+  async execute(
+    dto: CreateEventGroupDto,
+    user: CurrentUserType,
+  ): Promise<void> {
     const eventGroup = EventGroup.create(dto.title, user.userId, dto.currency);
     await this.eventGroupRepository.save(eventGroup);
   }

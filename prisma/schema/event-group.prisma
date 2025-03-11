@@ -1,7 +1,8 @@
 model EventGroup {
-  id       String @id
-  title    String
-  currency String
+  id        String   @id
+  title     String
+  currency  String
+  createdAt DateTime
 
   member     User[]
   expenses   Expense[]
