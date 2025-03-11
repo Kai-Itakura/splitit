@@ -12,8 +12,8 @@ import { TokenPair } from '../application/interfaces/token-generator.interface';
 import { LoginUseCase } from '../application/use-cases/login.use-case';
 import { RefreshTokenPairUseCase } from '../application/use-cases/refresh-token-pair.use-case';
 import { SigninUseCase } from '../application/use-cases/signin.use-case';
-import { currentUser } from '../decorators/current-user.decorator';
-import { CurrentUser } from '../decorators/types/current-user.type';
+import { CurrentUser } from '../decorators/current-user.decorator';
+import { CurrentUserType } from '../decorators/types/current-user.type';
 import { RefreshJwtGuard } from '../guards/refresh-jwt.guard';
 import { AuthDTO } from './dto/auth.dto';
 
@@ -53,7 +53,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('refresh')
   async refresh(
-    @currentUser() currentUser: CurrentUser,
+    @CurrentUser() currentUser: CurrentUserType,
     @Res({ passthrough: true }) res: Response,
   ): Promise<{ accessToken: string }> {
     const payload = { userId: currentUser.userId };

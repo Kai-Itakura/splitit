@@ -1,3 +1,3 @@
-export interface CurrentUser extends Express.User {
+export interface CurrentUserType extends Express.User {
   userId: string;
 }

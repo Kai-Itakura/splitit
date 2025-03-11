@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CurrentUser } from '../../decorators/types/current-user.type';
+import { CurrentUserType } from '../../decorators/types/current-user.type';
 import {
   AuthUserRepositoryToken,
   IAuthUserRepository,
@@ -19,7 +19,7 @@ export class RefreshTokenPairUseCase {
     private readonly authUserRepository: IAuthUserRepository,
   ) {}
 
-  async execute(payload: CurrentUser): Promise<TokenPair> {
+  async execute(payload: CurrentUserType): Promise<TokenPair> {
     const newTokenPair = await this.tokenGenerator.generateTokenPair(payload);
     const authUser = await this.authUserRepository.findById(payload.userId);
     authUser.addRefreshToken(
