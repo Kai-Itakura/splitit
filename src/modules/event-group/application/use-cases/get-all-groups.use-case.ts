@@ -16,6 +16,8 @@ export class GetAllGroupsUseCase {
 
   async execute(user: CurrentUserType): Promise<EventGroupDto[]> {
     const eventGroups = await this.eventGroupRepository.findAll(user.userId);
-    return eventGroups.map((group) => plainToInstance(EventGroupDto, group));
+    return eventGroups.map((group) =>
+      plainToInstance(EventGroupDto, group, { strategy: 'excludeAll' }),
+    );
   }
 }
