@@ -1,6 +1,5 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { User } from '../domain/entities/user.entity';
 import { IUserRepository } from '../domain/repositories/user.repository.interface';
@@ -14,36 +13,12 @@ export class UserRepository implements IUserRepository {
   }
 
   /**
-   * ユーザーの作成
-   */
-  async create(user: User): Promise<void> {
-    try {
-      await this.prismaUser.create({
-        data: {
-          id: user.id,
-          email: user.email,
-          password: user.passwordHash,
-        },
-      });
-    } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          throw new ConflictException('Email is already used!');
-        }
-      }
-
-      console.error(error);
-      throw new Error();
-    }
-  }
-
-  /**
    * ユーザーの更新
    */
-  async update(user: User): Promise<void> {
+  async save(user: User): Promise<void> {
     await this.prismaUser.update({
       where: { id: user.id },
-      data: { password: user.passwordHash, name: user.name },
+      data: { name: user.name },
     });
   }
 
@@ -59,12 +34,7 @@ export class UserRepository implements IUserRepository {
       return null;
     }
 
-    return User.reconstruct(
-      user.id,
-      user.email,
-      user.password,
-      user.name ?? undefined,
-    );
+    return User.reconstruct(user.id, user.email, user.name ?? undefined);
   }
 
   /**

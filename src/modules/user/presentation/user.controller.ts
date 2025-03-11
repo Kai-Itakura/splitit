@@ -21,37 +21,4 @@ export class UserController {
   async findByEmail(@Body() dto: FindUserDTO): Promise<ReturnUserDTO> {
     return this.findUserByEmailUseCase.execute(dto);
   }
-
-  // /**
-  //  * 作成
-  //  */
-  // @Post()
-  // async create(@Body() dto: CreateUserDTO): Promise<ReturnUserDTO> {
-  //   return this.userService.create(dto);
-  // }
-
-  // /**
-  //  * 更新
-  //  */
-  // @Put()
-  // async updateUserName(@Body() dto: UpdateUserNameDTO): Promise<ReturnUserDTO> {
-  //   return this.userService.changeName(dto);
-  // }
-
-  // /**
-  //  * 取得
-  //  */
-  // @Get()
-  // async findById(@Body() dto: GetUserDTO): Promise<ReturnUserDTO> {
-  //   return this.userService.findById(dto.id);
-  // }
-
-  // /**
-  //  * 削除
-  //  */
-  // @Delete()
-  // async delete(@Body() dto: GetUserDTO): Promise<Message> {
-  //   await this.userService.delete(dto.id);
-  //   return { message: 'Successfully deleted!' };
-  // }
 }
