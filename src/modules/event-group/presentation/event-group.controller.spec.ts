@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { createEventGroupUseCase } from '../application/use-cases/create-event-group.use-case';
+import { CreateEventGroupUseCase } from '../application/use-cases/create-event-group.use-case';
 import { EventGroupController } from './event-group.controller';
 
 describe('EventGroupController', () => {
@@ -8,7 +8,7 @@ describe('EventGroupController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [EventGroupController],
-      providers: [createEventGroupUseCase],
+      providers: [CreateEventGroupUseCase],
     }).compile();
 
     controller = module.get<EventGroupController>(EventGroupController);

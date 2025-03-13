@@ -1,5 +1,5 @@
 import { Id } from 'src/modules/shared/value-objects/id';
-import { Currency } from '../types/currency.type';
+import { Currency, CurrencyType } from '../value-objects/currency';
 import { Expense } from './expense.entity';
 import { SettleMent } from './settlement.entity';
 
@@ -12,6 +12,7 @@ export class EventGroup {
     private readonly _title: string,
     private readonly _userIds: string[],
     private readonly _currency: Currency,
+    private readonly _createdAt: Date,
   ) {}
 
   get id(): string {
@@ -26,19 +27,49 @@ export class EventGroup {
     return [...this._userIds];
   }
 
-  get currency(): Currency {
-    return this._currency;
+  get currency(): CurrencyType {
+    return this._currency.value;
   }
 
-  static create(title: string, userId: string, currency: Currency = 'JPY') {
-    return new EventGroup(Id.create(), title, [userId], currency);
+  get createdAt(): Date {
+    return this._createdAt;
+  }
+
+  get memberCount(): number {
+    return this._userIds.length;
+  }
+
+  static create(title: string, userId: string, currency: string = 'JPY') {
+    return new EventGroup(
+      Id.create(),
+      title,
+      [userId],
+      Currency.create(currency),
+      new Date(),
+    );
+  }
+
+  static reconstruct(
+    id: string,
+    title: string,
+    userIds: string[],
+    currency: string,
+    createdAt: Date,
+  ) {
+    return new EventGroup(
+      Id.reconstruct(id),
+      title,
+      userIds,
+      Currency.create(currency),
+      createdAt,
+    );
   }
 
   addUserId(userId: string): void {
     this._userIds.push(userId);
   }
 
-  createExpense(
+  addExpense(
     title: string,
     amount: number,
     payerId: string,

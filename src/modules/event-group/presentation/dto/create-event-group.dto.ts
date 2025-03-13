@@ -1,10 +1,10 @@
 import { IsString } from 'class-validator';
-import { Currency } from '../../domain/types/currency.type';
+import { CurrencyType } from '../../domain/value-objects/currency';
 
 export class CreateEventGroupDto {
   @IsString()
   title: string;
 
   @IsString()
-  currency?: Currency;
+  currency?: CurrencyType;
 }
