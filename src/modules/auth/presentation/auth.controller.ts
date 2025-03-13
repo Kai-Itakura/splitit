@@ -15,7 +15,7 @@ import { SigninUseCase } from '../application/use-cases/signin.use-case';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { CurrentUserType } from '../decorators/types/current-user.type';
 import { RefreshJwtGuard } from '../guards/refresh-jwt.guard';
-import { AuthDTO } from './dto/auth.dto';
+import { LoginAuthDto, SigninAuthDto } from './dto/auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -26,7 +26,7 @@ export class AuthController {
   ) {}
 
   @Post('signin')
-  async signin(@Body() dto: AuthDTO): Promise<{ message: string }> {
+  async signin(@Body() dto: SigninAuthDto): Promise<{ message: string }> {
     await this.signinUseCase.execute(dto);
     return { message: 'Successfully Signin!' };
   }
@@ -34,7 +34,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(
-    @Body() dto: AuthDTO,
+    @Body() dto: LoginAuthDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<{ accessToken: string }> {
     const tokenPair = await this.loginUseCase.execute(dto);
