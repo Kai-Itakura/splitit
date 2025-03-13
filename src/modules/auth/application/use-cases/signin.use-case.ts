@@ -19,7 +19,7 @@ export class SigninUseCase {
 
   async execute(dto: AuthDTO): Promise<void> {
     // ユーザーの新規作成
-    const authUser = await AuthUser.create(dto.email, dto.password);
+    const authUser = await AuthUser.create(dto.email, dto.password, dto.name);
     await this.authUserRepository.create(authUser);
   }
 }

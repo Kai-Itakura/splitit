@@ -7,4 +7,7 @@ export class AuthDTO {
 
   @IsString()
   password: string;
+
+  @IsString()
+  name: string;
 }

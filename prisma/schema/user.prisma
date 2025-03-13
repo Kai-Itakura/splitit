@@ -4,7 +4,7 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
-  name      String?
+  name      String
 
   EventGroups   EventGroup[]
   Expenses      Expense[]      @relation("payer")
