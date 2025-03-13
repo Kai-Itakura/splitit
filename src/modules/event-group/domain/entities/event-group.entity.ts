@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { Id } from 'src/modules/shared/value-objects/id';
 import { Currency, CurrencyType } from '../value-objects/currency';
 import { Expense } from './expense.entity';
@@ -5,6 +6,8 @@ import { SettleMent } from './settlement.entity';
 
 export class EventGroup {
   private readonly _expenses: Expense[] = [];
+  private _addedExpenseId: string;
+
   private readonly _settlements: SettleMent[] = [];
 
   private constructor(
@@ -75,10 +78,30 @@ export class EventGroup {
     payerId: string,
     payeeIds: string[],
   ): void {
-    this._expenses.push(Expense.create(title, amount, payerId, payeeIds));
+    if (!this.isMember([payerId]))
+      throw new BadRequestException('Payer is not member of Group!');
+    if (!this.isMember(payeeIds))
+      throw new BadRequestException('Some payee are not member of Group!');
+
+    const newExpense = Expense.create(title, amount, payerId, payeeIds);
+    this._expenses.push(newExpense);
+    this._addedExpenseId = newExpense.id;
+  }
+
+  getExpense(expenseId: string): Expense | undefined {
+    return this._expenses.find((expense) => expense.id === expenseId);
   }
 
   createSettlement(receiverId: string, payerId: string, amount: number) {
     this._settlements.push(SettleMent.create(receiverId, payerId, amount));
+  }
+
+  private isMember(userIds: string[]) {
+    return userIds.some((userId) => this._userIds.includes(userId));
+  }
+
+  // 子エンティティ変更追跡用
+  get addedExpenseId() {
+    return this._addedExpenseId;
   }
 }

@@ -10,6 +10,26 @@ export class Expense {
     private readonly _payeeIds: string[],
   ) {}
 
+  get id(): string {
+    return this._id.value;
+  }
+
+  get title(): string {
+    return this._title;
+  }
+
+  get amount(): number {
+    return this._amount.value;
+  }
+
+  get payerId(): string {
+    return this._payerId;
+  }
+
+  get payeeIds(): string[] {
+    return [...this._payeeIds];
+  }
+
   static create(
     title: string,
     amount: number,
