@@ -1,15 +1,25 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserService } from 'src/modules/user/application/use-cases/user.service';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { UserRepositoryToken } from '../../domain/repositories/user.repository.interface';
+import { UserRepository } from '../../infrastructure/user.repository';
+import { FindByEmailUseCase } from './find-by-email.use-case';
 
-describe('UserService', () => {
-  let service: UserService;
+describe('FindByEmailUseCase', () => {
+  let service: FindByEmailUseCase;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UserService],
+      providers: [
+        FindByEmailUseCase,
+        {
+          provide: UserRepositoryToken,
+          useClass: UserRepository,
+        },
+        PrismaService,
+      ],
     }).compile();
 
-    service = module.get<UserService>(UserService);
+    service = module.get<FindByEmailUseCase>(FindByEmailUseCase);
   });
 
   it('should be defined', () => {
