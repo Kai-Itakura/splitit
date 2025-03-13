@@ -53,14 +53,14 @@ export class EventGroup {
     id: string,
     title: string,
     userIds: string[],
-    currency: Currency,
+    currency: string,
     createdAt: Date,
   ) {
     return new EventGroup(
       Id.reconstruct(id),
       title,
       userIds,
-      currency,
+      Currency.create(currency),
       createdAt,
     );
   }
@@ -69,7 +69,7 @@ export class EventGroup {
     this._userIds.push(userId);
   }
 
-  createExpense(
+  addExpense(
     title: string,
     amount: number,
     payerId: string,
