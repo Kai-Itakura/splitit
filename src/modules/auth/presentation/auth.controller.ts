@@ -44,10 +44,13 @@ export class AuthController {
     return { accessToken: tokenPair.accessToken.value };
   }
 
-  // @UseGuards(RefreshJwtGuard)
-  // @HttpCode(HttpStatus.OK)
-  // @Post('logout')
-  // async logout(@Req() req: Request) {}
+  @UseGuards(RefreshJwtGuard)
+  @HttpCode(HttpStatus.OK)
+  @Post('logout')
+  logout(@Res({ passthrough: true }) res: Response): { accessToken: string } {
+    this.setAuthCookie(res, { value: '', expiresAt: new Date() });
+    return { accessToken: '' };
+  }
 
   @UseGuards(RefreshJwtGuard)
   @HttpCode(HttpStatus.OK)
