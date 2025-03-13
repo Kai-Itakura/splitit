@@ -4,7 +4,7 @@ import { EventGroup } from '../../domain/entities/event-group.entity';
 import {
   EventGroupRepositoryToken,
   IEventGroupRepository,
-} from '../../domain/repositories/event-group.repository.interfece';
+} from '../../domain/repositories/event-group.repository.interface';
 import { CreateEventGroupDto } from '../../presentation/dto/create-event-group.dto';
 
 @Injectable()

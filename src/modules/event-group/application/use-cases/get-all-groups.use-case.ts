@@ -4,7 +4,7 @@ import { CurrentUserType } from 'src/modules/auth/decorators/types/current-user.
 import {
   EventGroupRepositoryToken,
   IEventGroupRepository,
-} from '../../domain/repositories/event-group.repository.interfece';
+} from '../../domain/repositories/event-group.repository.interface';
 import { EventGroupDto } from '../../presentation/dto/event-group.dto';
 
 @Injectable()
