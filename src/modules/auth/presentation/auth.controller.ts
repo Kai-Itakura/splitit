@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { Message } from 'src/modules/types/response-message.type';
 import { TokenPair } from '../application/interfaces/token-generator.interface';
 import { LoginUseCase } from '../application/use-cases/login.use-case';
 import { RefreshTokenPairUseCase } from '../application/use-cases/refresh-token-pair.use-case';
@@ -26,7 +27,7 @@ export class AuthController {
   ) {}
 
   @Post('signin')
-  async signin(@Body() dto: SigninAuthDto): Promise<{ message: string }> {
+  async signin(@Body() dto: SigninAuthDto): Promise<Message> {
     await this.signinUseCase.execute(dto);
     return { message: 'Successfully Signin!' };
   }

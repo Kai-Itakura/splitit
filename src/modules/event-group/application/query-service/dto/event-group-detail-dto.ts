@@ -18,6 +18,7 @@ export type EventGroupDetailDto = Prisma.EventGroupGetPayload<{
         title: true;
         payer: {
           select: {
+            id: true;
             name: true;
           };
         };

@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { UserRepositoryToken } from '../user/domain/repositories/user.repository.interface';
+import { UserRepository } from '../user/infrastructure/user.repository';
 import { EventGroupQueryServiceToken } from './application/query-service/event-group-query.service.interface';
 import { AddExpenseUseCase } from './application/use-cases/add-expense.use-case';
+import { AddMemberUseCase } from './application/use-cases/add-member.use-case';
 import { CreateEventGroupUseCase } from './application/use-cases/create-event-group.use-case';
 import { GetAllGroupsUseCase } from './application/use-cases/get-all-groups.use-case';
 import { getGroupUseCase } from './application/use-cases/get-group.use-case';
 import { EventGroupRepositoryToken } from './domain/repositories/event-group.repository.interface';
+import { EventGroupUserService } from './domain/service/event-group-user.service';
 import { EventGroupQueryService } from './infrastructure/query-service/event-group-query.service';
 import { EventGroupRepository } from './infrastructure/repositories/event-group.repository';
 import { EventGroupController } from './presentation/event-group.controller';
@@ -19,6 +23,10 @@ import { EventGroupController } from './presentation/event-group.controller';
       useClass: EventGroupRepository,
     },
     {
+      provide: UserRepositoryToken,
+      useClass: UserRepository,
+    },
+    {
       provide: EventGroupQueryServiceToken,
       useClass: EventGroupQueryService,
     },
@@ -26,6 +34,8 @@ import { EventGroupController } from './presentation/event-group.controller';
     getGroupUseCase,
     GetAllGroupsUseCase,
     AddExpenseUseCase,
+    AddMemberUseCase,
+    EventGroupUserService,
   ],
 })
 export class EventGroupModule {}

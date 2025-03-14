@@ -23,6 +23,8 @@ export class EventGroupRepository implements IEventGroupRepository {
       if (expense) {
         await this.addExpense(expense, eventGroup.id);
       }
+    } else if (eventGroup.addedUserId) {
+      await this.addUser(eventGroup.addedUserId, eventGroup.id);
     } else {
       await this.saveEventGroup(eventGroup);
     }
@@ -103,7 +105,7 @@ export class EventGroupRepository implements IEventGroupRepository {
         currency: eventGroup.currency,
         createdAt: eventGroup.createdAt,
         member: {
-          connect: eventGroup.userIds.map((userId) => {
+          connect: eventGroup.memberIds.map((userId) => {
             return { id: userId };
           }),
         },
@@ -130,6 +132,21 @@ export class EventGroupRepository implements IEventGroupRepository {
           }),
         },
         groupId: groupId,
+      },
+    });
+  }
+
+  private async addUser(userId: string, groupId: string): Promise<void> {
+    await this.prismaEventGroup.update({
+      where: {
+        id: groupId,
+      },
+      data: {
+        member: {
+          connect: {
+            id: userId,
+          },
+        },
       },
     });
   }

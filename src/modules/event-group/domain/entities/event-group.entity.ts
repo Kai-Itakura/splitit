@@ -10,10 +10,12 @@ export class EventGroup {
 
   private readonly _settlements: SettleMent[] = [];
 
+  private _addedUserId: string;
+
   private constructor(
     private readonly _id: Id,
     private readonly _title: string,
-    private readonly _userIds: string[],
+    private readonly _memberIds: string[],
     private readonly _currency: Currency,
     private readonly _createdAt: Date,
   ) {}
@@ -26,8 +28,8 @@ export class EventGroup {
     return this._title;
   }
 
-  get userIds(): string[] {
-    return [...this._userIds];
+  get memberIds(): string[] {
+    return [...this._memberIds];
   }
 
   get currency(): CurrencyType {
@@ -39,7 +41,7 @@ export class EventGroup {
   }
 
   get memberCount(): number {
-    return this._userIds.length;
+    return this._memberIds.length;
   }
 
   static create(title: string, userId: string, currency: string = 'JPY') {
@@ -68,8 +70,9 @@ export class EventGroup {
     );
   }
 
-  addUserId(userId: string): void {
-    this._userIds.push(userId);
+  addMemberId(userId: string): void {
+    this._memberIds.push(userId);
+    this._addedUserId = userId;
   }
 
   addExpense(
@@ -97,11 +100,16 @@ export class EventGroup {
   }
 
   private isMember(userIds: string[]) {
-    return userIds.some((userId) => this._userIds.includes(userId));
+    return userIds.some((userId) => this._memberIds.includes(userId));
   }
 
   // 子エンティティ変更追跡用
-  get addedExpenseId() {
+  // ----------------------
+  get addedExpenseId(): string {
     return this._addedExpenseId;
+  }
+
+  get addedUserId(): string {
+    return this._addedUserId;
   }
 }

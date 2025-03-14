@@ -34,6 +34,7 @@ export class EventGroupQueryService implements IEventGroupQueryService {
             title: true,
             payer: {
               select: {
+                id: true,
                 name: true,
               },
             },
