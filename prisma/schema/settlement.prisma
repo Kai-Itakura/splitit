@@ -4,12 +4,12 @@ model Settlement {
   groupId String
   group   EventGroup @relation(fields: [groupId], references: [id])
 
-  receiverId String
-  receiver   User   @relation(fields: [receiverId], references: [id], name: "receiver")
+  payeeId String
+  payee   User   @relation(fields: [payeeId], references: [id], name: "payee")
 
   payerId String
   payer   User   @relation(fields: [payerId], references: [id], name: "payer")
 
-  amount Int
-  paid   Boolean @default(false)
+  amount    Int
+  isSettled Boolean @default(false)
 }

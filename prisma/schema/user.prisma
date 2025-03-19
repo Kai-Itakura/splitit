@@ -10,8 +10,8 @@ model User {
   Expenses      Expense[]      @relation("payer")
   refreshTokens RefreshToken[]
 
-  ReceiverSettlement Settlement[] @relation("receiver")
-  PayerSettlement    Settlement[] @relation("payer")
+  PayeeSettlement Settlement[] @relation("payee")
+  PayerSettlement Settlement[] @relation("payer")
 
   ExpensePayees Expense[] @relation("payee")
 }

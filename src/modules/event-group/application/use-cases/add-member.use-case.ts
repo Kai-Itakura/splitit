@@ -3,7 +3,7 @@ import {
   EventGroupRepositoryToken,
   IEventGroupRepository,
 } from '../../domain/repositories/event-group.repository.interface';
-import { EventGroupUserService } from '../../domain/service/event-group-user.service';
+import { EventGroupUserService } from '../../domain/services/event-group-user.service';
 import { AddMemberDto } from '../../presentation/dto/add-member.dto';
 
 @Injectable()

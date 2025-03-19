@@ -1,0 +1,19 @@
+<mxfile host="65bd71144e">
+    <diagram id="vTH6TQTcjgnmF-ezsTUP" name="Page-1">
+        <mxGraphModel dx="1106" dy="609" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="5" value="立て替え記録" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="250" y="200" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="立て替え記録内での収支" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="280" y="290" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="全体での収支" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="305" y="370" width="120" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
