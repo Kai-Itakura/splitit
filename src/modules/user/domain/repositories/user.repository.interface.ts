@@ -15,6 +15,11 @@ export interface IUserRepository {
    * 削除
    */
   delete(id: string): Promise<void>;
+
+  /**
+   * 存在確認
+   */
+  exists(id: string): Promise<boolean>;
 }
 
 export const UserRepositoryToken = Symbol('IUserRepository');

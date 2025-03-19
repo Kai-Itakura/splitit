@@ -4,7 +4,7 @@ import {
   AuthUserRepositoryToken,
   IAuthUserRepository,
 } from '../../domain/repositories/auth-user.repository.interface';
-import { AuthDTO } from '../../presentation/dto/auth.dto';
+import { SigninAuthDto } from '../../presentation/dto/auth.dto';
 
 export interface JwtPayload {
   id: string;
@@ -17,9 +17,9 @@ export class SigninUseCase {
     private readonly authUserRepository: IAuthUserRepository,
   ) {}
 
-  async execute(dto: AuthDTO): Promise<void> {
+  async execute(dto: SigninAuthDto): Promise<void> {
     // ユーザーの新規作成
-    const authUser = await AuthUser.create(dto.email, dto.password);
+    const authUser = await AuthUser.create(dto.email, dto.password, dto.name);
     await this.authUserRepository.create(authUser);
   }
 }

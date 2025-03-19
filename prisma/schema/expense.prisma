@@ -6,8 +6,8 @@ model Expense {
   payerId String
   payer   User   @relation(fields: [payerId], references: [id], name: "payer")
 
+  payees User[] @relation(name: "payee")
+
   groupId String
   group   EventGroup @relation(fields: [groupId], references: [id])
-
-  payees User[] @relation(name: "payee")
 }

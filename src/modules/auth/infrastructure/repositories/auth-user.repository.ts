@@ -25,6 +25,7 @@ export class AuthUserRepository implements IAuthUserRepository {
         data: {
           id: authUser.id,
           email: authUser.email,
+          name: authUser.name,
           password: authUser.passwordHash,
         },
       });
@@ -44,6 +45,7 @@ export class AuthUserRepository implements IAuthUserRepository {
       select: {
         id: true,
         email: true,
+        name: true,
         password: true,
         refreshTokens: {
           select: {
@@ -60,6 +62,7 @@ export class AuthUserRepository implements IAuthUserRepository {
     return AuthUser.reconstruct(
       authUser.id,
       authUser.email,
+      authUser.name,
       authUser.password,
       authUser.refreshTokens,
     );
@@ -71,6 +74,7 @@ export class AuthUserRepository implements IAuthUserRepository {
       select: {
         id: true,
         email: true,
+        name: true,
         password: true,
         refreshTokens: {
           select: {
@@ -87,6 +91,7 @@ export class AuthUserRepository implements IAuthUserRepository {
     return AuthUser.reconstruct(
       authUser.id,
       authUser.email,
+      authUser.name,
       authUser.password,
       authUser.refreshTokens,
     );
@@ -121,6 +126,7 @@ export class AuthUserRepository implements IAuthUserRepository {
         },
         data: {
           email: authUser.email,
+          name: authUser.name,
           password: authUser.passwordHash,
         },
       });

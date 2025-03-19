@@ -8,8 +8,8 @@ import { IUserRepository } from '../domain/repositories/user.repository.interfac
 export class UserRepository implements IUserRepository {
   private readonly prismaUser: Prisma.UserDelegate;
 
-  constructor(private readonly prismaService: PrismaService) {
-    this.prismaUser = this.prismaService.user;
+  constructor(prismaService: PrismaService) {
+    this.prismaUser = prismaService.user;
   }
 
   /**
@@ -44,5 +44,18 @@ export class UserRepository implements IUserRepository {
     await this.prismaUser.delete({
       where: { id },
     });
+  }
+
+  /**
+   * 存在確認
+   */
+  async exists(id: string): Promise<boolean> {
+    const user = await this.prismaUser.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return !!user;
   }
 }

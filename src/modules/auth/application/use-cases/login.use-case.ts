@@ -3,7 +3,7 @@ import {
   AuthUserRepositoryToken,
   IAuthUserRepository,
 } from '../../domain/repositories/auth-user.repository.interface';
-import { AuthDTO } from '../../presentation/dto/auth.dto';
+import { LoginAuthDto } from '../../presentation/dto/auth.dto';
 import {
   ITokenGenerator,
   TokenGeneratorToken,
@@ -19,7 +19,7 @@ export class LoginUseCase {
     private readonly tokenGenerator: ITokenGenerator,
   ) {}
 
-  async execute(dto: AuthDTO): Promise<TokenPair> {
+  async execute(dto: LoginAuthDto): Promise<TokenPair> {
     const authUser = await this.authUserRepository.findByEmail(dto.email);
     if (!authUser) throw new UnauthorizedException('User not found!');
 

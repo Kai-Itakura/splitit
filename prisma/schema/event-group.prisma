@@ -6,7 +6,7 @@ model EventGroup {
 
   member     User[]
   expenses   Expense[]
-  settlement Settlement[]
+  settlements Settlement[]
 
   @@map("Group")
 }

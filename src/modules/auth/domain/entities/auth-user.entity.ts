@@ -11,14 +11,16 @@ export class AuthUser {
   private constructor(
     private readonly _id: Id,
     private readonly _email: string,
+    private readonly _name: string,
     private readonly _passwordHash: PasswordHash,
     private readonly _refreshTokens: RefreshToken[] = [],
   ) {}
 
-  static async create(email: string, password: string) {
+  static async create(email: string, password: string, name: string) {
     return new AuthUser(
       Id.create(),
       email,
+      name,
       await PasswordHash.create(password),
     );
   }
@@ -29,6 +31,10 @@ export class AuthUser {
 
   get email(): string {
     return this._email;
+  }
+
+  get name(): string {
+    return this._name;
   }
 
   get passwordHash(): string {
@@ -42,12 +48,14 @@ export class AuthUser {
   static reconstruct(
     id: string,
     email: string,
+    name: string,
     passwordHash: string,
     reconstructRefreshTokens: ReconstructRefreshToken[],
   ): AuthUser {
     return new AuthUser(
       Id.reconstruct(id),
       email,
+      name,
       PasswordHash.reconstruct(passwordHash),
       reconstructRefreshTokens.map(({ id, token, expiresAt }) =>
         RefreshToken.reconstruct(id, token, expiresAt),

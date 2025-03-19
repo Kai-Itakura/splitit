@@ -34,6 +34,7 @@ export class EventGroupQueryService implements IEventGroupQueryService {
             title: true,
             payer: {
               select: {
+                id: true,
                 name: true,
               },
             },
@@ -42,6 +43,14 @@ export class EventGroupQueryService implements IEventGroupQueryService {
                 id: true,
               },
             },
+          },
+        },
+        settlements: {
+          select: {
+            id: true,
+            payeeId: true,
+            payerId: true,
+            amount: true,
           },
         },
       },

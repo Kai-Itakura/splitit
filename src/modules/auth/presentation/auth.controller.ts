@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { Message } from 'src/modules/types/response-message.type';
 import { TokenPair } from '../application/interfaces/token-generator.interface';
 import { LoginUseCase } from '../application/use-cases/login.use-case';
 import { RefreshTokenPairUseCase } from '../application/use-cases/refresh-token-pair.use-case';
@@ -15,7 +16,7 @@ import { SigninUseCase } from '../application/use-cases/signin.use-case';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { CurrentUserType } from '../decorators/types/current-user.type';
 import { RefreshJwtGuard } from '../guards/refresh-jwt.guard';
-import { AuthDTO } from './dto/auth.dto';
+import { LoginAuthDto, SigninAuthDto } from './dto/auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -26,7 +27,7 @@ export class AuthController {
   ) {}
 
   @Post('signin')
-  async signin(@Body() dto: AuthDTO): Promise<{ message: string }> {
+  async signin(@Body() dto: SigninAuthDto): Promise<Message> {
     await this.signinUseCase.execute(dto);
     return { message: 'Successfully Signin!' };
   }
@@ -34,7 +35,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(
-    @Body() dto: AuthDTO,
+    @Body() dto: LoginAuthDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<{ accessToken: string }> {
     const tokenPair = await this.loginUseCase.execute(dto);
@@ -44,10 +45,13 @@ export class AuthController {
     return { accessToken: tokenPair.accessToken.value };
   }
 
-  // @UseGuards(RefreshJwtGuard)
-  // @HttpCode(HttpStatus.OK)
-  // @Post('logout')
-  // async logout(@Req() req: Request) {}
+  @UseGuards(RefreshJwtGuard)
+  @HttpCode(HttpStatus.OK)
+  @Post('logout')
+  logout(@Res({ passthrough: true }) res: Response): { accessToken: string } {
+    this.setAuthCookie(res, { value: '', expiresAt: new Date() });
+    return { accessToken: '' };
+  }
 
   @UseGuards(RefreshJwtGuard)
   @HttpCode(HttpStatus.OK)
