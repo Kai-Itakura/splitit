@@ -6,12 +6,12 @@ model User {
   updatedAt DateTime @updatedAt()
   name      String
 
-  EventGroups   EventGroup[]
-  Expenses      Expense[]      @relation("payer")
+  eventGroups   EventGroup[]
+  expenses      Expense[]      @relation("payer")
   refreshTokens RefreshToken[]
 
-  ReceiverSettlement Settlement[] @relation("receiver")
-  PayerSettlement    Settlement[] @relation("payer")
+  payeeSettlement Settlement[] @relation("payee")
+  payerSettlement Settlement[] @relation("payer")
 
-  ExpensePayees Expense[] @relation("payee")
+  expensePayees Expense[] @relation("payee")
 }
