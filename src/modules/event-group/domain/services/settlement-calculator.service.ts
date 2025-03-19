@@ -44,7 +44,6 @@ export class SettlementCalculatorService {
         if (existSettlement) {
           existSettlement.amount += amount;
         } else {
-          console.count('🔥');
           // 新規作成
           settlements.push({
             payerId: payer.memberId,

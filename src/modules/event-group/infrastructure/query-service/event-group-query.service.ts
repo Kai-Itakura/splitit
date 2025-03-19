@@ -45,7 +45,7 @@ export class EventGroupQueryService implements IEventGroupQueryService {
             },
           },
         },
-        settlement: {
+        settlements: {
           select: {
             id: true,
             payeeId: true,

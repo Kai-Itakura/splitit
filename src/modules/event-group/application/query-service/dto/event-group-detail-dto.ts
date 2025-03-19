@@ -29,7 +29,7 @@ export type EventGroupDetailDto = Prisma.EventGroupGetPayload<{
         };
       };
     };
-    settlement: {
+    settlements: {
       select: {
         id: true;
         payeeId: true;

@@ -14,6 +14,20 @@ export class Settlement {
     return new Settlement(Id.create(), payeeId, payerId, Amount.create(amount));
   }
 
+  static reconstruct(
+    id: string,
+    payeeId: string,
+    payerId: string,
+    amount: number,
+  ): Settlement {
+    return new Settlement(
+      Id.reconstruct(id),
+      payeeId,
+      payerId,
+      Amount.create(amount),
+    );
+  }
+
   get Id(): string {
     return this._id.value;
   }

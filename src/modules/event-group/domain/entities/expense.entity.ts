@@ -46,6 +46,22 @@ export class Expense {
     );
   }
 
+  static reconstruct(
+    id: string,
+    title: string,
+    amount: number,
+    payerId: string,
+    payeeIds: string[],
+  ): Expense {
+    return new Expense(
+      Id.reconstruct(id),
+      title,
+      Amount.create(amount),
+      payerId,
+      payeeIds,
+    );
+  }
+
   /**
    * 1人当たりの返済額を算出
    */

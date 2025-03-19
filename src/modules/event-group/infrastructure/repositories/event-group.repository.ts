@@ -48,10 +48,39 @@ export class EventGroupRepository implements IEventGroupRepository {
             id: true,
           },
         },
+        expenses: {
+          select: {
+            id: true,
+            title: true,
+            amount: true,
+            payerId: true,
+            payees: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        },
+        settlements: {
+          select: {
+            id: true,
+            payeeId: true,
+            payerId: true,
+            amount: true,
+            isSettled: true,
+          },
+        },
       },
     });
 
     if (!group) throw new ForbiddenException('Event Group not Found!');
+
+    const expenses = group.expenses.map((expense) => {
+      return {
+        ...expense,
+        payeeIds: expense.payees.map((payee) => payee.id),
+      };
+    });
 
     return EventGroup.reconstruct(
       group.id,
@@ -59,6 +88,8 @@ export class EventGroupRepository implements IEventGroupRepository {
       group.member.map((user) => user.id),
       group.currency,
       group.createdAt,
+      expenses,
+      group.settlements,
     );
   }
 
@@ -68,31 +99,67 @@ export class EventGroupRepository implements IEventGroupRepository {
         id: userId,
       },
       select: {
-        EventGroups: {
+        eventGroups: {
           select: {
             id: true,
             title: true,
-            member: true,
             currency: true,
             createdAt: true,
+            member: {
+              select: {
+                id: true,
+              },
+            },
+            expenses: {
+              select: {
+                id: true,
+                title: true,
+                amount: true,
+                payerId: true,
+                payees: {
+                  select: {
+                    id: true,
+                  },
+                },
+              },
+            },
+            settlements: {
+              select: {
+                id: true,
+                payeeId: true,
+                payerId: true,
+                amount: true,
+                isSettled: true,
+              },
+            },
           },
         },
       },
     });
 
-    if (!user || !user.EventGroups || user.EventGroups.length === 0)
+    if (!user || !user.eventGroups || user.eventGroups.length === 0)
       throw new ForbiddenException('Event group not found!');
 
-    const eventGroups = user.EventGroups;
-    const eventGroupEntities = eventGroups.map((eventGroup) =>
-      EventGroup.reconstruct(
+    const eventGroups = user.eventGroups;
+
+    const eventGroupEntities = eventGroups.map((eventGroup) => {
+      const expenses = eventGroup.expenses.map((expense) => {
+        return {
+          ...expense,
+          payeeIds: expense.payees.map((payee) => payee.id),
+        };
+      });
+
+      return EventGroup.reconstruct(
         eventGroup.id,
         eventGroup.title,
         eventGroup.member.map((member) => member.id),
         eventGroup.currency,
         eventGroup.createdAt,
-      ),
-    );
+        expenses,
+        eventGroup.settlements,
+      );
+    });
 
     return eventGroupEntities;
   }
