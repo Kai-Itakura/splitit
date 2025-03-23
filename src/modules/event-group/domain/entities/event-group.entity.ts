@@ -7,10 +7,6 @@ import { Expense } from './expense.entity';
 import { Settlement } from './settlement.entity';
 
 export class EventGroup {
-  private _addedExpenseId: string;
-
-  private _addedUserId: string;
-
   private constructor(
     private readonly _id: Id,
     private readonly _title: string,
@@ -43,6 +39,10 @@ export class EventGroup {
 
   get memberCount(): number {
     return this._memberIds.length;
+  }
+
+  get expenses(): Expense[] {
+    return [...this._expenses];
   }
 
   get settlements(): Settlement[] {
@@ -110,7 +110,6 @@ export class EventGroup {
       throw new ConflictException('User is already member of this group!');
 
     this._memberIds.push(userId);
-    this._addedUserId = userId;
   }
 
   addExpense(
@@ -126,14 +125,9 @@ export class EventGroup {
 
     const newExpense = Expense.create(title, amount, payerId, payeeIds);
     this._expenses.push(newExpense);
-    this._addedExpenseId = newExpense.id;
 
     // 新しい精算記録を作成
     this.createSettlements();
-  }
-
-  getExpense(expenseId: string): Expense | undefined {
-    return this._expenses.find((expense) => expense.id === expenseId);
   }
 
   private isMember(userIds: string[]) {
@@ -168,15 +162,5 @@ export class EventGroup {
 
       this._settlements.push(settlementEntity);
     });
-  }
-
-  // 子エンティティ変更追跡用
-  // ----------------------
-  get addedExpenseId(): string {
-    return this._addedExpenseId;
-  }
-
-  get addedUserId(): string {
-    return this._addedUserId;
   }
 }

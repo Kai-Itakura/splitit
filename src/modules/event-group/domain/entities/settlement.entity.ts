@@ -28,7 +28,7 @@ export class Settlement {
     );
   }
 
-  get Id(): string {
+  get id(): string {
     return this._id.value;
   }
 
