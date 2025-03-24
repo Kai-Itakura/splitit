@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -60,7 +61,7 @@ export class EventGroupController {
     return this.getAllGroupsUseCase.execute(user);
   }
 
-  @Post(':groupId')
+  @Delete(':groupId')
   async deleteGroup(@Param('groupId') groupId: string): Promise<Message> {
     await this.deleteEventGroupUseCase.execute(groupId);
     return { message: 'Successfully deleted!' };

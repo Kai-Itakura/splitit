@@ -2,7 +2,7 @@ model Settlement {
   id String @id
 
   groupId String
-  group   EventGroup @relation(fields: [groupId], references: [id])
+  group   EventGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
   payeeId String
   payee   User   @relation(fields: [payeeId], references: [id], name: "payee")
