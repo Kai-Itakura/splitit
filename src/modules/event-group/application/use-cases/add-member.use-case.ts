@@ -14,8 +14,8 @@ export class AddMemberUseCase {
     private readonly eventGroupUserService: EventGroupUserService,
   ) {}
 
-  async execute(dto: AddMemberDto): Promise<void> {
-    const eventGroup = await this.eventGroupRepository.findById(dto.groupId);
+  async execute(dto: AddMemberDto, groupId: string): Promise<void> {
+    const eventGroup = await this.eventGroupRepository.findById(groupId);
 
     // ユーザーが存在するか確認
     if (!(await this.eventGroupUserService.userExists(dto.userId)))

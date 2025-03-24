@@ -85,9 +85,12 @@ export class EventGroupController {
     return { message: 'Successfully update expense record!' };
   }
 
-  @Post('member')
-  async addMember(@Body() dto: AddMemberDto): Promise<Message> {
-    await this.addMemberUseCase.execute(dto);
+  @Post(':groupId/member')
+  async addMember(
+    @Body() dto: AddMemberDto,
+    @Param('groupId') groupId: string,
+  ): Promise<Message> {
+    await this.addMemberUseCase.execute(dto, groupId);
     return { message: 'Successfully add member!' };
   }
 }
