@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { CurrentUser } from 'src/modules/auth/decorators/current-user.decorator';
 import { CurrentUserType } from 'src/modules/auth/decorators/types/current-user.type';
 import { Message } from 'src/modules/types/response-message.type';
@@ -9,10 +17,11 @@ import { AddMemberUseCase } from '../application/use-cases/add-member.use-case';
 import { CreateEventGroupUseCase } from '../application/use-cases/create-event-group.use-case';
 import { GetAllGroupsUseCase } from '../application/use-cases/get-all-groups.use-case';
 import { getGroupUseCase } from '../application/use-cases/get-group.use-case';
-import { AddExpenseDto } from './dto/add-expense.dto';
+import { UpdateExpenseUseCase } from '../application/use-cases/update-expense.use-case';
 import { AddMemberDto } from './dto/add-member.dto';
 import { CreateEventGroupDto } from './dto/create-event-group.dto';
 import { EventGroupDto } from './dto/event-group.dto';
+import { ExpenseDto } from './dto/expense.dto';
 
 @UseGuards(JWTGuard)
 @Controller('event-group')
@@ -22,6 +31,7 @@ export class EventGroupController {
     private readonly getGroupUseCase: getGroupUseCase,
     private readonly getAllGroupsUseCase: GetAllGroupsUseCase,
     private readonly addExpenseUseCase: AddExpenseUseCase,
+    private readonly updateExpenseUseCase: UpdateExpenseUseCase,
     private readonly addMemberUseCase: AddMemberUseCase,
   ) {}
 
@@ -48,10 +58,23 @@ export class EventGroupController {
     return this.getAllGroupsUseCase.execute(user);
   }
 
-  @Post('expense-record')
-  async addExpense(@Body() dto: AddExpenseDto): Promise<Message> {
-    await this.addExpenseUseCase.execute(dto);
+  @Post(':groupId/expense-record')
+  async addExpense(
+    @Body() dto: ExpenseDto,
+    @Param('groupId') groupId: string,
+  ): Promise<Message> {
+    await this.addExpenseUseCase.execute(dto, groupId);
     return { message: 'Successfully add expense record!' };
+  }
+
+  @Put(':groupId/expense-record/:expenseId')
+  async updateExpense(
+    @Body() dto: ExpenseDto,
+    @Param('groupId') groupId: string,
+    @Param('expenseId') expenseId: string,
+  ): Promise<Message> {
+    await this.updateExpenseUseCase.execute(dto, groupId, expenseId);
+    return { message: 'Successfully update expense record!' };
   }
 
   @Post('member')

@@ -1,4 +1,4 @@
-import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import {
   EventGroupRepositoryToken,
   IEventGroupRepository,
@@ -19,7 +19,7 @@ export class AddMemberUseCase {
 
     // ユーザーが存在するか確認
     if (!(await this.eventGroupUserService.userExists(dto.userId)))
-      throw new ForbiddenException('User is not exist!');
+      throw new NotFoundException('User is not exist!');
 
     eventGroup.addMemberId(dto.userId);
 
