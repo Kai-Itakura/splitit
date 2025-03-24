@@ -1,13 +1,15 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { EventGroupRepositoryToken } from '../../domain/repositories/event-group.repository.interface';
-import { EventGroupRepository } from '../../infrastructure/repositories/event-group.repository';
+import {
+  EventGroupRepositoryToken,
+  IEventGroupRepository,
+} from '../../domain/repositories/event-group.repository.interface';
 import { ExpenseDto } from '../../presentation/dto/expense.dto';
 
 @Injectable()
 export class UpdateExpenseUseCase {
   constructor(
     @Inject(EventGroupRepositoryToken)
-    private readonly eventGroupRepository: EventGroupRepository,
+    private readonly eventGroupRepository: IEventGroupRepository,
   ) {}
 
   async execute(

@@ -180,6 +180,14 @@ export class EventGroupRepository implements IEventGroupRepository {
     return eventGroupEntities;
   }
 
+  async delete(groupId: string): Promise<void> {
+    await this.prismaEventGroup.delete({
+      where: {
+        id: groupId,
+      },
+    });
+  }
+
   private async saveEventGroup(
     eventGroupDelegate: Prisma.EventGroupDelegate,
     eventGroup: EventGroup,
