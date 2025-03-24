@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { EventGroup } from '../../domain/entities/event-group.entity';
 import { Expense } from '../../domain/entities/expense.entity';
@@ -10,27 +10,47 @@ import { IEventGroupRepository } from '../../domain/repositories/event-group.rep
 export class EventGroupRepository implements IEventGroupRepository {
   private readonly prismaEventGroup: Prisma.EventGroupDelegate;
   private readonly prismaUser: Prisma.UserDelegate;
-  private readonly prismaExpense: Prisma.ExpenseDelegate;
-  private readonly prismaSettlement: Prisma.SettlementDelegate;
 
   constructor(private readonly prismaService: PrismaService) {
     this.prismaEventGroup = prismaService.eventGroup;
     this.prismaUser = prismaService.user;
-    this.prismaExpense = prismaService.expense;
-    this.prismaSettlement = prismaService.settlement;
   }
 
   async save(eventGroup: EventGroup): Promise<void> {
-    if (eventGroup.addedExpenseId) {
-      const expense = eventGroup.getExpense(eventGroup.addedExpenseId);
-      if (expense) {
-        await this.addExpense(expense, eventGroup.settlements, eventGroup.id);
+    await this.prismaService.$transaction(async (tx) => {
+      const existingEventGroup = await tx.eventGroup.findUnique({
+        where: {
+          id: eventGroup.id,
+        },
+        select: {
+          id: true,
+          member: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      });
+
+      // イベントグループの保存
+      await this.saveEventGroup(tx.eventGroup, eventGroup, existingEventGroup);
+
+      if (existingEventGroup) {
+        // 費用の保存
+        await this.saveExpenses(
+          tx.expense,
+          eventGroup.expenses,
+          existingEventGroup.id,
+        );
+
+        // 精算記録の保存
+        await this.saveSettlements(
+          tx.settlement,
+          eventGroup.settlements,
+          eventGroup.id,
+        );
       }
-    } else if (eventGroup.addedUserId) {
-      await this.addUser(eventGroup.addedUserId, eventGroup.id);
-    } else {
-      await this.saveEventGroup(eventGroup);
-    }
+    });
   }
 
   async findById(groupId: string): Promise<EventGroup> {
@@ -75,12 +95,10 @@ export class EventGroupRepository implements IEventGroupRepository {
 
     if (!group) throw new ForbiddenException('Event Group not Found!');
 
-    const expenses = group.expenses.map((expense) => {
-      return {
-        ...expense,
-        payeeIds: expense.payees.map((payee) => payee.id),
-      };
-    });
+    const expenses = group.expenses.map((expense) => ({
+      ...expense,
+      payeeIds: expense.payees.map((payee) => payee.id),
+    }));
 
     return EventGroup.reconstruct(
       group.id,
@@ -143,12 +161,10 @@ export class EventGroupRepository implements IEventGroupRepository {
     const eventGroups = user.eventGroups;
 
     const eventGroupEntities = eventGroups.map((eventGroup) => {
-      const expenses = eventGroup.expenses.map((expense) => {
-        return {
-          ...expense,
-          payeeIds: expense.payees.map((payee) => payee.id),
-        };
-      });
+      const expenses = eventGroup.expenses.map((expense) => ({
+        ...expense,
+        payeeIds: expense.payees.map((payee) => payee.id),
+      }));
 
       return EventGroup.reconstruct(
         eventGroup.id,
@@ -164,87 +180,217 @@ export class EventGroupRepository implements IEventGroupRepository {
     return eventGroupEntities;
   }
 
-  private async saveEventGroup(eventGroup: EventGroup): Promise<void> {
-    await this.prismaEventGroup.upsert({
-      where: {
-        id: eventGroup.id,
-      },
-      create: {
-        id: eventGroup.id,
-        title: eventGroup.title,
-        currency: eventGroup.currency,
-        createdAt: eventGroup.createdAt,
-        member: {
-          connect: eventGroup.memberIds.map((userId) => {
-            return { id: userId };
-          }),
+  private async saveEventGroup(
+    eventGroupDelegate: Prisma.EventGroupDelegate,
+    eventGroup: EventGroup,
+    existingEventGroup: { id: string; member: Pick<User, 'id'>[] } | null,
+  ): Promise<void> {
+    if (existingEventGroup) {
+      // 更新
+      const existingMemberIds = existingEventGroup.member.map(
+        (user) => user.id,
+      );
+      const memberIdsToDelete = existingMemberIds.filter(
+        (existingMemberId) => !eventGroup.memberIds.includes(existingMemberId),
+      );
+      const memberIdsToAdd = eventGroup.memberIds.filter(
+        (memberId) => !existingMemberIds.includes(memberId),
+      );
+      await eventGroupDelegate.update({
+        where: {
+          id: eventGroup.id,
         },
-      },
-      update: {
-        title: eventGroup.title,
-        currency: eventGroup.currency,
-      },
-    });
+        data: {
+          title: eventGroup.title,
+          currency: eventGroup.currency,
+          member: {
+            disconnect: memberIdsToDelete.map((memberId) => ({ id: memberId })),
+            connect: memberIdsToAdd.map((memberId) => ({ id: memberId })),
+          },
+        },
+      });
+    } else {
+      // 新規作成
+      await eventGroupDelegate.create({
+        data: {
+          id: eventGroup.id,
+          title: eventGroup.title,
+          currency: eventGroup.currency,
+          createdAt: eventGroup.createdAt,
+          member: {
+            connect: eventGroup.memberIds.map((userId) => ({ id: userId })),
+          },
+        },
+      });
+    }
   }
 
-  private async addExpense(
-    expense: Expense,
-    settlements: Settlement[],
+  /**
+   * 費用の新規作成or更新or削除
+   */
+  private async saveExpenses(
+    expenseDelegate: Prisma.ExpenseDelegate,
+    newExpenses: Expense[],
     groupId: string,
   ): Promise<void> {
-    const createExpense = this.prismaExpense.create({
-      data: {
-        id: expense.id,
-        title: expense.title,
-        amount: expense.amount,
-        payerId: expense.payerId,
+    const existingExpenses = await expenseDelegate.findMany({
+      where: {
+        groupId,
+      },
+      select: {
+        id: true,
+        title: true,
+        amount: true,
+        payerId: true,
         payees: {
-          connect: expense.payeeIds.map((payeeId) => {
-            return {
-              id: payeeId,
-            };
-          }),
+          select: {
+            id: true,
+          },
         },
-        groupId: groupId,
       },
     });
 
-    const deleteAllSettlements = this.prismaSettlement.deleteMany({
+    const existingExpenseIds = existingExpenses.map(
+      (existingExpense) => existingExpense.id,
+    );
+
+    // 新規作成
+    const expenseToCreate = newExpenses.find(
+      (newExpense) => !existingExpenseIds.includes(newExpense.id),
+    );
+    if (expenseToCreate) {
+      await expenseDelegate.create({
+        data: {
+          id: expenseToCreate.id,
+          title: expenseToCreate.title,
+          amount: expenseToCreate.amount,
+          payerId: expenseToCreate.payerId,
+          payees: {
+            connect: expenseToCreate.payeeIds.map((payeeId) => ({
+              id: payeeId,
+            })),
+          },
+          groupId,
+        },
+      });
+    }
+
+    // 更新
+    const expensesToUpdate = newExpenses.filter((newExpense) =>
+      existingExpenseIds.includes(newExpense.id),
+    );
+    if (expensesToUpdate.length > 0) {
+      await Promise.all(
+        expensesToUpdate.map((expense) => {
+          const existingPayeeIds = existingExpenses
+            .find((existingExpense) => existingExpense.id === expense.id)!
+            .payees.map((payee) => payee.id);
+          const newPayeeIds = expense.payeeIds;
+
+          return expenseDelegate.update({
+            where: {
+              id: expense.id,
+            },
+            data: {
+              title: expense.title,
+              amount: expense.amount,
+              payerId: expense.payerId,
+              payees: {
+                disconnect: existingPayeeIds.map((payeeId) => ({
+                  id: payeeId,
+                })),
+                connect: newPayeeIds.map((payeeId) => ({ id: payeeId })),
+              },
+            },
+          });
+        }),
+      );
+    }
+
+    // 削除
+    const expenseIdsToDelete = existingExpenseIds.filter(
+      (expenseId) =>
+        !newExpenses.some((newExpense) => newExpense.id === expenseId),
+    );
+    if (expenseIdsToDelete.length > 0) {
+      await expenseDelegate.deleteMany({
+        where: {
+          id: {
+            in: expenseIdsToDelete,
+          },
+        },
+      });
+    }
+  }
+
+  private async saveSettlements(
+    settlementDelegate: Prisma.SettlementDelegate,
+    settlements: Settlement[],
+    groupId: string,
+  ) {
+    const existingSettlements = await settlementDelegate.findMany({
       where: {
         groupId,
       },
     });
 
-    const createSettlements = this.prismaSettlement.createMany({
-      data: settlements.map((settlement) => {
-        return {
-          groupId,
-          id: settlement.Id,
-          payerId: settlement.payerId,
-          payeeId: settlement.payeeId,
+    // 新規作成
+    const settlementsToCreate = settlements.filter(
+      (settlement) =>
+        !existingSettlements
+          .map((existingSettlement) => existingSettlement.id)
+          .includes(settlement.id),
+    );
+    if (settlementsToCreate.length > 0) {
+      await settlementDelegate.createMany({
+        data: settlementsToCreate.map((settlement) => ({
+          id: settlement.id,
           amount: settlement.amount,
+          payeeId: settlement.payeeId,
+          payerId: settlement.payerId,
           isSettled: settlement.isSettled,
-        };
-      }),
-    });
+          groupId,
+        })),
+      });
+    }
 
-    await this.prismaService.$transaction([
-      createExpense,
-      deleteAllSettlements,
-      createSettlements,
-    ]);
-  }
+    // 更新
+    const settlementsToUpdate = settlements.filter((settlement) =>
+      existingSettlements
+        .map((existingSettlement) => existingSettlement.id)
+        .includes(settlement.id),
+    );
+    if (settlementsToUpdate.length > 0) {
+      await Promise.all(
+        settlementsToUpdate.map((settlement) => {
+          return settlementDelegate.update({
+            where: {
+              id: settlement.id,
+            },
+            data: {
+              amount: settlement.amount,
+              payerId: settlement.payerId,
+              payeeId: settlement.payeeId,
+              isSettled: settlement.isSettled,
+            },
+          });
+        }),
+      );
+    }
 
-  private async addUser(userId: string, groupId: string): Promise<void> {
-    await this.prismaEventGroup.update({
+    // 削除
+    const settlementIdsToDelete = existingSettlements
+      .map((settlement) => settlement.id)
+      .filter(
+        (existingSettlementId) =>
+          !settlements
+            .map((settlement) => settlement.id)
+            .includes(existingSettlementId),
+      );
+    await settlementDelegate.deleteMany({
       where: {
-        id: groupId,
-      },
-      data: {
-        member: {
-          connect: {
-            id: userId,
-          },
+        id: {
+          in: settlementIdsToDelete,
         },
       },
     });
