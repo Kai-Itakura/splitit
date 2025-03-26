@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   UseGuards,
@@ -17,10 +18,11 @@ import { AddExpenseUseCase } from '../application/use-cases/add-expense.use-case
 import { AddMemberUseCase } from '../application/use-cases/add-member.use-case';
 import { CreateEventGroupUseCase } from '../application/use-cases/create-event-group.use-case';
 import { DeleteEventGroupUseCase } from '../application/use-cases/delete-event-group.use-case';
+import { DeleteMemberUseCase } from '../application/use-cases/delete-member.use-case.dto';
 import { GetAllGroupsUseCase } from '../application/use-cases/get-all-groups.use-case';
 import { getGroupUseCase } from '../application/use-cases/get-group.use-case';
 import { UpdateExpenseUseCase } from '../application/use-cases/update-expense.use-case';
-import { AddMemberDto } from './dto/add-member.dto';
+import { MemberDto } from './dto/add-member.dto';
 import { CreateEventGroupDto } from './dto/create-event-group.dto';
 import { EventGroupDto } from './dto/event-group.dto';
 import { ExpenseDto } from './dto/expense.dto';
@@ -32,6 +34,7 @@ export class EventGroupController {
     private readonly createEventGroupUseCase: CreateEventGroupUseCase,
     private readonly getGroupUseCase: getGroupUseCase,
     private readonly getAllGroupsUseCase: GetAllGroupsUseCase,
+    private readonly deleteMemberUserCase: DeleteMemberUseCase,
     private readonly deleteEventGroupUseCase: DeleteEventGroupUseCase,
     private readonly addExpenseUseCase: AddExpenseUseCase,
     private readonly updateExpenseUseCase: UpdateExpenseUseCase,
@@ -67,6 +70,24 @@ export class EventGroupController {
     return { message: 'Successfully deleted!' };
   }
 
+  @Put(':groupId/member')
+  async addMember(
+    @Body() dto: MemberDto,
+    @Param('groupId') groupId: string,
+  ): Promise<Message> {
+    await this.addMemberUseCase.execute(dto.memberId, groupId);
+    return { message: 'Successfully add member!' };
+  }
+
+  @Delete(':groupId/member/:memberId')
+  async deleteMember(
+    @Param('groupId') groupId: string,
+    @Param('memberId') memberId: string,
+  ): Promise<Message> {
+    await this.deleteMemberUserCase.execute(memberId, groupId);
+    return { message: 'Successfully delete member!' };
+  }
+
   @Post(':groupId/expense-record')
   async addExpense(
     @Body() dto: ExpenseDto,
@@ -76,7 +97,7 @@ export class EventGroupController {
     return { message: 'Successfully add expense record!' };
   }
 
-  @Put(':groupId/expense-record/:expenseId')
+  @Patch(':groupId/expense-record/:expenseId')
   async updateExpense(
     @Body() dto: ExpenseDto,
     @Param('groupId') groupId: string,
@@ -84,14 +105,5 @@ export class EventGroupController {
   ): Promise<Message> {
     await this.updateExpenseUseCase.execute(dto, groupId, expenseId);
     return { message: 'Successfully update expense record!' };
-  }
-
-  @Post(':groupId/member')
-  async addMember(
-    @Body() dto: AddMemberDto,
-    @Param('groupId') groupId: string,
-  ): Promise<Message> {
-    await this.addMemberUseCase.execute(dto, groupId);
-    return { message: 'Successfully add member!' };
   }
 }

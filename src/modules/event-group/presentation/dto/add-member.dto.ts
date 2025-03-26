@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class AddMemberDto {
+export class MemberDto {
   @IsString()
-  userId: string;
+  memberId: string;
 }

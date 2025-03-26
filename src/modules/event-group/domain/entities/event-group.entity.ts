@@ -117,6 +117,28 @@ export class EventGroup {
     this._memberIds.push(userId);
   }
 
+  removeMemberId(memberId: string): void {
+    const expenseRelatedMembers = this._expenses.reduce<Set<string>>(
+      (members, expense) => {
+        members.add(expense.payerId);
+        expense.payeeIds.forEach((payeeId) => members.add(payeeId));
+        return members;
+      },
+      new Set(),
+    );
+
+    if (expenseRelatedMembers.has(memberId))
+      throw new BadRequestException(
+        "Member can't delete because due to relevance of some expense records!",
+      );
+
+    const deleteIndex = this._memberIds.findIndex((id) => id === memberId);
+    if (deleteIndex === -1)
+      throw new NotFoundException('Member no longer exist!');
+
+    this._memberIds.splice(deleteIndex, 1);
+  }
+
   addExpense(
     title: string,
     amount: number,
