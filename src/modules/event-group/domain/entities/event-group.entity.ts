@@ -1,5 +1,10 @@
-import { BadRequestException, ConflictException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Id } from 'src/modules/shared/value-objects/id';
+import { isSameArray } from 'src/util/is-same-array';
 import { Balance } from '../model/balance.model';
 import { SettlementCalculatorService } from '../services/settlement-calculator.service';
 import { Currency, CurrencyType } from '../value-objects/currency';
@@ -112,6 +117,28 @@ export class EventGroup {
     this._memberIds.push(userId);
   }
 
+  removeMemberId(memberId: string): void {
+    const expenseRelatedMembers = this._expenses.reduce<Set<string>>(
+      (members, expense) => {
+        members.add(expense.payerId);
+        expense.payeeIds.forEach((payeeId) => members.add(payeeId));
+        return members;
+      },
+      new Set(),
+    );
+
+    if (expenseRelatedMembers.has(memberId))
+      throw new BadRequestException(
+        "Member can't delete because due to relevance of some expense records!",
+      );
+
+    const deleteIndex = this._memberIds.findIndex((id) => id === memberId);
+    if (deleteIndex === -1)
+      throw new NotFoundException('Member no longer exist!');
+
+    this._memberIds.splice(deleteIndex, 1);
+  }
+
   addExpense(
     title: string,
     amount: number,
@@ -128,6 +155,29 @@ export class EventGroup {
 
     // 新しい精算記録を作成
     this.createSettlements();
+  }
+
+  updateExpense(
+    id: string,
+    title: string,
+    amount: number,
+    payerId: string,
+    payeeIds: string[],
+  ): void {
+    const expense = this._expenses.find((expense) => expense.id === id);
+    if (!expense) throw new NotFoundException('Expense not found!');
+
+    // 費用の更新
+    expense.update(title, amount, payerId, payeeIds);
+
+    if (
+      expense.amount !== amount ||
+      expense.payerId !== payerId ||
+      isSameArray(expense.payeeIds, payeeIds)
+    ) {
+      // 新しい精算記録を作成
+      this.createSettlements();
+    }
   }
 
   private isMember(userIds: string[]) {

@@ -3,24 +3,30 @@ import {
   EventGroupRepositoryToken,
   IEventGroupRepository,
 } from '../../domain/repositories/event-group.repository.interface';
-import { EventGroupUserService } from '../../domain/services/event-group-user.service';
+import { ExpenseDto } from '../../presentation/dto/expense.dto';
 
 @Injectable()
-export class AddMemberUseCase {
+export class UpdateExpenseUseCase {
   constructor(
     @Inject(EventGroupRepositoryToken)
     private readonly eventGroupRepository: IEventGroupRepository,
-    private readonly eventGroupUserService: EventGroupUserService,
   ) {}
 
-  async execute(memberId: string, groupId: string): Promise<void> {
+  async execute(
+    dto: ExpenseDto,
+    groupId: string,
+    expenseId: string,
+  ): Promise<void> {
     const eventGroup = await this.eventGroupRepository.findById(groupId);
+    if (!eventGroup) throw new NotFoundException('Event group not found!');
 
-    // ユーザーが存在するか確認
-    if (!(await this.eventGroupUserService.userExists(memberId)))
-      throw new NotFoundException('User is not exist!');
-
-    eventGroup.addMemberId(memberId);
+    eventGroup.updateExpense(
+      expenseId,
+      dto.title,
+      dto.amount,
+      dto.payerId,
+      dto.payeeIds,
+    );
 
     await this.eventGroupRepository.save(eventGroup);
   }

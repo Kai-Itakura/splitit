@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { EventGroup } from '../../domain/entities/event-group.entity';
@@ -93,7 +93,7 @@ export class EventGroupRepository implements IEventGroupRepository {
       },
     });
 
-    if (!group) throw new ForbiddenException('Event Group not Found!');
+    if (!group) throw new NotFoundException('Event Group not Found!');
 
     const expenses = group.expenses.map((expense) => ({
       ...expense,
@@ -156,7 +156,7 @@ export class EventGroupRepository implements IEventGroupRepository {
     });
 
     if (!user || !user.eventGroups || user.eventGroups.length === 0)
-      throw new ForbiddenException('Event group not found!');
+      throw new NotFoundException('Event group not found!');
 
     const eventGroups = user.eventGroups;
 
@@ -178,6 +178,14 @@ export class EventGroupRepository implements IEventGroupRepository {
     });
 
     return eventGroupEntities;
+  }
+
+  async delete(groupId: string): Promise<void> {
+    await this.prismaEventGroup.delete({
+      where: {
+        id: groupId,
+      },
+    });
   }
 
   private async saveEventGroup(

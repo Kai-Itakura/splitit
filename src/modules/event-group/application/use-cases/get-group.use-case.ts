@@ -1,4 +1,4 @@
-import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { EventGroupDetailDto } from '../query-service/dto/event-group-detail-dto';
 import {
   EventGroupQueryServiceToken,
@@ -14,7 +14,7 @@ export class getGroupUseCase {
 
   async execute(groupId: string): Promise<EventGroupDetailDto> {
     const group = await this.eventGroupQueryService.findByGroupId(groupId);
-    if (!group) throw new ForbiddenException('Group not found!');
+    if (!group) throw new NotFoundException('Group not found!');
     return group;
   }
 }
