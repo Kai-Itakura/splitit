@@ -5,10 +5,10 @@ import { Amount } from '../value-objects/amount';
 export class Expense {
   private constructor(
     private readonly _id: Id,
-    private readonly _title: string,
-    private readonly _amount: Amount,
-    private readonly _payerId: string,
-    private readonly _payeeIds: string[],
+    private _title: string,
+    private _amount: Amount,
+    private _payerId: string,
+    private _payeeIds: string[],
   ) {}
 
   get id(): string {
@@ -60,6 +60,18 @@ export class Expense {
       payerId,
       payeeIds,
     );
+  }
+
+  update(
+    title: string,
+    amount: number,
+    payerId: string,
+    payeeIds: string[],
+  ): void {
+    this._title = title;
+    this._amount = Amount.create(amount);
+    this._payerId = payerId;
+    this._payeeIds = payeeIds;
   }
 
   /**
