@@ -1,7 +1,7 @@
 import {
   ConflictException,
-  ForbiddenException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -57,7 +57,7 @@ export class AuthUserRepository implements IAuthUserRepository {
       },
     });
 
-    if (!authUser) throw new ForbiddenException('User not found!');
+    if (!authUser) throw new NotFoundException('User not found!');
 
     return AuthUser.reconstruct(
       authUser.id,
@@ -86,7 +86,7 @@ export class AuthUserRepository implements IAuthUserRepository {
       },
     });
 
-    if (!authUser) throw new ForbiddenException('User not found!');
+    if (!authUser) throw new NotFoundException('User not found!');
 
     return AuthUser.reconstruct(
       authUser.id,

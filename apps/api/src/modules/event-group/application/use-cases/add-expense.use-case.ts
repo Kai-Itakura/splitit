@@ -3,7 +3,7 @@ import {
   EventGroupRepositoryToken,
   IEventGroupRepository,
 } from '../../domain/repositories/event-group.repository.interface';
-import { AddExpenseDto } from '../../presentation/dto/add-expense.dto';
+import { ExpenseDto } from '../../presentation/dto/expense.dto';
 
 @Injectable()
 export class AddExpenseUseCase {
@@ -12,8 +12,8 @@ export class AddExpenseUseCase {
     private readonly eventGroupRepository: IEventGroupRepository,
   ) {}
 
-  async execute(dto: AddExpenseDto): Promise<void> {
-    const groupUser = await this.eventGroupRepository.findById(dto.groupId);
+  async execute(dto: ExpenseDto, groupId: string): Promise<void> {
+    const groupUser = await this.eventGroupRepository.findById(groupId);
     groupUser.addExpense(dto.title, dto.amount, dto.payerId, dto.payeeIds);
     await this.eventGroupRepository.save(groupUser);
   }

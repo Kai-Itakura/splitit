@@ -1,9 +1,6 @@
 import { ArrayMinSize, IsArray, IsNumber, IsString } from 'class-validator';
 
-export class AddExpenseDto {
-  @IsString()
-  groupId: string;
-
+export class ExpenseDto {
   @IsString()
   title: string;
 
