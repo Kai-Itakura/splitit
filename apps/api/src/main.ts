@@ -1,12 +1,18 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
+import { config } from 'dotenv';
+import { expand } from 'dotenv-expand';
 import { AppModule } from './app.module';
 import { LoggingInterceptor } from './interceptors/logging.intercepter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const envFile =
+    process.env.NODE_ENV === 'development' ? '.env.db.develop' : '.env.db';
+  const dbEnv = config({ path: envFile });
+  expand(dbEnv);
 
+  const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
 
   // Logging Interceptor

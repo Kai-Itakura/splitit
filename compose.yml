@@ -4,8 +4,8 @@ services:
       context: .
       dockerfile: ./apps/api/Dockerfile
     env_file:
-      - .env
-      - .env.db
+      - apps/api/.env
+      - apps/api/.env.db
     ports:
       - '3005:3005'
       - '5555:5555'

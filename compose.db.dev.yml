@@ -1,0 +1,12 @@
+services:
+  db-dev:
+    image: postgres:15
+    ports:
+      - '5453:5432'
+    env_file:
+      - apps/api/.env.db.develop
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
