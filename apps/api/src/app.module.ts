@@ -7,7 +7,10 @@ import { UserModule } from './modules/user/user.module';
 @Module({
   imports: [
     AuthModule,
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env', '.evn.db.develop'],
+    }),
     UserModule,
     EventGroupModule,
   ],

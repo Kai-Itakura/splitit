@@ -1,5 +1,5 @@
 {
-  "name": "nest-project",
+  "name": "dutch-treat-app",
   "dockerComposeFile": ["../compose.yml"],
   "service": "api",
   "workspaceFolder": "/app"
