@@ -9,13 +9,17 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "prepare": "husky"
+    "prepare": "husky",
+    "db:generate": "turbo run db:generate",
+    "db:migrate": "turbo run db:migrate",
+    "db:deploy": "turbo run db:deploy"
   },
   "devDependencies": {
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
     "npm": "^2.4.4",
-    "prettier": "^3.4.2"
+    "prettier": "^3.4.2",
+    "turbo": "^2.4.4"
   },
   "engines": {
     "node": ">=14.0.0",
