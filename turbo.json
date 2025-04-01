@@ -31,5 +31,6 @@
     "db:deploy": {
       "cache": false
     }
-  }
+  },
+  "ui": "tui"
 }
