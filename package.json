@@ -15,6 +15,8 @@
     "db:deploy": "turbo run db:deploy"
   },
   "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
     "npm": "^2.4.4",
