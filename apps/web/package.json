@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.0",
-    "@repo/ui": "*",
+    "@repo/ui": "workspace:*",
     "cross-env": "^7.0.3",
     "next": "15.2.4",
     "react": "^19.0.0",
@@ -21,7 +21,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@repo/eslint-config": "workspace:^",
-    "@repo/typescript-config": "*",
+    "@repo/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
