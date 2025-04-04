@@ -3,6 +3,7 @@ import { CurrentUserType } from '../../decorators/types/current-user.type';
 export interface TokenPair {
   accessToken: {
     value: string;
+    expiresAt: Date;
   };
   refreshToken: {
     value: string;
