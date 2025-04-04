@@ -16,18 +16,17 @@ export class TokenGenerator implements ITokenGenerator {
   ) {}
 
   async generateTokenPair(payload: CurrentUserType): Promise<TokenPair> {
+    const accessTokenExp =
+      this.configService.getOrThrow<StringValue>('ACCESS_TOKEN_EXP');
+    const accessTokenExpiresAt = this.getExpirationDate(accessTokenExp);
     const accessToken = await this.jwtService.signAsync(payload, {
-      expiresIn: this.configService.get('ACCESS_TOKEN_EXP'),
+      expiresIn: accessTokenExp,
       secret: this.configService.get('JWT_SECRET'),
     });
 
     const refreshTokenExp =
       this.configService.getOrThrow<StringValue>('REFRESH_TOKEN_EXP');
-    const refreshTokenExpNum = ms(refreshTokenExp);
-    const refreshTokenExpiresAt = new Date();
-    refreshTokenExpiresAt.setMilliseconds(
-      refreshTokenExpiresAt.getMilliseconds() + refreshTokenExpNum,
-    );
+    const refreshTokenExpiresAt = this.getExpirationDate(refreshTokenExp);
 
     const refreshToken = await this.jwtService.signAsync(payload, {
       expiresIn: refreshTokenExp,
@@ -37,11 +36,20 @@ export class TokenGenerator implements ITokenGenerator {
     return {
       accessToken: {
         value: accessToken,
+        expiresAt: accessTokenExpiresAt,
       },
       refreshToken: {
         value: refreshToken,
         expiresAt: refreshTokenExpiresAt,
       },
     };
+  }
+
+  private getExpirationDate(exp: StringValue): Date {
+    const expNum = ms(exp);
+    const expirationDate = new Date();
+    expirationDate.setMilliseconds(expirationDate.getMilliseconds() + expNum);
+
+    return expirationDate;
   }
 }
