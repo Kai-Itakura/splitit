@@ -12,24 +12,24 @@ import { Message } from 'src/modules/types/response-message.type';
 import { TokenPair } from '../application/interfaces/token-generator.interface';
 import { LoginUseCase } from '../application/use-cases/login.use-case';
 import { RefreshTokenPairUseCase } from '../application/use-cases/refresh-token-pair.use-case';
-import { SigninUseCase } from '../application/use-cases/signin.use-case';
+import { SignupUseCase } from '../application/use-cases/signup.use-case';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { CurrentUserType } from '../decorators/types/current-user.type';
 import { RefreshJwtGuard } from '../guards/refresh-jwt.guard';
-import { LoginAuthDto, SigninAuthDto } from './dto/auth.dto';
+import { LoginAuthDto, SignupAuthDto } from './dto/auth.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly signinUseCase: SigninUseCase,
+    private readonly signupUseCase: SignupUseCase,
     private readonly loginUseCase: LoginUseCase,
     private readonly refreshTokenPairUseCase: RefreshTokenPairUseCase,
   ) {}
 
-  @Post('signin')
-  async signin(@Body() dto: SigninAuthDto): Promise<Message> {
-    await this.signinUseCase.execute(dto);
-    return { message: 'Successfully Signin!' };
+  @Post('signup')
+  async signup(@Body() dto: SignupAuthDto): Promise<Message> {
+    await this.signupUseCase.execute(dto);
+    return { message: 'Successfully Signup!' };
   }
 
   @HttpCode(HttpStatus.OK)

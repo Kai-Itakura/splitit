@@ -17,17 +17,17 @@ import { useRouter } from 'next/navigation';
 import { useActionState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FORM_STATUS } from '../../action/form-state';
-import { signin } from '../../action/signin';
+import { signup } from '../../action/signup';
 import FormCard from '../../components/form-card';
 import {
-  SigninFormSchema,
-  signinFormSchema,
-} from '../../schema/signin-form.schema';
+  SignupFormSchema,
+  signupFormSchema,
+} from '../../schema/signup-form.schema';
 
-const SigninForm = () => {
-  const form = useForm<SigninFormSchema>({
+const SignupForm = () => {
+  const form = useForm<SignupFormSchema>({
     mode: 'onChange',
-    resolver: zodResolver(signinFormSchema),
+    resolver: zodResolver(signupFormSchema),
     defaultValues: {
       name: '',
       email: '',
@@ -35,7 +35,7 @@ const SigninForm = () => {
     },
   });
 
-  const [state, formAction, isPending] = useActionState(signin, {
+  const [state, formAction, isPending] = useActionState(signup, {
     status: FORM_STATUS.IDLE,
   });
 
@@ -60,7 +60,7 @@ const SigninForm = () => {
   }, [state]);
 
   return (
-    <FormCard type="signin">
+    <FormCard type="signup">
       {' '}
       <Form {...form}>
         <form className="space-y-8" action={formAction}>
@@ -112,7 +112,7 @@ const SigninForm = () => {
             disabled={isPending || !form.formState.isValid}
             className="cursor-pointer"
           >
-            サインイン
+            サインアップ
           </Button>
         </form>
       </Form>
@@ -120,4 +120,4 @@ const SigninForm = () => {
   );
 };
 
-export default SigninForm;
+export default SignupForm;

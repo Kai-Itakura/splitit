@@ -1,14 +1,14 @@
 'use server';
 
-import { signinFormSchema } from '../schema/signin-form.schema';
+import { signupFormSchema } from '../schema/signup-form.schema';
 import { FORM_STATUS, FormActionState } from './form-state';
 
-export async function signin(
+export async function signup(
   _prevState: FormActionState,
   formData: FormData,
 ): Promise<FormActionState> {
   const data = Object.fromEntries(formData);
-  const parsed = signinFormSchema.safeParse(data);
+  const parsed = signupFormSchema.safeParse(data);
   if (!parsed.success) {
     return {
       status: FORM_STATUS.ERROR,
@@ -16,7 +16,7 @@ export async function signin(
     };
   }
 
-  const res = await fetch(`${process.env.API_URL}/auth/signin`, {
+  const res = await fetch(`${process.env.API_URL}/auth/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -33,10 +33,13 @@ export async function signin(
     } else {
       return {
         status: FORM_STATUS.ERROR,
-        message: 'サインインに失敗しました。',
+        message: 'サインアップに失敗しました。',
       };
     }
   }
 
-  return { status: FORM_STATUS.SUCCESS, message: 'サインインに成功しました。' };
+  return {
+    status: FORM_STATUS.SUCCESS,
+    message: 'サインアップに成功しました。',
+  };
 }
