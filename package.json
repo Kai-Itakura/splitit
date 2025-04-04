@@ -12,7 +12,8 @@
     "prepare": "husky",
     "db:generate": "turbo run db:generate",
     "db:migrate": "turbo run db:migrate",
-    "db:deploy": "turbo run db:deploy"
+    "db:deploy": "turbo run db:deploy",
+    "prisma-studio": "turbo run prisma-studio --filter=api"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

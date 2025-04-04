@@ -15,7 +15,10 @@ export class RefreshJwtStrategy extends PassportStrategy(
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          const jwt: string | null = req.cookies['refresh_token'] ?? null;
+          const jwt: string | null =
+            req.cookies[
+              configService.getOrThrow<string>('REFRESH_COOKIE_NAME')
+            ] ?? null;
           return jwt;
         },
       ]),

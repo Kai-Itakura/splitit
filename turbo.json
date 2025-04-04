@@ -1,5 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalEnv": ["API_URL"],
   "tasks": {
     "build": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
@@ -16,7 +17,8 @@
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "interactive": true
     },
     "clean": {
       "cache": false
@@ -26,10 +28,14 @@
     },
     "db:migrate": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "interactive": true
     },
     "db:deploy": {
       "cache": false
+    },
+    "prisma-studio": {
+      "persistent": true
     }
   },
   "ui": "tui"
