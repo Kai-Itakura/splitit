@@ -33,7 +33,7 @@ export async function login(
     } else {
       return {
         status: FORM_STATUS.ERROR,
-        message: 'サインインに失敗しました。',
+        message: 'サインアップに失敗しました。',
       };
     }
   }

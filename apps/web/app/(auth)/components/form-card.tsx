@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/components';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
-export type FormType = 'signin' | 'login';
+export type FormType = 'signup' | 'login';
 
 const FormCard = ({
   type,
@@ -11,20 +11,20 @@ const FormCard = ({
   type: FormType;
   children: ReactNode;
 }) => {
-  const isSignin = type === 'signin';
+  const isSignup = type === 'signup';
 
   return (
     <Card className="my-20 mx-5 min-sm::mx-20 min-md:max-w-3xl min-md:mx-auto">
-      <CardHeader>{isSignin ? 'サインイン' : 'ログイン'}</CardHeader>
+      <CardHeader>{isSignup ? 'サインアップ' : 'ログイン'}</CardHeader>
       <CardContent>{children}</CardContent>
       <CardFooter>
         <p>
-          {isSignin ? '登録済みの方は' : 'まだアカウントを持っていない方は'}
+          {isSignup ? '登録済みの方は' : 'まだアカウントを持っていない方は'}
           <Link
-            href={isSignin ? '/login' : '/signin'}
+            href={isSignup ? '/login' : '/signup'}
             className="text-blue-500 hover:underline active:text-blue-700"
           >
-            {isSignin ? 'ログイン' : 'サインイン'}
+            {isSignup ? 'ログイン' : 'サインアップ'}
           </Link>
         </p>
       </CardFooter>

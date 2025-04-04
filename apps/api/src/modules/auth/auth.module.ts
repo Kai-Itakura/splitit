@@ -4,7 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TokenGeneratorToken } from './application/interfaces/token-generator.interface';
 import { LoginUseCase } from './application/use-cases/login.use-case';
 import { RefreshTokenPairUseCase } from './application/use-cases/refresh-token-pair.use-case';
-import { SigninUseCase } from './application/use-cases/signin.use-case';
+import { SignupUseCase } from './application/use-cases/signup.use-case';
 import { AuthUserRepositoryToken } from './domain/repositories/auth-user.repository.interface';
 import { AuthUserRepository } from './infrastructure/repositories/auth-user.repository';
 import { TokenGenerator } from './infrastructure/token/token-generator';
@@ -27,7 +27,7 @@ import { RefreshJwtStrategy } from './strategy/refresh.jwt.strategy';
     },
     JwtStrategy,
     RefreshJwtStrategy,
-    SigninUseCase,
+    SignupUseCase,
     LoginUseCase,
     RefreshTokenPairUseCase,
   ],

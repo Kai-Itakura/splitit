@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const signinFormSchema = z
+export const signupFormSchema = z
   .object({
     name: z.string().min(1, { message: '名前は必須です。' }),
     email: z
@@ -15,6 +15,6 @@ export const signinFormSchema = z
         'パスワードは半角英数字混合で入力してください',
       ),
   })
-  .brand('signin-form-schema');
+  .brand('signup-form-schema');
 
-export type SigninFormSchema = z.infer<typeof signinFormSchema>;
+export type SignupFormSchema = z.infer<typeof signupFormSchema>;
