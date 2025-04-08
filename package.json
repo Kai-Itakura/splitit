@@ -18,6 +18,7 @@
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
+    "dotenv-cli": "^8.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
     "npm": "^2.4.4",

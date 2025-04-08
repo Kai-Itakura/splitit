@@ -4,12 +4,12 @@ import cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
 import { expand } from 'dotenv-expand';
 import { AppModule } from './app.module';
-import { LoggingInterceptor } from './interceptors/logging.intercepter';
+import { LoggingInterceptor } from './interceptors/logging.interceptor';
 
 async function bootstrap() {
   const envFile =
     process.env.NODE_ENV === 'development' ? '.env.db.develop' : '.env.db';
-  const dbEnv = config({ path: envFile });
+  const dbEnv = config({ path: [envFile] });
   expand(dbEnv);
 
   const app = await NestFactory.create(AppModule);
