@@ -2,8 +2,8 @@ import {
   ACCESS_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_COOKIE_NAME,
 } from '@/app/constants/token';
-import { Result } from '@/app/types/result.type';
 import { post } from '@/app/util/fetch';
+import { fail, isFail, ok, Result } from '@/app/util/result';
 import { cookies } from 'next/headers';
 
 type TokenPair = {
@@ -48,10 +48,10 @@ export const authFetch = async <T>(
 ): Promise<Result<Message>> => {
   const result = await post<T, TokenPair>(path, body, requestInit);
 
-  if (!result.ok) {
-    return result;
+  if (isFail(result)) {
+    return fail(result.error);
   }
 
   await setCookies(result.data);
-  return { ok: true, data: { message: '認証成功' } };
+  return ok({ message: '認証成功' });
 };

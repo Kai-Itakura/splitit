@@ -1,5 +1,43 @@
 import { API_URL } from '../constants/api-url';
-import { Result } from '../types/result.type';
+import { getCookieString } from './get-cookie-string';
+import { Result } from './result';
+
+export const get = async <T>(
+  path: string,
+  requestInit: RequestInit = {},
+): Promise<Result<T>> => {
+  const options: RequestInit = {
+    ...requestInit,
+    method: 'GET',
+    headers: {
+      cookie: await getCookieString(),
+    },
+  };
+  try {
+    const res = await fetch(`${API_URL}/${path}`, options);
+
+    if (!res.ok) {
+      return {
+        ok: false,
+        error: { status: res.status, message: res.statusText },
+      };
+    }
+
+    const data: T = await res.json();
+    return {
+      ok: true,
+      data,
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      return { ok: false, error: { status: 500, message: error.message } };
+    }
+    return {
+      ok: false,
+      error: { status: 500, message: 'Unknown error occurred!' },
+    };
+  }
+};
 
 export const post = async <T, U>(
   path: string,
@@ -11,6 +49,7 @@ export const post = async <T, U>(
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      cookie: await getCookieString(),
     },
     body: JSON.stringify(body),
     credentials: 'include',
