@@ -1,46 +1,18 @@
-import {
-  ACCESS_TOKEN_COOKIE_NAME,
-  REFRESH_TOKEN_COOKIE_NAME,
-} from '@/app/constants/token';
 import { post } from '@/app/util/fetch';
+import {
+  generateAuthCookies,
+  TokenPair,
+} from '@/app/util/generate-auth-cookies';
 import { fail, isFail, ok, Result } from '@/app/util/result';
 import { cookies } from 'next/headers';
-
-type TokenPair = {
-  accessToken: {
-    value: string;
-    expiresAt: Date;
-  };
-  refreshToken: {
-    value: string;
-    expiresAt: Date;
-  };
-};
 
 type Message = {
   message: string;
 };
 
-const setCookies = async (session: TokenPair) => {
-  const requestCookies = await cookies();
-
-  requestCookies.set(ACCESS_TOKEN_COOKIE_NAME, session.accessToken.value, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'lax',
-    expires: new Date(session.accessToken.expiresAt),
-    path: '/',
-  });
-
-  requestCookies.set(REFRESH_TOKEN_COOKIE_NAME, session.refreshToken.value, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'lax',
-    expires: new Date(session.refreshToken.expiresAt),
-    path: '/',
-  });
-};
-
+/**
+ * 認証情報が返ってくるAPIへのPOSTリクエスト
+ */
 export const authFetch = async <T>(
   path: string,
   body: T,
@@ -52,6 +24,11 @@ export const authFetch = async <T>(
     return fail(result.error);
   }
 
-  await setCookies(result.data);
+  // レスポンスでcookieを返却
+  const authCookies = generateAuthCookies(result.data);
+  const requestCookies = await cookies();
+  requestCookies.set(authCookies.accessToken);
+  requestCookies.set(authCookies.refreshToken);
+
   return ok({ message: '認証成功' });
 };
