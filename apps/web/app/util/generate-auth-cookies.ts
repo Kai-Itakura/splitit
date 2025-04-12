@@ -2,18 +2,8 @@ import {
   ACCESS_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_COOKIE_NAME,
 } from '@/app/constants/token';
+import { TokenPair } from '@repo/types';
 import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
-
-export type TokenPair = {
-  accessToken: {
-    value: string;
-    expiresAt: Date;
-  };
-  refreshToken: {
-    value: string;
-    expiresAt: Date;
-  };
-};
 
 export type SessionCookies = {
   accessToken: Cookie;

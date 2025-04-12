@@ -111,6 +111,9 @@ importers:
       '@nestjs/testing':
         specifier: ^11.0.1
         version: 11.0.1(@nestjs/common@11.0.12)(@nestjs/core@11.0.1)(@nestjs/platform-express@11.0.1)
+      '@repo/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@swc/cli':
         specifier: ^0.6.0
         version: 0.6.0(@swc/core@1.10.7)
@@ -235,6 +238,9 @@ importers:
       '@repo/eslint-config':
         specifier: workspace:^
         version: link:../../packages/eslint-config
+      '@repo/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
@@ -298,6 +304,8 @@ importers:
       typescript-eslint:
         specifier: ^8.27.0
         version: 8.27.0(eslint@9.23.0)(typescript@5.8.2)
+
+  packages/types: {}
 
   packages/typescript-config: {}
 

@@ -31,4 +31,4 @@ const PassWordInput = ({
   );
 };
 
-export default PassWordInput;
+export { PassWordInput };

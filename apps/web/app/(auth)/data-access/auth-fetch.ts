@@ -1,14 +1,8 @@
 import { post } from '@/app/util/fetch';
-import {
-  generateAuthCookies,
-  TokenPair,
-} from '@/app/util/generate-auth-cookies';
+import { generateAuthCookies } from '@/app/util/generate-auth-cookies';
 import { fail, isFail, ok, Result } from '@/app/util/result';
+import { Message, TokenPair } from '@repo/types';
 import { cookies } from 'next/headers';
-
-type Message = {
-  message: string;
-};
 
 /**
  * 認証情報が返ってくるAPIへのPOSTリクエスト

@@ -1,4 +1,5 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { TokenPair } from '@repo/types';
 import {
   AuthUserRepositoryToken,
   IAuthUserRepository,
@@ -7,7 +8,6 @@ import { LoginAuthDto } from '../../presentation/dto/auth.dto';
 import {
   ITokenGenerator,
   TokenGeneratorToken,
-  TokenPair,
 } from '../interfaces/token-generator.interface';
 
 @Injectable()
