@@ -4,13 +4,9 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Res,
   UseGuards,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { Response } from 'express';
-import { Message } from 'src/modules/types/response-message.type';
-import { TokenPair } from '../application/interfaces/token-generator.interface';
+import { Message, TokenPair } from '@repo/types';
 import { LoginUseCase } from '../application/use-cases/login.use-case';
 import { RefreshTokenPairUseCase } from '../application/use-cases/refresh-token-pair.use-case';
 import { SignupUseCase } from '../application/use-cases/signup.use-case';
@@ -25,7 +21,6 @@ export class AuthController {
     private readonly signupUseCase: SignupUseCase,
     private readonly loginUseCase: LoginUseCase,
     private readonly refreshTokenPairUseCase: RefreshTokenPairUseCase,
-    private readonly configService: ConfigService,
   ) {}
 
   @Post('signup')
@@ -36,32 +31,18 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async login(
-    @Body() dto: LoginAuthDto,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<Message> {
-    const tokenPair = await this.loginUseCase.execute(dto);
-
-    this.setAuthCookie(res, tokenPair);
-
-    return { message: 'Successfully login!' };
+  async login(@Body() dto: LoginAuthDto): Promise<TokenPair> {
+    return this.loginUseCase.execute(dto);
   }
 
   @UseGuards(RefreshJwtGuard)
   @HttpCode(HttpStatus.OK)
   @Post('logout')
-  logout(@Res({ passthrough: true }) res: Response): { accessToken: string } {
-    this.setAuthCookie(res, {
-      accessToken: {
-        value: '',
-        expiresAt: new Date(),
-      },
-      refreshToken: {
-        value: '',
-        expiresAt: new Date(),
-      },
-    });
-    return { accessToken: '' };
+  logout(): TokenPair {
+    return {
+      accessToken: { value: '', expiresAt: new Date() },
+      refreshToken: { value: '', expiresAt: new Date() },
+    };
   }
 
   @UseGuards(RefreshJwtGuard)
@@ -69,37 +50,8 @@ export class AuthController {
   @Post('refresh')
   async refresh(
     @CurrentUser() currentUser: CurrentUserType,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<Message> {
+  ): Promise<TokenPair> {
     const payload = { userId: currentUser.userId };
-    const newTokenPair = await this.refreshTokenPairUseCase.execute(payload);
-
-    this.setAuthCookie(res, newTokenPair);
-
-    return { message: 'Successfully refresh token!' };
-  }
-
-  private setAuthCookie(res: Response, tokenPair: TokenPair): void {
-    const accessCookieName =
-      this.configService.getOrThrow<string>('ACCESS_COOKIE_NAME');
-    const refreshCookieName = this.configService.getOrThrow<string>(
-      'REFRESH_COOKIE_NAME',
-    );
-
-    const { accessToken, refreshToken } = tokenPair;
-    res.cookie(accessCookieName, accessToken.value, {
-      expires: accessToken.expiresAt,
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      path: '/',
-    });
-    res.cookie(refreshCookieName, refreshToken.value, {
-      expires: refreshToken.expiresAt,
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      path: '/auth',
-    });
+    return this.refreshTokenPairUseCase.execute(payload);
   }
 }

@@ -1,5 +1,6 @@
 'use server';
 
+import { post } from '@/app/util/fetch';
 import { signupFormSchema } from '../schema/signup-form.schema';
 import { FORM_STATUS, FormActionState } from './form-state';
 
@@ -16,26 +17,16 @@ export async function signup(
     };
   }
 
-  const res = await fetch(`${process.env.API_URL}/auth/signup`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(parsed.data),
-  });
+  const result = await post('auth/signup', parsed.data);
 
-  if (!res.ok) {
-    if (res.status === 409) {
-      return {
-        status: FORM_STATUS.ERROR,
-        message: 'このメールアドレスは使用済みです。',
-      };
-    } else {
-      return {
-        status: FORM_STATUS.ERROR,
-        message: 'サインアップに失敗しました。',
-      };
-    }
+  if (!result.ok) {
+    return {
+      status: FORM_STATUS.ERROR,
+      message:
+        result.error.status === 409
+          ? 'このメールアドレスは使用済みです。'
+          : 'サインアップに失敗しました。',
+    };
   }
 
   return {

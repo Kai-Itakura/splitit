@@ -1,6 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": ["API_URL"],
+  "globalEnv": ["API_URL, ACCESS_TOKEN_COOKIE_NAME, REFRESH_TOKEN_COOKIE_NAME"],
   "tasks": {
     "build": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],

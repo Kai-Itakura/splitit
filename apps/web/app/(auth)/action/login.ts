@@ -1,5 +1,6 @@
 'use server';
 
+import { authFetch } from '../data-access/auth-fetch';
 import { loginFormSchema } from '../schema/login-form.schema';
 import { FORM_STATUS, FormActionState } from './form-state';
 
@@ -16,27 +17,20 @@ export async function login(
     };
   }
 
-  const res = await fetch(`${process.env.API_URL}/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(parsed.data),
-  });
+  const result = await authFetch('auth/login', parsed.data);
 
-  if (!res.ok) {
-    if (res.status === 404) {
-      return {
-        status: FORM_STATUS.ERROR,
-        message: 'ユーザーが存在しません。',
-      };
-    } else {
-      return {
-        status: FORM_STATUS.ERROR,
-        message: 'サインアップに失敗しました。',
-      };
-    }
+  if (!result.ok) {
+    return {
+      status: FORM_STATUS.ERROR,
+      message:
+        result.error.status === 404
+          ? 'ユーザーが存在しません。'
+          : 'ログインに失敗しました。',
+    };
   }
 
-  return { status: FORM_STATUS.SUCCESS, message: 'ログインに成功しました。' };
+  return {
+    status: FORM_STATUS.SUCCESS,
+    message: 'ログインに成功しました。',
+  };
 }
