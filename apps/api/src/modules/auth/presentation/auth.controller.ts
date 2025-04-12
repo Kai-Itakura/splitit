@@ -6,8 +6,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { Message } from 'src/modules/types/response-message.type';
-import { TokenPair } from '../application/interfaces/token-generator.interface';
+import { Message, TokenPair } from '@repo/types';
 import { LoginUseCase } from '../application/use-cases/login.use-case';
 import { RefreshTokenPairUseCase } from '../application/use-cases/refresh-token-pair.use-case';
 import { SignupUseCase } from '../application/use-cases/signup.use-case';

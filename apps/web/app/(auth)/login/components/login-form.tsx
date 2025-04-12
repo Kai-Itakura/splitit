@@ -11,8 +11,8 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  PassWordInput,
 } from '@repo/ui/components';
-import PassWordInput from '@repo/ui/components/ui/password-input';
 import { useRouter } from 'next/navigation';
 import { useActionState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';

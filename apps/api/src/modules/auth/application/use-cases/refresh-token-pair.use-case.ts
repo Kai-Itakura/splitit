@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { TokenPair } from '@repo/types';
 import { CurrentUserType } from '../../decorators/types/current-user.type';
 import {
   AuthUserRepositoryToken,
@@ -7,7 +8,6 @@ import {
 import {
   ITokenGenerator,
   TokenGeneratorToken,
-  TokenPair,
 } from '../interfaces/token-generator.interface';
 
 @Injectable()

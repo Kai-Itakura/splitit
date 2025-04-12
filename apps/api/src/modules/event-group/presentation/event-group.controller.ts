@@ -9,9 +9,9 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
+import { Message } from '@repo/types';
 import { CurrentUser } from 'src/modules/auth/decorators/current-user.decorator';
 import { CurrentUserType } from 'src/modules/auth/decorators/types/current-user.type';
-import { Message } from 'src/modules/types/response-message.type';
 import { JWTGuard } from '../../auth/guards/jwt.guard';
 import { EventGroupDetailDto } from '../application/query-service/dto/event-group-detail-dto';
 import { AddExpenseUseCase } from '../application/use-cases/add-expense.use-case';

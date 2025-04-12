@@ -1,6 +1,6 @@
 import { post } from '@/app/util/fetch';
-import { TokenPair } from '@/app/util/generate-auth-cookies';
 import { fail, ok, Result } from '@/app/util/result';
+import { TokenPair } from '@repo/types';
 
 export const refreshTokenPair = async (
   path: string,
