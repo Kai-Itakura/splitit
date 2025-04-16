@@ -4,7 +4,7 @@ import {
   IUserRepository,
   UserRepositoryToken,
 } from '../../domain/repositories/user.repository.interface';
-import { FindUserDTO } from '../../presentation/dto/get-user-dto';
+import { FindUserDTO } from '../../presentation/dto/get-user.dto';
 import { ReturnUserDTO } from '../../presentation/dto/return-user.dto';
 
 @Injectable()

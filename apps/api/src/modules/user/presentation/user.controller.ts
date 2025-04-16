@@ -6,11 +6,13 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { JWTGuard } from 'src/modules/auth/guards/jwt.guard';
 import { FindByEmailUseCase } from '../application/use-cases/find-by-email.use-case';
-import { FindUserDTO } from './dto/get-user-dto';
+import { FindUserDTO } from './dto/get-user.dto';
 import { ReturnUserDTO } from './dto/return-user.dto';
 
+@ApiTags('user')
 @UseGuards(JWTGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')

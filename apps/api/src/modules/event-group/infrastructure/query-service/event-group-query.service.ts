@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
-import { EventGroupDetailDto } from '../../application/query-service/dto/event-group-detail-dto';
+import { EventGroupDetailDto } from '../../application/query-service/dto/event-group-detail.dto';
 import { IEventGroupQueryService } from '../../application/query-service/event-group-query.service.interface';
 
 @Injectable()

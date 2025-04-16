@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { EventGroupDetailDto } from '../query-service/dto/event-group-detail-dto';
+import { EventGroupDetailDto } from '../query-service/dto/event-group-detail.dto';
 import {
   EventGroupQueryServiceToken,
   IEventGroupQueryService,

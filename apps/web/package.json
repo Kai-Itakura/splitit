@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "dotenv -e ../../.env next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "codegen": "dotenv -e .env openapi-ts"
   },
   "dependencies": {
+    "@hey-api/client-next": "^0.3.0",
     "@hookform/resolvers": "^4.1.0",
     "@repo/ui": "workspace:*",
     "cross-env": "^7.0.3",
@@ -19,10 +21,11 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@repo/types": "workspace:*",
-    "@repo/eslint-config": "workspace:^",
-    "@repo/typescript-config": "workspace:*",
     "@eslint/eslintrc": "^3",
+    "@hey-api/openapi-ts": "^0.66.4",
+    "@repo/eslint-config": "workspace:^",
+    "@repo/types": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
