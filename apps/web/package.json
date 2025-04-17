@@ -7,14 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "codegen": "dotenv -e .env openapi-ts"
+    "codegen": "dotenv -- bash -c 'openapi-typescript $API_URL/api-json -o ./openapi/schema.d.ts'"
   },
   "dependencies": {
-    "@hey-api/client-next": "^0.3.0",
     "@hookform/resolvers": "^4.1.0",
     "@repo/ui": "workspace:*",
     "cross-env": "^7.0.3",
+    "install": "^0.13.0",
     "next": "15.2.4",
+    "openapi-fetch": "^0.13.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
@@ -22,7 +23,6 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@hey-api/openapi-ts": "^0.66.4",
     "@repo/eslint-config": "workspace:^",
     "@repo/types": "workspace:*",
     "@repo/typescript-config": "workspace:*",
@@ -32,6 +32,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
+    "openapi-typescript": "^7.6.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
