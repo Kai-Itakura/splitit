@@ -1,6 +1,7 @@
 'use server';
 
-import { authFetch } from '../data-access/auth-fetch';
+import { setRequestCookies } from '@/app/util/set-request-cookies';
+import { client } from '@/openapi.config';
 import { loginFormSchema } from '../schema/login-form.schema';
 import { FORM_STATUS, FormActionState } from './form-state';
 
@@ -8,8 +9,8 @@ export async function login(
   _prevState: FormActionState,
   formData: FormData,
 ): Promise<FormActionState> {
-  const data = Object.fromEntries(formData);
-  const parsed = loginFormSchema.safeParse(data);
+  const body = Object.fromEntries(formData);
+  const parsed = loginFormSchema.safeParse(body);
   if (!parsed.success) {
     return {
       status: FORM_STATUS.ERROR,
@@ -17,20 +18,22 @@ export async function login(
     };
   }
 
-  const result = await authFetch('auth/login', parsed.data);
+  const { error, data } = await client.POST('/auth/login', {
+    body: parsed.data,
+  });
 
-  if (!result.ok) {
+  if (error) {
     return {
       status: FORM_STATUS.ERROR,
-      message:
-        result.error.status === 404
-          ? 'ユーザーが存在しません。'
-          : 'ログインに失敗しました。',
+      message: error.message,
     };
   }
 
+  // レスポンスにCookieをセット
+  await setRequestCookies(data);
+
   return {
     status: FORM_STATUS.SUCCESS,
-    message: 'ログインに成功しました。',
+    message: 'Successfully login!',
   };
 }

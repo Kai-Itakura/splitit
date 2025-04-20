@@ -7,12 +7,10 @@ const openapiMiddleware: Middleware = {
   async onRequest({ request }) {
     request.headers.set('cookie', await getCookieString());
   },
-
-  async onResponse({ response }) {
-    console.log('🔥 ~ onResponse ~ response:', response);
-  },
 };
 
-export const client = createClient<paths>({ baseUrl: API_URL });
+export const client = createClient<paths>({
+  baseUrl: API_URL,
+});
 
 client.use(openapiMiddleware);

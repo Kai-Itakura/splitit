@@ -35,6 +35,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@nanogiants/nestjs-swagger-api-exception-decorator':
+        specifier: ^1.7.2
+        version: 1.7.2(@nestjs/common@11.0.12)(@nestjs/swagger@11.1.3)
       '@nestjs/common':
         specifier: ^11.0.12
         version: 11.0.12(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -1948,6 +1951,16 @@ packages:
 
   /@microsoft/tsdoc@0.15.1:
     resolution: {integrity: sha512-4aErSrCR/On/e5G2hDP0wjooqDdauzEbIq8hIkIe5pXV0rtWJZvdCEKL0ykZxex+IxIwBp0eGeV48hQN07dXtw==}
+    dev: false
+
+  /@nanogiants/nestjs-swagger-api-exception-decorator@1.7.2(@nestjs/common@11.0.12)(@nestjs/swagger@11.1.3):
+    resolution: {integrity: sha512-oXHmVf7/xqC/eeYEs9dbkXaSOWBpH+zmeEU7IqgpnVwb9DyZlIKvAsubiJ0weqBoiqm4lg3NecftzZDUxAV/nw==}
+    peerDependencies:
+      '@nestjs/common': "^7.6.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 ||\_^11.0.0"
+      '@nestjs/swagger': "^4.8.1 || ^5.0.0 || ^6.0.0 || ^7.0.0 ||\_^8.0.0 ||\_^11.0.0"
+    dependencies:
+      '@nestjs/common': 11.0.12(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/swagger': 11.1.3(@nestjs/common@11.0.12)(@nestjs/core@11.0.1)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)
     dev: false
 
   /@napi-rs/nice-android-arm-eabi@1.0.1:

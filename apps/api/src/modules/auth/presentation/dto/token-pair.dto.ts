@@ -1,4 +1,4 @@
-type TokenPair = {
+export class TokenPair {
   accessToken: {
     value: string;
     expiresAt: Date;
@@ -7,6 +7,4 @@ type TokenPair = {
     value: string;
     expiresAt: Date;
   };
-};
-
-export type { TokenPair };
+}

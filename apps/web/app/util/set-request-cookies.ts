@@ -2,10 +2,11 @@ import {
   ACCESS_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_COOKIE_NAME,
 } from '@/app/constants/token';
-import { TokenPair } from '@repo/types';
+import { TokenPair } from '@/openapi/response.type';
 import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import { cookies } from 'next/headers';
 
-export type SessionCookies = {
+type SessionCookies = {
   accessToken: Cookie;
   refreshToken: Cookie;
 };
@@ -41,4 +42,11 @@ export const generateAuthCookies = (session: TokenPair): SessionCookies => {
       },
     },
   };
+};
+
+export const setRequestCookies = async (session: TokenPair): Promise<void> => {
+  const requestCookies = await cookies();
+  const authCookies = generateAuthCookies(session);
+  requestCookies.set(authCookies.accessToken);
+  requestCookies.set(authCookies.refreshToken);
 };

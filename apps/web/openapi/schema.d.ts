@@ -190,10 +190,25 @@ export interface components {
       password: string;
       name: string;
     };
+    Message: {
+      message: string;
+    };
     LoginAuthDto: {
       /** Format: email */
       email: string;
       password: string;
+    };
+    TokenPair: {
+      accessToken: {
+        value: string;
+        /** Format: date-time */
+        expiresAt: string;
+      };
+      refreshToken: {
+        value: string;
+        /** Format: date-time */
+        expiresAt: string;
+      };
     };
     FindUserDTO: {
       email: string;
@@ -279,7 +294,22 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': Record<string, never>;
+          'application/json': components['schemas']['Message'];
+        };
+      };
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 409 */
+            statusCode: number;
+            /** @example Conflict */
+            message: string;
+            /** @example Conflict */
+            error?: string;
+          };
         };
       };
     };
@@ -302,7 +332,22 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': Record<string, never>;
+          'application/json': components['schemas']['TokenPair'];
+        };
+      };
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 404 */
+            statusCode: number;
+            /** @example Not Found */
+            message: string;
+            /** @example Not Found */
+            error?: string;
+          };
         };
       };
     };
@@ -321,7 +366,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': Record<string, never>;
+          'application/json': components['schemas']['TokenPair'];
         };
       };
     };
@@ -340,7 +385,37 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': Record<string, never>;
+          'application/json': components['schemas']['TokenPair'];
+        };
+      };
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 401 */
+            statusCode: number;
+            /** @example Unauthorized */
+            message: string;
+            /** @example Unauthorized */
+            error?: string;
+          };
+        };
+      };
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 404 */
+            statusCode: number;
+            /** @example Not Found */
+            message: string;
+            /** @example Not Found */
+            error?: string;
+          };
         };
       };
     };
@@ -405,7 +480,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': Record<string, never>;
+          'application/json': components['schemas']['Message'];
         };
       };
     };
@@ -447,7 +522,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': Record<string, never>;
+          'application/json': components['schemas']['Message'];
         };
       };
     };
@@ -472,7 +547,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': Record<string, never>;
+          'application/json': components['schemas']['Message'];
         };
       };
     };
@@ -494,7 +569,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': Record<string, never>;
+          'application/json': components['schemas']['Message'];
         };
       };
     };
@@ -519,7 +594,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': Record<string, never>;
+          'application/json': components['schemas']['Message'];
         };
       };
     };
@@ -545,7 +620,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': Record<string, never>;
+          'application/json': components['schemas']['Message'];
         };
       };
     };
