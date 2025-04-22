@@ -1,12 +1,15 @@
+import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator';
 import {
   Body,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Post,
   Put,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -59,6 +62,7 @@ export class EventGroupController {
     return this.getGroupUseCase.execute(groupId);
   }
 
+  @ApiException(() => [NotFoundException, UnauthorizedException])
   @Get()
   async getAllGroups(
     @CurrentUser() user: CurrentUserType,

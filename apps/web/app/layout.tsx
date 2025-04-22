@@ -1,6 +1,12 @@
 import '@repo/ui/globals.css';
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist, Geist_Mono, M_PLUS_2 } from 'next/font/google';
+
+const mPlus2 = M_PLUS_2({
+  weight: '400',
+  variable: '--font-m-plus-2',
+  subsets: ['latin-ext'],
+});
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -25,9 +31,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${mPlus2.variable} ${geistSans.variable} ${geistMono.variable} font-m-plus-2 antialiased`}
       >
-        {children}
+        <div className="px-4">{children}</div>
       </body>
     </html>
   );

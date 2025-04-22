@@ -2,7 +2,7 @@
 
 import { EyeNoneIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 import { useState } from 'react';
-import { Input } from './input';
+import { Input } from '../ui/input';
 
 const PassWordInput = ({
   className,
