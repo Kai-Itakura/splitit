@@ -1,4 +1,3 @@
-import { jwtDecode } from 'jwt-decode';
 import { NextRequest, NextResponse } from 'next/server';
 import {
   ACCESS_TOKEN_COOKIE_NAME,
@@ -8,32 +7,39 @@ import { generateAuthCookies } from './app/util/set-request-cookies';
 import { client } from './openapi.config';
 
 export async function middleware(request: NextRequest) {
-  const accessToken = request.cookies.get(ACCESS_TOKEN_COOKIE_NAME)?.value;
-  if (accessToken) {
-    const decoded = jwtDecode(accessToken);
-    if (Date.now() > decoded.exp! * 1000) {
-      // アクセストークンの有効期限切れ
-      const refreshTokenCookie = request.cookies.get(REFRESH_TOKEN_COOKIE_NAME);
+  const accessCookie = request.cookies.has(ACCESS_TOKEN_COOKIE_NAME);
+  if (!accessCookie) {
+    // アクセストークンの有効期限切れ
+    const refreshCookie = request.cookies.get(REFRESH_TOKEN_COOKIE_NAME);
+    if (!refreshCookie) {
       // リフレッシュトークンの有効期限切れ
-      if (!refreshTokenCookie) {
-        return NextResponse.redirect(new URL('/login', request.url), {
-          status: 303,
-        });
-      }
-
-      const { error, data } = await client.POST('/auth/refresh');
-      if (error) {
-        return NextResponse.redirect(new URL('/login', request.url), {
-          status: 303,
-        });
-      }
-      // リフレッシュ成功時は新しいセッション情報をcookieにセット
-      const response = NextResponse.next();
-      const tokenPair = generateAuthCookies(data);
-      response.cookies.set(tokenPair.accessToken);
-      response.cookies.set(tokenPair.refreshToken);
-      return response;
+      return NextResponse.redirect(new URL('/login', request.url), {
+        status: 303,
+      });
     }
+
+    const { error, data } = await client.POST('/auth/refresh');
+    if (error) {
+      // トークンリフレッシュ失敗
+      return NextResponse.redirect(new URL('/login', request.url), {
+        status: 303,
+      });
+    }
+
+    // リフレッシュ成功時は新しいセッション情報をcookieにセット;
+    const response = NextResponse.next();
+    const { accessToken, refreshToken } = generateAuthCookies(data);
+    response.cookies.set(
+      accessToken.name,
+      accessToken.value,
+      accessToken.options,
+    );
+    response.cookies.set(
+      refreshToken.name,
+      refreshToken.value,
+      refreshToken.options,
+    );
+    return response;
   }
 }
 

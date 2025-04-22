@@ -46,7 +46,11 @@ export const generateAuthCookies = (session: TokenPair): SessionCookies => {
 
 export const setRequestCookies = async (session: TokenPair): Promise<void> => {
   const requestCookies = await cookies();
-  const authCookies = generateAuthCookies(session);
-  requestCookies.set(authCookies.accessToken);
-  requestCookies.set(authCookies.refreshToken);
+  const { accessToken, refreshToken } = generateAuthCookies(session);
+  requestCookies.set(accessToken.name, accessToken.value, accessToken.options);
+  requestCookies.set(
+    refreshToken.name,
+    refreshToken.value,
+    refreshToken.options,
+  );
 };

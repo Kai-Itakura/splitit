@@ -29,7 +29,7 @@ export async function login(
     };
   }
 
-  // レスポンスにCookieをセット
+  // Cookieをセット
   await setRequestCookies(data);
 
   return {
