@@ -1,6 +1,6 @@
 'use server';
 
-import { post } from '@/app/util/fetch';
+import { client } from '@/openapi.config';
 import { signupFormSchema } from '../schema/signup-form.schema';
 import { FORM_STATUS, FormActionState } from './form-state';
 
@@ -8,8 +8,8 @@ export async function signup(
   _prevState: FormActionState,
   formData: FormData,
 ): Promise<FormActionState> {
-  const data = Object.fromEntries(formData);
-  const parsed = signupFormSchema.safeParse(data);
+  const body = Object.fromEntries(formData);
+  const parsed = signupFormSchema.safeParse(body);
   if (!parsed.success) {
     return {
       status: FORM_STATUS.ERROR,
@@ -17,20 +17,19 @@ export async function signup(
     };
   }
 
-  const result = await post('auth/signup', parsed.data);
+  const { error, data } = await client.POST('/auth/signup', {
+    body: parsed.data,
+  });
 
-  if (!result.ok) {
+  if (error) {
     return {
       status: FORM_STATUS.ERROR,
-      message:
-        result.error.status === 409
-          ? 'このメールアドレスは使用済みです。'
-          : 'サインアップに失敗しました。',
+      message: error.message,
     };
   }
 
   return {
     status: FORM_STATUS.SUCCESS,
-    message: 'サインアップに成功しました。',
+    message: data.message,
   };
 }

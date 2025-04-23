@@ -1,19 +1,23 @@
+import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator';
 import {
   Body,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Post,
   Put,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { Message } from '@repo/types';
+import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from 'src/modules/auth/decorators/current-user.decorator';
 import { CurrentUserType } from 'src/modules/auth/decorators/types/current-user.type';
+import { Message } from 'src/modules/shared/dto/message.dto';
 import { JWTGuard } from '../../auth/guards/jwt.guard';
-import { EventGroupDetailDto } from '../application/query-service/dto/event-group-detail-dto';
+import { EventGroupDetailDto } from '../application/query-service/dto/event-group-detail.dto';
 import { AddExpenseUseCase } from '../application/use-cases/add-expense.use-case';
 import { AddMemberUseCase } from '../application/use-cases/add-member.use-case';
 import { CreateEventGroupUseCase } from '../application/use-cases/create-event-group.use-case';
@@ -27,6 +31,7 @@ import { CreateEventGroupDto } from './dto/create-event-group.dto';
 import { EventGroupDto } from './dto/event-group.dto';
 import { ExpenseDto } from './dto/expense.dto';
 
+@ApiTags('event-group')
 @UseGuards(JWTGuard)
 @Controller('event-group')
 export class EventGroupController {
@@ -57,6 +62,7 @@ export class EventGroupController {
     return this.getGroupUseCase.execute(groupId);
   }
 
+  @ApiException(() => [NotFoundException, UnauthorizedException])
   @Get()
   async getAllGroups(
     @CurrentUser() user: CurrentUserType,

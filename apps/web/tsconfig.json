@@ -14,7 +14,8 @@
     "paths": {
       "@/*": ["./*"],
       "@repo/ui/*": ["../../packages/ui/src/*"]
-    }
+    },
+    "noUncheckedIndexedAccess": true
   },
   "include": [
     "next-env.d.ts",
