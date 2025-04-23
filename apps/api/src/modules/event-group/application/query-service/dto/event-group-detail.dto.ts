@@ -10,6 +10,7 @@ export class EventGroupDetailDto {
   expenses: {
     id: string;
     title: string;
+    amount: number;
     payer: {
       id: string;
       name: string;

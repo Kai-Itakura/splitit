@@ -55,6 +55,7 @@ export class EventGroupController {
     return { message: 'Successfully created!' };
   }
 
+  @ApiException(() => [NotFoundException, UnauthorizedException])
   @Get(':groupId')
   async getGroup(
     @Param('groupId') groupId: string,

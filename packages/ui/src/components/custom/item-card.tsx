@@ -1,9 +1,21 @@
-import { ReactNode } from 'react';
+import { cn } from '@repo/ui/lib/utils';
+import { ComponentProps, ReactNode } from 'react';
 import { Card } from '../ui/card';
 
-const ItemCard = ({ children }: { children: ReactNode }) => {
+type ItemCardProps = {
+  children: ReactNode;
+  className?: string;
+} & ComponentProps<'div'>;
+
+const ItemCard = ({ children, className, ...props }: ItemCardProps) => {
   return (
-    <Card className="flex-row justify-between items-center py-4 px-4 gap-2 shadow-xl">
+    <Card
+      {...props}
+      className={cn([
+        className,
+        'flex-row justify-between items-center py-4 px-4 gap-2 shadow-xl',
+      ])}
+    >
       {children}
     </Card>
   );
