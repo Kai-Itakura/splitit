@@ -3,32 +3,36 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "dotenv -e ../../.env next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "codegen": "dotenv -- bash -c 'openapi-typescript $API_URL/api-json -o ./openapi/schema.d.ts'"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.0",
     "@repo/ui": "workspace:*",
     "cross-env": "^7.0.3",
+    "install": "^0.13.0",
     "next": "15.2.4",
+    "openapi-fetch": "^0.13.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@repo/types": "workspace:*",
-    "@repo/eslint-config": "workspace:^",
-    "@repo/typescript-config": "workspace:*",
     "@eslint/eslintrc": "^3",
+    "@repo/eslint-config": "workspace:^",
+    "@repo/types": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
+    "openapi-typescript": "^7.6.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

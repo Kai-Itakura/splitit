@@ -1,36 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { refreshTokenPair } from './app/(auth)/data-access/refresh-token-pair';
 import {
   ACCESS_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_COOKIE_NAME,
 } from './app/constants/token';
-import { generateAuthCookies } from './app/util/generate-auth-cookies';
+import { generateAuthCookies } from './app/util/set-request-cookies';
+import { client } from './openapi.config';
 
 export async function middleware(request: NextRequest) {
-  const isAccessTokenExist = request.cookies.has(ACCESS_TOKEN_COOKIE_NAME);
-  // アクセストークンの有効期限切れ
-  if (!isAccessTokenExist) {
-    const refreshTokenCookie = request.cookies.get(REFRESH_TOKEN_COOKIE_NAME);
-    // リフレッシュトークンの有効期限切れ
-    if (!refreshTokenCookie) {
+  const accessCookie = request.cookies.has(ACCESS_TOKEN_COOKIE_NAME);
+  if (!accessCookie) {
+    // アクセストークンの有効期限切れ
+    const refreshCookie = request.cookies.get(REFRESH_TOKEN_COOKIE_NAME);
+    if (!refreshCookie) {
+      // リフレッシュトークンの有効期限切れ
       return NextResponse.redirect(new URL('/login', request.url), {
         status: 303,
       });
     }
 
-    const result = await refreshTokenPair('auth/refresh');
-    // リフレッシュ失敗
-    if (!result.ok) {
+    const { error, data } = await client.POST('/auth/refresh');
+    if (error) {
+      // トークンリフレッシュ失敗
       return NextResponse.redirect(new URL('/login', request.url), {
         status: 303,
       });
     }
 
-    // リフレッシュ成功時は新しいセッション情報をcookieにセット
+    // リフレッシュ成功時は新しいセッション情報をcookieにセット;
     const response = NextResponse.next();
-    const authCookies = generateAuthCookies(result.data);
-    response.cookies.set(authCookies.accessToken);
-    response.cookies.set(authCookies.refreshToken);
+    const { accessToken, refreshToken } = generateAuthCookies(data);
+    response.cookies.set(
+      accessToken.name,
+      accessToken.value,
+      accessToken.options,
+    );
+    response.cookies.set(
+      refreshToken.name,
+      refreshToken.value,
+      refreshToken.options,
+    );
     return response;
   }
 }

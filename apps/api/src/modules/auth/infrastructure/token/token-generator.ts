@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { TokenPair } from '@repo/types';
 import ms, { StringValue } from 'ms';
 import { ITokenGenerator } from '../../application/interfaces/token-generator.interface';
 import { CurrentUserType } from '../../decorators/types/current-user.type';
+import { TokenPair } from '../../presentation/dto/token-pair.dto';
 
 @Injectable()
 export class TokenGenerator implements ITokenGenerator {

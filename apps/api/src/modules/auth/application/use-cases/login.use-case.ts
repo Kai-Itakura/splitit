@@ -1,10 +1,10 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { TokenPair } from '@repo/types';
 import {
   AuthUserRepositoryToken,
   IAuthUserRepository,
 } from '../../domain/repositories/auth-user.repository.interface';
 import { LoginAuthDto } from '../../presentation/dto/auth.dto';
+import { TokenPair } from '../../presentation/dto/token-pair.dto';
 import {
   ITokenGenerator,
   TokenGeneratorToken,
