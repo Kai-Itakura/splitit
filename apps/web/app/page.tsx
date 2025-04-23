@@ -1,13 +1,8 @@
 import { client } from '@/openapi.config';
-import { redirect } from 'next/navigation';
 import EventList from './components/event-list';
 
 export default async function Home() {
-  const { error, data } = await client.GET('/event-group');
-
-  if (error?.statusCode === 401) {
-    redirect('login');
-  }
+  const { data } = await client.GET('/event-group');
 
   return (
     <div className="flex justify-center min-h-svh mt-10">

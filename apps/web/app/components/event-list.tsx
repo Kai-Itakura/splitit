@@ -1,16 +1,29 @@
+'use client';
+
 import { components } from '@/openapi/schema';
 import ItemCard from '@repo/ui/components/custom/item-card';
 import { User } from '@repo/ui/components/icons';
+import { useRouter } from 'next/navigation';
+import { MouseEventHandler } from 'react';
 import { formatDate } from '../lib/format-date';
 
 type EventListProps = {
-  event: Omit<components['schemas']['EventGroupDto'], 'id'>;
+  event: components['schemas']['EventGroupDto'];
 };
 
 const EventList = ({ event }: EventListProps) => {
+  const router = useRouter();
+
+  const onItemCardClick: MouseEventHandler<HTMLDivElement> = () => {
+    router.push(`/event/${event.id}`);
+  };
+
   return (
     <li>
-      <ItemCard>
+      <ItemCard
+        onClick={onItemCardClick}
+        className="cursor-pointer hover:bg-gray-50"
+      >
         <div className="flex flex-col gap-2">
           <h2 className="font-bold text-xl">{event.title}</h2>
           <p className="text-sm text-slate-500">
