@@ -19,9 +19,9 @@ export class SettlementCalculatorService {
       const sortedBalances = balances.sort((a, b) => b.amount - a.amount);
 
       // 最も負債がある人
-      const payer = sortedBalances[0];
+      const payer = <Balance>sortedBalances[0];
       // 最も資産がある人
-      const payee = sortedBalances[sortedBalances.length - 1];
+      const payee = <Balance>sortedBalances[sortedBalances.length - 1];
 
       const absolutePayerAmount = Math.abs(payer.amount);
       const absolutePayeeAmount = Math.abs(payee.amount);
