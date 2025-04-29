@@ -18,10 +18,6 @@ const openapiMiddleware: Middleware = {
         redirect('/login');
       }
       // eslint-disable-next-line no-fallthrough
-      case 404: {
-        redirect('/404');
-      }
-      // eslint-disable-next-line no-fallthrough
       case 500: {
         redirect('/500');
       }
