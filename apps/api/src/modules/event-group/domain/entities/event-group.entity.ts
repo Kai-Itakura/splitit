@@ -75,6 +75,7 @@ export class EventGroup {
       id: string;
       title: string;
       amount: number;
+      createdAt: Date;
       payerId: string;
       payeeIds: string[];
     }[],
@@ -96,6 +97,7 @@ export class EventGroup {
           expense.id,
           expense.title,
           expense.amount,
+          expense.createdAt,
           expense.payerId,
           expense.payeeIds,
         ),

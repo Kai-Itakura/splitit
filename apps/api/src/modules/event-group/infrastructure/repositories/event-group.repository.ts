@@ -73,6 +73,7 @@ export class EventGroupRepository implements IEventGroupRepository {
             id: true,
             title: true,
             amount: true,
+            createdAt: true,
             payerId: true,
             payees: {
               select: {
@@ -133,6 +134,7 @@ export class EventGroupRepository implements IEventGroupRepository {
                 id: true,
                 title: true,
                 amount: true,
+                createdAt: true,
                 payerId: true,
                 payees: {
                   select: {
@@ -272,6 +274,7 @@ export class EventGroupRepository implements IEventGroupRepository {
           id: expenseToCreate.id,
           title: expenseToCreate.title,
           amount: expenseToCreate.amount,
+          createdAt: expenseToCreate.createdAt,
           payerId: expenseToCreate.payerId,
           payees: {
             connect: expenseToCreate.payeeIds.map((payeeId) => ({

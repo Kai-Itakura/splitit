@@ -8,11 +8,9 @@ import { IEventGroupQueryService } from '../../application/query-service/event-g
 @Injectable()
 export class EventGroupQueryService implements IEventGroupQueryService {
   private readonly prismaEventGroup: Prisma.EventGroupDelegate;
-  private readonly prismaExpense: Prisma.ExpenseDelegate;
 
   constructor(private prismaService: PrismaService) {
     this.prismaEventGroup = prismaService.eventGroup;
-    this.prismaExpense = prismaService.expense;
   }
 
   async findByGroupId(groupId: string): Promise<EventGroupDetailDto | null> {
@@ -38,6 +36,7 @@ export class EventGroupQueryService implements IEventGroupQueryService {
               id: true,
               title: true,
               amount: true,
+              createdAt: true,
               payer: {
                 select: {
                   id: true,
