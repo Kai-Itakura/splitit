@@ -25,4 +25,5 @@ export class EventGroupDetailDto {
     payerId: string;
     amount: number;
   }[];
+  totalExpense: number;
 }

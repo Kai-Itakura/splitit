@@ -13,7 +13,7 @@ import { getGroupUseCase } from './application/use-cases/get-group.use-case';
 import { UpdateExpenseUseCase } from './application/use-cases/update-expense.use-case';
 import { EventGroupRepositoryToken } from './domain/repositories/event-group.repository.interface';
 import { EventGroupUserService } from './domain/services/event-group-user.service';
-import { EventGroupQueryService } from './infrastructure/query-service/event-group-query.service';
+import { EventGroupQueryService } from './infrastructure/query-service/event-group.query.service';
 import { EventGroupRepository } from './infrastructure/repositories/event-group.repository';
 import { EventGroupController } from './presentation/event-group.controller';
 
