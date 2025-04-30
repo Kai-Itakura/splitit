@@ -86,7 +86,7 @@ export class AuthUser {
 
     if (index !== -1) {
       const removedRefreshToken = this._refreshTokens.splice(index, 1)[0];
-      this._removedRefreshTokenId = removedRefreshToken.id;
+      this._removedRefreshTokenId = removedRefreshToken!.id;
     }
   }
 

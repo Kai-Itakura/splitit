@@ -1,8 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
-import '@total-typescript/ts-reset/array-includes';
-
-const CURRENCY_TYPES = ['JPY', 'USD', 'EUR'] as const;
-export type CurrencyType = (typeof CURRENCY_TYPES)[number];
+import { CURRENCY_TYPES, CurrencyType } from '@repo/types/currency.type';
+import '@total-typescript/ts-reset';
 
 export class Currency {
   private constructor(private readonly _value: CurrencyType) {}

@@ -12,6 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^4.1.0",
     "@repo/ui": "workspace:*",
+    "@repo/types": "workspace:*",
     "cross-env": "^7.0.3",
     "install": "^0.13.0",
     "next": "15.2.4",

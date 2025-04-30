@@ -10,6 +10,7 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "prepare": "husky",
+    "sql:generate": "turbo run sql:generate",
     "db:generate": "turbo run db:generate",
     "db:migrate": "turbo run db:migrate",
     "db:deploy": "turbo run db:deploy",

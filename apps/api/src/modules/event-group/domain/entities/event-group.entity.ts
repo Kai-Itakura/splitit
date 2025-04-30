@@ -3,11 +3,12 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common';
+import { CurrencyType } from '@repo/types/currency.type';
 import { Id } from 'src/modules/shared/value-objects/id';
 import { isSameArray } from 'src/util/is-same-array';
 import { Balance } from '../model/balance.model';
 import { SettlementCalculatorService } from '../services/settlement-calculator.service';
-import { Currency, CurrencyType } from '../value-objects/currency';
+import { Currency } from '../value-objects/currency';
 import { Expense } from './expense.entity';
 import { Settlement } from './settlement.entity';
 
@@ -74,6 +75,7 @@ export class EventGroup {
       id: string;
       title: string;
       amount: number;
+      createdAt: Date;
       payerId: string;
       payeeIds: string[];
     }[],
@@ -95,6 +97,7 @@ export class EventGroup {
           expense.id,
           expense.title,
           expense.amount,
+          expense.createdAt,
           expense.payerId,
           expense.payeeIds,
         ),

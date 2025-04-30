@@ -18,8 +18,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "sql:generate": "dotenv -e .env.db.develop -- prisma generate --sql",
     "db:generate": "dotenv -e .env.db.develop -- prisma generate",
     "db:migrate": "dotenv -e .env.db.develop -- prisma migrate dev",
+    "db:migrate:create-only": "dotenv -e .env.db.develop -- prisma migrate dev --name=$name --create-only",
     "db:deploy": "prisma migrate deploy",
     "prisma-studio": "dotenv -e .env.db.develop -- prisma studio"
   },
@@ -53,6 +55,7 @@
     "@nestjs/cli": "^11.0.5",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
+    "@repo/typescript-config": "workspace:*",
     "@repo/types": "workspace:*",
     "@swc/cli": "^0.6.0",
     "@swc/core": "^1.10.7",

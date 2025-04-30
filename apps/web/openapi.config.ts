@@ -10,13 +10,12 @@ const openapiMiddleware: Middleware = {
   },
 
   async onResponse({ response }) {
+    // トークンリフレッシュのリクエストのみNext.jsのMiddleware内で行うので無視
+    if (response.url.includes('/auth/refresh')) return response;
+
     switch (response.status) {
       case 401: {
         redirect('/login');
-      }
-      // eslint-disable-next-line no-fallthrough
-      case 404: {
-        redirect('/404');
       }
       // eslint-disable-next-line no-fallthrough
       case 500: {

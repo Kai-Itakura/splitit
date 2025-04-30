@@ -251,6 +251,7 @@ export interface components {
         payerId: string;
         amount: number;
       }[];
+      totalExpense: number | null;
     };
     EventGroupDto: {
       id: string;
