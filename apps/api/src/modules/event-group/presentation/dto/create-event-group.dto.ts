@@ -1,5 +1,5 @@
+import { CurrencyType } from '@repo/types/currency.type';
 import { IsString } from 'class-validator';
-import { CurrencyType } from '../../domain/value-objects/currency';
 
 export class CreateEventGroupDto {
   @IsString()

@@ -10,6 +10,8 @@ export class EventGroupDetailDto {
   expenses: {
     id: string;
     title: string;
+    amount: number;
+    createdAt: Date;
     payer: {
       id: string;
       name: string;
@@ -24,4 +26,5 @@ export class EventGroupDetailDto {
     payerId: string;
     amount: number;
   }[];
+  totalExpense: number;
 }

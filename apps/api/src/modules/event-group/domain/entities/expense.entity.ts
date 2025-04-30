@@ -7,6 +7,7 @@ export class Expense {
     private readonly _id: Id,
     private _title: string,
     private _amount: Amount,
+    private _createAt: Date,
     private _payerId: string,
     private _payeeIds: string[],
   ) {}
@@ -21,6 +22,10 @@ export class Expense {
 
   get amount(): number {
     return this._amount.value;
+  }
+
+  get createdAt(): Date {
+    return this._createAt;
   }
 
   get payerId(): string {
@@ -41,6 +46,7 @@ export class Expense {
       Id.create(),
       title,
       Amount.create(amount),
+      new Date(),
       payerId,
       payeeIds,
     );
@@ -50,6 +56,7 @@ export class Expense {
     id: string,
     title: string,
     amount: number,
+    createdAt: Date,
     payerId: string,
     payeeIds: string[],
   ): Expense {
@@ -57,6 +64,7 @@ export class Expense {
       Id.reconstruct(id),
       title,
       Amount.create(amount),
+      createdAt,
       payerId,
       payeeIds,
     );

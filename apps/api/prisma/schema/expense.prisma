@@ -1,7 +1,8 @@
 model Expense {
-  id     String @id
-  title  String
-  amount Int
+  id        String   @id
+  title     String
+  amount    Int
+  createdAt DateTime
 
   payerId String
   payer   User   @relation(fields: [payerId], references: [id], name: "payer")

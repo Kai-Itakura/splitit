@@ -15,8 +15,8 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from 'src/modules/auth/decorators/current-user.decorator';
 import { CurrentUserType } from 'src/modules/auth/decorators/types/current-user.type';
+import { JWTGuard } from 'src/modules/auth/guards/jwt.guard';
 import { Message } from 'src/modules/shared/dto/message.dto';
-import { JWTGuard } from '../../auth/guards/jwt.guard';
 import { EventGroupDetailDto } from '../application/query-service/dto/event-group-detail.dto';
 import { AddExpenseUseCase } from '../application/use-cases/add-expense.use-case';
 import { AddMemberUseCase } from '../application/use-cases/add-member.use-case';
@@ -55,6 +55,7 @@ export class EventGroupController {
     return { message: 'Successfully created!' };
   }
 
+  @ApiException(() => [NotFoundException, UnauthorizedException])
   @Get(':groupId')
   async getGroup(
     @Param('groupId') groupId: string,
