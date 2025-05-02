@@ -2,8 +2,8 @@
 
 import { setRequestCookies } from '@/app/util/set-request-cookies';
 import { client } from '@/openapi.config';
+import { FORM_STATUS, FormActionState } from '../../actions/form-state';
 import { loginFormSchema } from '../schema/login-form.schema';
-import { FORM_STATUS, FormActionState } from './form-state';
 
 export async function login(
   _prevState: FormActionState,

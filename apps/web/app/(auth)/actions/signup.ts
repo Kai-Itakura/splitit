@@ -1,8 +1,8 @@
 'use server';
 
 import { client } from '@/openapi.config';
+import { FORM_STATUS, FormActionState } from '../../actions/form-state';
 import { signupFormSchema } from '../schema/signup-form.schema';
-import { FORM_STATUS, FormActionState } from './form-state';
 
 export async function signup(
   _prevState: FormActionState,

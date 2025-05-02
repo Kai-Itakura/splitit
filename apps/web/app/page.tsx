@@ -1,5 +1,6 @@
 import { client } from '@/openapi.config';
 import Image from 'next/image';
+import CreateEventDialog from './components/create-event-dialog';
 import EventList from './components/event-list';
 
 export default async function Home() {
@@ -24,6 +25,7 @@ export default async function Home() {
                 className="shadow-2xl rounded-full w-64 h-64 object-contain mx-auto mb-8"
               />
               <p className="text-center text-lg">イベントがありません。</p>
+              <CreateEventDialog />
             </>
           )}
         </ul>

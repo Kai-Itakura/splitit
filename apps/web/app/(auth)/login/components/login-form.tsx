@@ -16,8 +16,8 @@ import {
 import { useRouter } from 'next/navigation';
 import { useActionState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { FORM_STATUS } from '../../action/form-state';
-import { login } from '../../action/login';
+import { FORM_STATUS } from '../../../actions/form-state';
+import { login } from '../../actions/login';
 import FormCard from '../../components/form-card';
 import {
   loginFormSchema,
