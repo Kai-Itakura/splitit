@@ -12,9 +12,6 @@ export class UserRepository implements IUserRepository {
     this.prismaUser = prismaService.user;
   }
 
-  /**
-   * ユーザーの更新
-   */
   async save(user: User): Promise<void> {
     await this.prismaUser.update({
       where: { id: user.id },
@@ -22,9 +19,14 @@ export class UserRepository implements IUserRepository {
     });
   }
 
-  /**
-   * ユーザーの取得
-   */
+  async findById(userId: string): Promise<User | null> {
+    const user = await this.prismaUser.findUnique({
+      where: { id: userId },
+    });
+
+    return user ? User.reconstruct(user.id, user.email, user.name) : null;
+  }
+
   async findByEmail(email: string): Promise<User | null> {
     const user = await this.prismaUser.findUnique({
       where: { email },
@@ -34,21 +36,15 @@ export class UserRepository implements IUserRepository {
       return null;
     }
 
-    return User.reconstruct(user.id, user.email, user.name ?? undefined);
+    return User.reconstruct(user.id, user.email, user.name);
   }
 
-  /**
-   * ユーザーの削除
-   */
   async delete(id: string): Promise<void> {
     await this.prismaUser.delete({
       where: { id },
     });
   }
 
-  /**
-   * 存在確認
-   */
   async exists(id: string): Promise<boolean> {
     const user = await this.prismaUser.findUnique({
       where: {

@@ -75,7 +75,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get?: never;
+    get: operations['getUser'];
     put?: never;
     post: operations['findByEmail'];
     delete?: never;
@@ -210,14 +210,13 @@ export interface components {
         expiresAt: string;
       };
     };
+    ReturnUserDTO: {
+      id: string;
+      email: string;
+      name: string;
+    };
     FindUserDTO: {
       email: string;
-    };
-    ReturnUserDTO: {
-      _id: string;
-      _email: string;
-      _name?: string;
-      _passwordHash: string;
     };
     CreateEventGroupDto: {
       title: string;
@@ -405,6 +404,40 @@ export interface operations {
             /** @example Unauthorized */
             error?: string;
           };
+        };
+      };
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 404 */
+            statusCode: number;
+            /** @example Not Found */
+            message: string;
+            /** @example Not Found */
+            error?: string;
+          };
+        };
+      };
+    };
+  };
+  getUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ReturnUserDTO'];
         };
       };
       404: {

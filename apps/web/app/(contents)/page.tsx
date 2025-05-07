@@ -9,13 +9,13 @@ export default async function Home() {
   const { data } = await client.GET('/event-group');
 
   return (
-    <div className="flex justify-center min-h-svh mt-10">
+    <div className="flex justify-center min-h-svh mt-10 px-4">
       <div className="w-full">
         <h1 className="font-extrabold text-center">イベント一覧</h1>
         <div className="mt-10">
           {data ? (
             <>
-              <ul>
+              <ul className="space-y-4">
                 {data.map((event) => (
                   <EventList event={event} key={event.id}></EventList>
                 ))}

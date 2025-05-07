@@ -1,4 +1,4 @@
-import { API_URL } from '../constants/api-url';
+import { API_URL } from '../(contents)/constants/api-url';
 import { getCookieString } from './get-cookie-string';
 import { Result } from './result';
 
