@@ -12,6 +12,7 @@ import {
   FormMessage,
   Input,
   PassWordInput,
+  toast,
 } from '@repo/ui/components';
 import { useRouter } from 'next/navigation';
 import { useActionState, useEffect } from 'react';
@@ -44,12 +45,13 @@ const LoginForm = () => {
     switch (state.status) {
       case 'success': {
         form.reset();
+        toast(state.message);
         router.push('/');
         break;
       }
 
       case 'error': {
-        console.error(state.message);
+        toast(state.message);
         break;
       }
 

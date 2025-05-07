@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Button,
   Dialog,
@@ -6,11 +8,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/components';
+import { useState } from 'react';
 import CreateEventForm from './create-event-form';
 
 const CreateEventDialog = () => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" className="flex mx-auto mt-6 cursor-pointer">
           イベントを作成
@@ -20,7 +25,7 @@ const CreateEventDialog = () => {
         <DialogHeader>
           <DialogTitle>イベント作成</DialogTitle>
         </DialogHeader>
-        <CreateEventForm />
+        <CreateEventForm setDialogOpen={setOpen} />
       </DialogContent>
     </Dialog>
   );

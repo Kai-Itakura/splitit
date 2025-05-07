@@ -18,26 +18,46 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
+  toast,
 } from '@repo/ui/components';
-import { useActionState } from 'react';
+import { Dispatch, SetStateAction, useActionState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { createEvent } from '../actions/create-event';
 import { FORM_STATUS } from '../actions/form-state';
 import { CreateEventSchema, createEventSchema } from '../create-event.schema';
 
-const CreateEventForm = () => {
+const CreateEventForm = ({
+  setDialogOpen,
+}: {
+  setDialogOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
   const form = useForm<CreateEventSchema>({
     mode: 'onChange',
     resolver: zodResolver(createEventSchema),
     defaultValues: {
       title: '',
-      currency: undefined,
+      currency: '',
     },
   });
 
   const [state, formAction, isPending] = useActionState(createEvent, {
     status: FORM_STATUS.IDLE,
   });
+
+  useEffect(() => {
+    switch (state.status) {
+      case 'error':
+        toast(state.message);
+        break;
+      case 'success':
+        form.reset();
+        toast(state.message);
+        setDialogOpen(false);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
+
   return (
     <Form {...form}>
       <form action={formAction} className="space-y-8">
@@ -61,7 +81,14 @@ const CreateEventForm = () => {
             <FormItem>
               <FormLabel>通貨</FormLabel>
               <FormControl>
-                <Select {...field} defaultValue={CURRENCY_TYPES[0]}>
+                <Select
+                  defaultValue={field.value}
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    form.setValue('currency', value);
+                  }}
+                  {...field}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="通貨を選択" />
                   </SelectTrigger>

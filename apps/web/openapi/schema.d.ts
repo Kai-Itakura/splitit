@@ -221,7 +221,7 @@ export interface components {
     };
     CreateEventGroupDto: {
       title: string;
-      currency?: Record<string, never>;
+      currency: string;
     };
     EventGroupDetailDto: {
       id: string;
@@ -237,6 +237,8 @@ export interface components {
         id: string;
         title: string;
         amount: number;
+        /** Format: date-time */
+        createdAt: string;
         payer: {
           id?: string;
           name?: string;
@@ -251,7 +253,7 @@ export interface components {
         payerId: string;
         amount: number;
       }[];
-      totalExpense: number | null;
+      totalExpense: number;
     };
     EventGroupDto: {
       id: string;
@@ -513,6 +515,21 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['Message'];
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 400 */
+            statusCode: number;
+            /** @example Bad Request */
+            message: string;
+            /** @example Bad Request */
+            error?: string;
+          };
         };
       };
     };

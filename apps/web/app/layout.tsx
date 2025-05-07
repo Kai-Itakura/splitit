@@ -1,21 +1,12 @@
+import { Toaster } from '@repo/ui/components';
 import '@repo/ui/globals.css';
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono, M_PLUS_2 } from 'next/font/google';
+import { M_PLUS_2 } from 'next/font/google';
 
 const mPlus2 = M_PLUS_2({
   weight: '400',
   variable: '--font-m-plus-2',
   subsets: ['latin-ext'],
-});
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
@@ -30,10 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${mPlus2.variable} ${geistSans.variable} ${geistMono.variable} font-m-plus-2 antialiased`}
-      >
+      <body className={`${mPlus2.variable}  font-m-plus-2 antialiased`}>
         <div className="px-4">{children}</div>
+        <Toaster />
       </body>
     </html>
   );

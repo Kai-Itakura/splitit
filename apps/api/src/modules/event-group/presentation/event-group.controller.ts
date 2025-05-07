@@ -1,5 +1,6 @@
 import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator';
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -46,6 +47,7 @@ export class EventGroupController {
     private readonly addMemberUseCase: AddMemberUseCase,
   ) {}
 
+  @ApiException(() => [BadRequestException])
   @Post()
   async create(
     @Body() dto: CreateEventGroupDto,

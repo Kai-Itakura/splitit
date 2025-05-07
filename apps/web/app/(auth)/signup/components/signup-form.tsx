@@ -12,6 +12,7 @@ import {
   FormMessage,
   Input,
   PassWordInput,
+  toast,
 } from '@repo/ui/components';
 import { useRouter } from 'next/navigation';
 import { useActionState, useEffect } from 'react';
@@ -45,12 +46,13 @@ const SignupForm = () => {
     switch (state.status) {
       case 'success': {
         form.reset();
+        toast(state.message);
         router.push('/login');
         break;
       }
 
       case 'error': {
-        console.error(state.message);
+        toast(state.message);
         break;
       }
 
