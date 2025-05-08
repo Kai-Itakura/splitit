@@ -1,16 +1,18 @@
 'use server';
 
-import { setRequestCookies } from '@/app/util/set-request-cookies';
 import { client } from '@/openapi.config';
-import { FORM_STATUS, FormActionState } from '../../actions/form-state';
-import { loginFormSchema } from '../schema/login-form.schema';
+import {
+  FORM_STATUS,
+  FormActionState,
+} from '../../(contents)/actions/form-state';
+import { signupFormSchema } from '../schema/signup-form.schema';
 
-export async function login(
+export async function signup(
   _prevState: FormActionState,
   formData: FormData,
 ): Promise<FormActionState> {
   const body = Object.fromEntries(formData);
-  const parsed = loginFormSchema.safeParse(body);
+  const parsed = signupFormSchema.safeParse(body);
   if (!parsed.success) {
     return {
       status: FORM_STATUS.ERROR,
@@ -18,7 +20,7 @@ export async function login(
     };
   }
 
-  const { error, data } = await client.POST('/auth/login', {
+  const { error, data } = await client.POST('/auth/signup', {
     body: parsed.data,
   });
 
@@ -29,11 +31,8 @@ export async function login(
     };
   }
 
-  // Cookieをセット
-  await setRequestCookies(data);
-
   return {
     status: FORM_STATUS.SUCCESS,
-    message: 'Successfully login!',
+    message: data.message,
   };
 }

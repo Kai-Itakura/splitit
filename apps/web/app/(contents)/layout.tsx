@@ -1,15 +1,16 @@
-import BaseLayout from '../base-layout';
 import Header from './header/header';
 
-export default function RootLayout({
+const ContentsLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
-    <BaseLayout>
+    <>
       <Header />
       {children}
-    </BaseLayout>
+    </>
   );
-}
+};
+
+export default ContentsLayout;
