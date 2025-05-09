@@ -372,6 +372,21 @@ export interface operations {
           'application/json': components['schemas']['TokenPair'];
         };
       };
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 401 */
+            statusCode: number;
+            /** @example Unauthorized */
+            message: string;
+            /** @example Unauthorized */
+            error?: string;
+          };
+        };
+      };
     };
   };
   refresh: {
