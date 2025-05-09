@@ -1,33 +1,34 @@
+'use client';
+
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuLabel,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@repo/ui/components';
-import Image from 'next/image';
+import { useState } from 'react';
+import { User } from '../types/user.type';
+import LogoutButton from './logout-button';
+import MypageLink from './mypage-link';
+import ProfileAvatar from './profile-avatar';
 
-const Settings = () => {
+const Settings = ({ user }: { user: User }) => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger className="rounded-full cursor-pointer">
-        <Avatar>
-          <AvatarImage />
-          <AvatarFallback>
-            <Image
-              className="w-full"
-              alt="アバター"
-              src={`https://robohash.org/${1}.png`}
-              width={40}
-              height={40}
-            />
-          </AvatarFallback>
-        </Avatar>
+        <ProfileAvatar userId={user.id} size="sm" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel></DropdownMenuLabel>
+        <DropdownMenuItem>
+          <MypageLink user={user} setOpen={setOpen} />
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <LogoutButton />
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
