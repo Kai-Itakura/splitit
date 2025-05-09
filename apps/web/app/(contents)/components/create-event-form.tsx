@@ -110,7 +110,7 @@ const CreateEventForm = ({
         <div className="text-right">
           <Button
             disabled={isPending || !form.formState.isValid}
-            className="cursor-pointer"
+            className="w-full cursor-pointer"
           >
             作成
           </Button>
