@@ -12,12 +12,13 @@ import {
   FormMessage,
   Input,
   PassWordInput,
+  toast,
 } from '@repo/ui/components';
 import { useRouter } from 'next/navigation';
 import { useActionState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { FORM_STATUS } from '../../action/form-state';
-import { login } from '../../action/login';
+import { FORM_STATUS } from '../../../(contents)/actions/form-state';
+import { login } from '../../actions/login';
 import FormCard from '../../components/form-card';
 import {
   loginFormSchema,
@@ -44,12 +45,13 @@ const LoginForm = () => {
     switch (state.status) {
       case 'success': {
         form.reset();
+        toast(state.message);
         router.push('/');
         break;
       }
 
       case 'error': {
-        console.error(state.message);
+        toast(state.message);
         break;
       }
 
@@ -95,7 +97,7 @@ const LoginForm = () => {
           />
           <Button
             disabled={isPending || !form.formState.isValid}
-            className="cursor-pointer"
+            className="w-full cursor-pointer"
           >
             ログイン
           </Button>

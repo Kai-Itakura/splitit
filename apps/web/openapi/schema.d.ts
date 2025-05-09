@@ -75,7 +75,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get?: never;
+    get: operations['getUser'];
     put?: never;
     post: operations['findByEmail'];
     delete?: never;
@@ -210,18 +210,17 @@ export interface components {
         expiresAt: string;
       };
     };
+    ReturnUserDTO: {
+      id: string;
+      email: string;
+      name: string;
+    };
     FindUserDTO: {
       email: string;
     };
-    ReturnUserDTO: {
-      _id: string;
-      _email: string;
-      _name?: string;
-      _passwordHash: string;
-    };
     CreateEventGroupDto: {
       title: string;
-      currency?: Record<string, never>;
+      currency: string;
     };
     EventGroupDetailDto: {
       id: string;
@@ -237,6 +236,8 @@ export interface components {
         id: string;
         title: string;
         amount: number;
+        /** Format: date-time */
+        createdAt: string;
         payer: {
           id?: string;
           name?: string;
@@ -251,7 +252,7 @@ export interface components {
         payerId: string;
         amount: number;
       }[];
-      totalExpense: number | null;
+      totalExpense: number;
     };
     EventGroupDto: {
       id: string;
@@ -422,6 +423,40 @@ export interface operations {
       };
     };
   };
+  getUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ReturnUserDTO'];
+        };
+      };
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 404 */
+            statusCode: number;
+            /** @example Not Found */
+            message: string;
+            /** @example Not Found */
+            error?: string;
+          };
+        };
+      };
+    };
+  };
   findByEmail: {
     parameters: {
       query?: never;
@@ -513,6 +548,21 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['Message'];
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 400 */
+            statusCode: number;
+            /** @example Bad Request */
+            message: string;
+            /** @example Bad Request */
+            error?: string;
+          };
         };
       };
     };

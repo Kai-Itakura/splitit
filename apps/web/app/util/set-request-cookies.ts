@@ -1,7 +1,7 @@
 import {
   ACCESS_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_COOKIE_NAME,
-} from '@/app/constants/token';
+} from '@/app/(contents)/constants/token';
 import { TokenPair } from '@/openapi/response.type';
 import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { cookies } from 'next/headers';

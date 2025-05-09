@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CurrentUserType } from 'src/modules/auth/decorators/types/current-user.type';
+import { CurrentUserType } from 'src/decorators/types/current-user.type';
 import { EventGroup } from '../../domain/entities/event-group.entity';
 import {
   EventGroupRepositoryToken,

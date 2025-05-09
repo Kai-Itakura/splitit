@@ -1,3 +1,4 @@
+import BackButton from '@/app/components/back-button';
 import { formatNumber } from '@/app/lib/fomat-number';
 import { getCurrencySymbol } from '@/app/lib/get-currency-symbol';
 import { client } from '@/openapi.config';
@@ -22,8 +23,8 @@ const EventDetail = async ({ params }: EventDetailProps) => {
   const currencySymbol = getCurrencySymbol(data.currency as CurrencyType);
   return (
     <>
-      <div>
-        <h1>{data.title}</h1>
+      <div className="mt-6 space-y-2">
+        <h1 className="text-4xl font-bold">{data.title}</h1>
         <p>
           {data.member.map(({ id, name }, index) => {
             const withSeparator = index === 0 ? name : ` | ${name}`;
@@ -35,7 +36,7 @@ const EventDetail = async ({ params }: EventDetailProps) => {
           {data.totalExpense ? formatNumber(data.totalExpense) : 0}
         </p>
       </div>
-      <div>
+      <div className="space-y-4 mt-6">
         {data.expenses.map((expense) => (
           <ItemCard key={expense.id}>
             <h2>{expense.title}</h2>
@@ -45,6 +46,9 @@ const EventDetail = async ({ params }: EventDetailProps) => {
             </p>
           </ItemCard>
         ))}
+      </div>
+      <div className="flex justify-center items-center mt-6">
+        <BackButton>戻る</BackButton>
       </div>
     </>
   );
