@@ -1,9 +1,9 @@
 import { client } from '@/openapi.config';
 import { Button } from '@repo/ui/components';
 import { Plus } from '@repo/ui/components/icons';
-import Image from 'next/image';
 import CreateEventDialog from './components/create-event-dialog';
 import EventList from './components/event-list';
+import NoItems from './components/no-items';
 
 export default async function Home() {
   const { data } = await client.GET('/event-group');
@@ -25,24 +25,20 @@ export default async function Home() {
               </CreateEventDialog>
             </>
           ) : (
-            <>
-              <Image
-                alt="カレンダー"
-                src="/calender.png"
-                width={250}
-                height={250}
-                className="shadow-2xl rounded-full w-64 h-64 object-contain mx-auto mb-8"
-              />
-              <p className="text-center text-lg">イベントがありません。</p>
+            <NoItems
+              alt="イベント"
+              src="/event.png"
+              message="イベントがありません。"
+            >
               <CreateEventDialog>
                 <Button
                   variant="outline"
                   className="flex mx-auto mt-6 cursor-pointer"
                 >
-                  イベントを作成
+                  イベント作成
                 </Button>
               </CreateEventDialog>
-            </>
+            </NoItems>
           )}
         </div>
       </div>
