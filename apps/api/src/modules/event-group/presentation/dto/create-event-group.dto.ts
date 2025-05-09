@@ -1,4 +1,3 @@
-import { CurrencyType } from '@repo/types/currency.type';
 import { IsString } from 'class-validator';
 
 export class CreateEventGroupDto {
@@ -6,5 +5,5 @@ export class CreateEventGroupDto {
   title: string;
 
   @IsString()
-  currency?: CurrencyType;
+  currency: string;
 }

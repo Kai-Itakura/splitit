@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import {
   ACCESS_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_COOKIE_NAME,
-} from '../constants/token';
+} from '../(contents)/constants/token';
 
 export async function getCookieString(): Promise<string> {
   const requestCookies = await cookies();

@@ -1,5 +1,6 @@
 import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator';
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -13,8 +14,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from 'src/modules/auth/decorators/current-user.decorator';
-import { CurrentUserType } from 'src/modules/auth/decorators/types/current-user.type';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
+import { CurrentUserType } from 'src/decorators/types/current-user.type';
 import { JWTGuard } from 'src/modules/auth/guards/jwt.guard';
 import { Message } from 'src/modules/shared/dto/message.dto';
 import { EventGroupDetailDto } from '../application/query-service/dto/event-group-detail.dto';
@@ -46,6 +47,7 @@ export class EventGroupController {
     private readonly addMemberUseCase: AddMemberUseCase,
   ) {}
 
+  @ApiException(() => [BadRequestException])
   @Post()
   async create(
     @Body() dto: CreateEventGroupDto,

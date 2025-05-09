@@ -11,12 +11,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { CurrentUser } from '../../../decorators/current-user.decorator';
+import { CurrentUserType } from '../../../decorators/types/current-user.type';
 import { Message } from '../../shared/dto/message.dto';
 import { LoginUseCase } from '../application/use-cases/login.use-case';
 import { RefreshTokenPairUseCase } from '../application/use-cases/refresh-token-pair.use-case';
 import { SignupUseCase } from '../application/use-cases/signup.use-case';
-import { CurrentUser } from '../decorators/current-user.decorator';
-import { CurrentUserType } from '../decorators/types/current-user.type';
 import { RefreshJwtGuard } from '../guards/refresh-jwt.guard';
 import { LoginAuthDto, SignupAuthDto } from './dto/auth.dto';
 import { TokenPair } from './dto/token-pair.dto';

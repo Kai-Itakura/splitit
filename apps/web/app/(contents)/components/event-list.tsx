@@ -5,7 +5,7 @@ import ItemCard from '@repo/ui/components/custom/item-card';
 import { User } from '@repo/ui/components/icons';
 import { useRouter } from 'next/navigation';
 import { MouseEventHandler } from 'react';
-import { formatDate } from '../lib/format-date';
+import { formatDate } from '../../lib/format-date';
 
 type EventListProps = {
   event: components['schemas']['EventGroupDto'];

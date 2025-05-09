@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { CurrentUserType } from 'src/modules/auth/decorators/types/current-user.type';
+import { CurrentUserType } from 'src/decorators/types/current-user.type';
 import {
   EventGroupRepositoryToken,
   IEventGroupRepository,
