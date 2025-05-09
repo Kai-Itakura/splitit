@@ -6,7 +6,7 @@ import { logout } from '../actions/logout';
 const LogoutButton = () => {
   return (
     <div
-      className="flex justify-center items-center gap-3"
+      className="flex justify-center items-center gap-3 w-full cursor-pointer"
       onClick={() => logout()}
     >
       <LogOut />
