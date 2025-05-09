@@ -8,7 +8,9 @@ const ContentsLayout = ({
   return (
     <>
       <Header />
-      {children}
+      <main>
+        <div className=" px-6">{children}</div>
+      </main>
     </>
   );
 };
