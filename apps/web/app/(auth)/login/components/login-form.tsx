@@ -97,7 +97,7 @@ const LoginForm = () => {
           />
           <Button
             disabled={isPending || !form.formState.isValid}
-            className="cursor-pointer"
+            className="w-full cursor-pointer"
           >
             ログイン
           </Button>

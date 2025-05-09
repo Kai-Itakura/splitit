@@ -113,7 +113,7 @@ const SignupForm = () => {
           />
           <Button
             disabled={isPending || !form.formState.isValid}
-            className="cursor-pointer"
+            className="w-full cursor-pointer"
           >
             サインアップ
           </Button>
