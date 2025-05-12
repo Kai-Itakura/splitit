@@ -68,7 +68,7 @@ const EventDetail = async ({ params }: EventDetailProps) => {
         )}
       </div>
       <div className="flex justify-center items-center mt-6">
-        <BackButton>戻る</BackButton>
+        <BackButton>一覧へ戻る</BackButton>
       </div>
     </>
   );
