@@ -5,7 +5,7 @@ import {
   EventGroupRepositoryToken,
   IEventGroupRepository,
 } from '../../domain/repositories/event-group.repository.interface';
-import { EventGroupDto } from '../../presentation/dto/event-group.dto';
+import { ReturnGroupDto } from '../../presentation/dto/return-event-group.dto';
 
 @Injectable()
 export class GetAllGroupsUseCase {
@@ -14,10 +14,10 @@ export class GetAllGroupsUseCase {
     private readonly eventGroupRepository: IEventGroupRepository,
   ) {}
 
-  async execute(user: CurrentUserType): Promise<EventGroupDto[]> {
+  async execute(user: CurrentUserType): Promise<ReturnGroupDto[]> {
     const eventGroups = await this.eventGroupRepository.findAll(user.userId);
     return eventGroups.map((group) =>
-      plainToInstance(EventGroupDto, group, { strategy: 'excludeAll' }),
+      plainToInstance(ReturnGroupDto, group, { strategy: 'excludeAll' }),
     );
   }
 }

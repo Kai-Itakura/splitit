@@ -7,7 +7,6 @@ import {
   Get,
   NotFoundException,
   Param,
-  Patch,
   Post,
   Put,
   UnauthorizedException,
@@ -26,11 +25,12 @@ import { DeleteEventGroupUseCase } from '../application/use-cases/delete-event-g
 import { DeleteMemberUseCase } from '../application/use-cases/delete-member.use-case.dto';
 import { GetAllGroupsUseCase } from '../application/use-cases/get-all-groups.use-case';
 import { getGroupUseCase } from '../application/use-cases/get-group.use-case';
+import { UpdateEventGroupUseCase } from '../application/use-cases/update-event-group.use-case';
 import { UpdateExpenseUseCase } from '../application/use-cases/update-expense.use-case';
 import { MemberDto } from './dto/add-member.dto';
-import { CreateEventGroupDto } from './dto/create-event-group.dto';
 import { EventGroupDto } from './dto/event-group.dto';
 import { ExpenseDto } from './dto/expense.dto';
+import { ReturnGroupDto } from './dto/return-event-group.dto';
 
 @ApiTags('event-group')
 @UseGuards(JWTGuard)
@@ -38,6 +38,7 @@ import { ExpenseDto } from './dto/expense.dto';
 export class EventGroupController {
   constructor(
     private readonly createEventGroupUseCase: CreateEventGroupUseCase,
+    private readonly updateEventGroupUserCase: UpdateEventGroupUseCase,
     private readonly getGroupUseCase: getGroupUseCase,
     private readonly getAllGroupsUseCase: GetAllGroupsUseCase,
     private readonly deleteMemberUserCase: DeleteMemberUseCase,
@@ -47,14 +48,28 @@ export class EventGroupController {
     private readonly addMemberUseCase: AddMemberUseCase,
   ) {}
 
-  @ApiException(() => [BadRequestException])
+  @ApiException(() => [BadRequestException, UnauthorizedException])
   @Post()
   async create(
-    @Body() dto: CreateEventGroupDto,
+    @Body() dto: EventGroupDto,
     @CurrentUser() user: CurrentUserType,
   ): Promise<Message> {
     await this.createEventGroupUseCase.execute(dto, user);
     return { message: 'Successfully created!' };
+  }
+
+  @ApiException(() => [
+    BadRequestException,
+    NotFoundException,
+    UnauthorizedException,
+  ])
+  @Put(':groupId')
+  async updateEvent(
+    @Body() dto: EventGroupDto,
+    @Param('groupId') groupId: string,
+  ): Promise<Message> {
+    await this.updateEventGroupUserCase.execute(dto, groupId);
+    return { message: 'Successfully update event group!' };
   }
 
   @ApiException(() => [NotFoundException, UnauthorizedException])
@@ -69,7 +84,7 @@ export class EventGroupController {
   @Get()
   async getAllGroups(
     @CurrentUser() user: CurrentUserType,
-  ): Promise<EventGroupDto[]> {
+  ): Promise<ReturnGroupDto[]> {
     return this.getAllGroupsUseCase.execute(user);
   }
 
@@ -106,7 +121,7 @@ export class EventGroupController {
     return { message: 'Successfully add expense record!' };
   }
 
-  @Patch(':groupId/expense-record/:expenseId')
+  @Put(':groupId/expense-record/:expenseId')
   async updateExpense(
     @Body() dto: ExpenseDto,
     @Param('groupId') groupId: string,
