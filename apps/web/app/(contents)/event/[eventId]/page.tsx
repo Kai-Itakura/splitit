@@ -1,9 +1,15 @@
+import CreateExpenseDialog from '@/app/(contents)/event/[eventId]/components/create-expense-dialog';
 import BackButton from '@/app/components/back-button';
 import { formatNumber } from '@/app/lib/fomat-number';
 import { getCurrencySymbol } from '@/app/lib/get-currency-symbol';
 import { client } from '@/openapi.config';
+import { components } from '@/openapi/schema';
 import { CurrencyType } from '@repo/types';
-import ItemCard from '@repo/ui/components/custom/item-card';
+import { Button } from '@repo/ui/components';
+import { Plus } from '@repo/ui/components/icons';
+import NoItems from '../../components/no-items';
+import EditExpenseDialog from './components/edit-expense-dialog';
+import ExpenseList from './components/expense-list';
 
 type EventDetailProps = {
   params: {
@@ -13,17 +19,17 @@ type EventDetailProps = {
 
 const EventDetail = async ({ params }: EventDetailProps) => {
   const { eventId } = await params;
-  const { error, data } = await client.GET('/event-group/{groupId}', {
+  const { data } = (await client.GET('/event-group/{groupId}', {
     params: { path: { groupId: eventId } },
-  });
-  if (error) {
-    return <div>ERROR: {error.message}</div>;
-  }
+  })) as {
+    data: components['schemas']['EventGroupDetailDto'];
+  };
 
   const currencySymbol = getCurrencySymbol(data.currency as CurrencyType);
   return (
     <>
-      <div className="mt-6 space-y-2">
+      <BackButton>一覧へ戻る</BackButton>
+      <div className="space-y-2">
         <h1 className="text-4xl font-bold">{data.title}</h1>
         <p>
           {data.member.map(({ id, name }, index) => {
@@ -36,19 +42,43 @@ const EventDetail = async ({ params }: EventDetailProps) => {
           {data.totalExpense ? formatNumber(data.totalExpense) : 0}
         </p>
       </div>
-      <div className="space-y-4 mt-6">
-        {data.expenses.map((expense) => (
-          <ItemCard key={expense.id}>
-            <h2>{expense.title}</h2>
-            <p>
-              {currencySymbol}
-              {formatNumber(expense.amount)}
-            </p>
-          </ItemCard>
-        ))}
-      </div>
-      <div className="flex justify-center items-center mt-6">
-        <BackButton>戻る</BackButton>
+      <div className="mt-6">
+        {data.expenses.length > 0 ? (
+          <>
+            <ul className="space-y-4">
+              {data.expenses.map((expense) => (
+                <li key={expense.id}>
+                  <EditExpenseDialog expense={expense} member={data.member}>
+                    <div>
+                      <ExpenseList
+                        expense={expense}
+                        currencySymbol={currencySymbol}
+                      />
+                    </div>
+                  </EditExpenseDialog>
+                </li>
+              ))}
+            </ul>
+            <CreateExpenseDialog members={data.member}>
+              <Plus className="fixed bottom-5 right-5 z-50 rounded-full shadow-xl p-1 w-10 h-10 bg-foreground hover:opacity-85 text-background cursor-pointer" />
+            </CreateExpenseDialog>
+          </>
+        ) : (
+          <NoItems
+            alt="立て替え記録"
+            src="/expense.jpg"
+            message="立て替え記録がありません。"
+          >
+            <CreateExpenseDialog members={data.member}>
+              <Button
+                variant="outline"
+                className="flex mx-auto mt-6 cursor-pointer"
+              >
+                立て替え記録作成
+              </Button>
+            </CreateExpenseDialog>
+          </NoItems>
+        )}
       </div>
     </>
   );
