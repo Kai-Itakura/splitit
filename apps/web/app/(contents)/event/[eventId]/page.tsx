@@ -6,9 +6,10 @@ import { client } from '@/openapi.config';
 import { components } from '@/openapi/schema';
 import { CurrencyType } from '@repo/types';
 import { Button } from '@repo/ui/components';
-import ItemCard from '@repo/ui/components/custom/item-card';
-import { Plus, User, WalletIcon } from '@repo/ui/components/icons';
+import { Plus } from '@repo/ui/components/icons';
 import NoItems from '../../components/no-items';
+import EditExpenseDialog from './components/edit-expense-dialog';
+import ExpenseList from './components/expense-list';
 
 type EventDetailProps = {
   params: {
@@ -47,25 +48,14 @@ const EventDetail = async ({ params }: EventDetailProps) => {
             <ul className="space-y-4">
               {data.expenses.map((expense) => (
                 <li key={expense.id}>
-                  <ItemCard>
-                    <h2 className="font-bold text-lg">{expense.title}</h2>
-                    <div className="space-y-1">
-                      <p className="text-xl font-bold text-right">
-                        {currencySymbol}
-                        {formatNumber(expense.amount)}
-                      </p>
-                      <div className="flex gap-3 text-sm text-slate-500">
-                        <p className="flex items-center gap-1">
-                          <WalletIcon size={14} />
-                          {expense.payer.name}
-                        </p>
-                        <p className="flex items-center gap-1">
-                          <User size={14} />
-                          {expense.payees?.length}
-                        </p>
-                      </div>
+                  <EditExpenseDialog expense={expense} member={data.member}>
+                    <div>
+                      <ExpenseList
+                        expense={expense}
+                        currencySymbol={currencySymbol}
+                      />
                     </div>
-                  </ItemCard>
+                  </EditExpenseDialog>
                 </li>
               ))}
             </ul>

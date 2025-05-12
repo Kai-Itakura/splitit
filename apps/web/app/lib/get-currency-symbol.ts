@@ -10,8 +10,9 @@ const currencyMap: Record<CurrencyType, CurrencySymbolType> = {
   EUR: '€',
 };
 
-export const getCurrencySymbol = (
-  currency: CurrencyType,
-): CurrencySymbolType => {
+const getCurrencySymbol = (currency: CurrencyType): CurrencySymbolType => {
   return currencyMap[currency];
 };
+
+export { getCurrencySymbol };
+export type { CurrencySymbolType };

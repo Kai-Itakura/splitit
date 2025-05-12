@@ -9,12 +9,18 @@ import {
 } from '@repo/ui/components';
 import { useState } from 'react';
 import { EventMember } from '../types/event-member';
-import CreateExpenseForm from './create-expense-form';
+import { Expense } from '../types/expense.type';
+import EditExpenseForm from './edit-expense-form';
 
-const CreateExpenseDialog = ({
+const EditExpenseDialog = ({
+  expense,
+  member,
   children,
-  members,
-}: Readonly<{ children: React.ReactNode; members: EventMember }>) => {
+}: Readonly<{
+  expense: Expense;
+  member: EventMember;
+  children: React.ReactNode;
+}>) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -22,12 +28,12 @@ const CreateExpenseDialog = ({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px] gap-8">
         <DialogHeader>
-          <DialogTitle>立て替え記録作成</DialogTitle>
+          <DialogTitle>立て替え記録更新</DialogTitle>
         </DialogHeader>
-        <CreateExpenseForm members={members} />
+        <EditExpenseForm expense={expense} member={member} />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default CreateExpenseDialog;
+export default EditExpenseDialog;

@@ -17,7 +17,9 @@ export default async function Home() {
             <>
               <ul className="space-y-4">
                 {data.map((event) => (
-                  <EventList event={event} key={event.id}></EventList>
+                  <li key={event.id}>
+                    <EventList event={event}></EventList>
+                  </li>
                 ))}
               </ul>
               <CreateEventDialog>

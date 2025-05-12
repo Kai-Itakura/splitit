@@ -19,23 +19,21 @@ const EventList = ({ event }: EventListProps) => {
   };
 
   return (
-    <li>
-      <ItemCard
-        onClick={onItemCardClick}
-        className="cursor-pointer hover:bg-gray-50"
-      >
-        <div className="flex flex-col gap-2">
-          <h2 className="font-bold text-xl">{event.title}</h2>
-          <p className="text-sm text-slate-500">
-            作成日: {formatDate(new Date(event.createdAt))}
-          </p>
-        </div>
-        <div className="flex justify-center items-center gap-1 text-slate-500">
-          <User size={14} />
-          <span>{event.memberCount}</span>
-        </div>
-      </ItemCard>
-    </li>
+    <ItemCard
+      onClick={onItemCardClick}
+      className="cursor-pointer hover:bg-gray-50"
+    >
+      <div className="flex flex-col gap-2">
+        <h2 className="font-bold text-xl">{event.title}</h2>
+        <p className="text-sm text-slate-500">
+          作成日: {formatDate(new Date(event.createdAt))}
+        </p>
+      </div>
+      <div className="flex justify-center items-center gap-1 text-slate-500">
+        <User size={14} />
+        <span>{event.memberCount}</span>
+      </div>
+    </ItemCard>
   );
 };
 

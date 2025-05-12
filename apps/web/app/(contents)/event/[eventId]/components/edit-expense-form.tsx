@@ -23,16 +23,23 @@ import {
   CreateExpenseSchema,
 } from '../create-expense.schema';
 import { EventMember } from '../types/event-member';
+import { Expense } from '../types/expense.type';
 
-const CreateExpenseForm = ({ members }: { members: EventMember }) => {
+const EditExpenseForm = ({
+  member,
+  expense,
+}: {
+  member: EventMember;
+  expense: Expense;
+}) => {
   const form = useForm<CreateExpenseSchema>({
     mode: 'onChange',
     resolver: zodResolver(createExpenseSchema),
     defaultValues: {
-      title: '',
-      amount: '',
-      payerId: '',
-      payeeIds: members.map((member) => member.id),
+      title: expense.title,
+      amount: expense.amount.toString(),
+      payerId: expense.payer.id,
+      payeeIds: expense.payees?.map((payee) => payee.id),
     },
   });
 
@@ -73,6 +80,7 @@ const CreateExpenseForm = ({ members }: { members: EventMember }) => {
               <FormLabel>立て替えた人</FormLabel>
               <FormControl>
                 <Select
+                  defaultValue={field.value}
                   onValueChange={(value) => {
                     field.onChange(value);
                     form.setValue('payerId', value);
@@ -83,7 +91,7 @@ const CreateExpenseForm = ({ members }: { members: EventMember }) => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      {members.map((member) => (
+                      {member.map((member) => (
                         <SelectItem key={member.id} value={member.id}>
                           {member.name}
                         </SelectItem>
@@ -106,4 +114,4 @@ const CreateExpenseForm = ({ members }: { members: EventMember }) => {
   );
 };
 
-export default CreateExpenseForm;
+export default EditExpenseForm;
