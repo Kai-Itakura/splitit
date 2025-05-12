@@ -21,7 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${mPlus2.variable}  font-m-plus-2 antialiased`}>
+      <body
+        className={`${mPlus2.variable}  font-m-plus-2 antialiased bg-gray-50`}
+      >
         {children}
         <Toaster />
       </body>

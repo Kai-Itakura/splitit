@@ -9,6 +9,7 @@ const ProfilePage = async ({ params }: { params: { userId: string } }) => {
 
   return (
     <>
+      <BackButton>戻る</BackButton>
       <div className="flex">
         <ProfileAvatar userId={userId} size="xl" />
         <div>
@@ -17,7 +18,6 @@ const ProfilePage = async ({ params }: { params: { userId: string } }) => {
           <p>{data.email}</p>
         </div>
       </div>
-      <BackButton className="mt-6">戻る</BackButton>
     </>
   );
 };
