@@ -36,7 +36,7 @@ const CreateEventForm = ({
     resolver: zodResolver(createEventSchema),
     defaultValues: {
       title: '',
-      currency: '',
+      currency: CURRENCY_TYPES[0],
     },
   });
 
@@ -82,7 +82,6 @@ const CreateEventForm = ({
               <FormLabel>通貨</FormLabel>
               <FormControl>
                 <Select
-                  defaultValue={field.value}
                   onValueChange={(value) => {
                     field.onChange(value);
                     form.setValue('currency', value);

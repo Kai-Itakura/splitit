@@ -44,6 +44,7 @@ export class AuthController {
     return this.loginUseCase.execute(dto);
   }
 
+  @ApiException(() => [UnauthorizedException])
   @UseGuards(RefreshJwtGuard)
   @HttpCode(HttpStatus.OK)
   @Post('logout')

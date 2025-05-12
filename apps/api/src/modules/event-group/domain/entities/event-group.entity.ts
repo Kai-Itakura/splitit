@@ -156,7 +156,7 @@ export class EventGroup {
     const newExpense = Expense.create(title, amount, payerId, payeeIds);
     this._expenses.push(newExpense);
 
-    // 新しい精算記録を作成
+    // 新しい精算記録作成
     this.createSettlements();
   }
 
@@ -178,7 +178,7 @@ export class EventGroup {
       expense.payerId !== payerId ||
       isSameArray(expense.payeeIds, payeeIds)
     ) {
-      // 新しい精算記録を作成
+      // 新しい精算記録作成
       this.createSettlements();
     }
   }
