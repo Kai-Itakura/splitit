@@ -1,15 +1,9 @@
-import { Expose } from 'class-transformer';
+import { IsString } from 'class-validator';
 
 export class EventGroupDto {
-  @Expose()
-  id: string;
-
-  @Expose({ name: '_title' })
+  @IsString()
   title: string;
 
-  @Expose()
-  memberCount: number;
-
-  @Expose({ name: '_createdAt' })
-  createdAt: Date;
+  @IsString()
+  currency: string;
 }
