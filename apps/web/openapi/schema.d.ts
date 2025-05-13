@@ -108,7 +108,7 @@ export interface paths {
       cookie?: never;
     };
     get: operations['getGroup'];
-    put?: never;
+    put: operations['updateEvent'];
     post?: never;
     delete: operations['deleteGroup'];
     options?: never;
@@ -172,12 +172,12 @@ export interface paths {
       cookie?: never;
     };
     get?: never;
-    put?: never;
+    put: operations['updateExpense'];
     post?: never;
     delete?: never;
     options?: never;
     head?: never;
-    patch: operations['updateExpense'];
+    patch?: never;
     trace?: never;
   };
 }
@@ -218,7 +218,7 @@ export interface components {
     FindUserDTO: {
       email: string;
     };
-    CreateEventGroupDto: {
+    EventGroupDto: {
       title: string;
       currency: string;
     };
@@ -254,7 +254,7 @@ export interface components {
       }[];
       totalExpense: number;
     };
-    EventGroupDto: {
+    ReturnGroupDto: {
       id: string;
       title: string;
       memberCount: number;
@@ -509,7 +509,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': components['schemas']['EventGroupDto'][];
+          'application/json': components['schemas']['ReturnGroupDto'][];
         };
       };
       401: {
@@ -553,7 +553,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['CreateEventGroupDto'];
+        'application/json': components['schemas']['EventGroupDto'];
       };
     };
     responses: {
@@ -580,6 +580,21 @@ export interface operations {
           };
         };
       };
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 401 */
+            statusCode: number;
+            /** @example Unauthorized */
+            message: string;
+            /** @example Unauthorized */
+            error?: string;
+          };
+        };
+      };
     };
   };
   getGroup: {
@@ -599,6 +614,76 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['EventGroupDetailDto'];
+        };
+      };
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 401 */
+            statusCode: number;
+            /** @example Unauthorized */
+            message: string;
+            /** @example Unauthorized */
+            error?: string;
+          };
+        };
+      };
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 404 */
+            statusCode: number;
+            /** @example Not Found */
+            message: string;
+            /** @example Not Found */
+            error?: string;
+          };
+        };
+      };
+    };
+  };
+  updateEvent: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        groupId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['EventGroupDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Message'];
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 400 */
+            statusCode: number;
+            /** @example Bad Request */
+            message: string;
+            /** @example Bad Request */
+            error?: string;
+          };
         };
       };
       401: {

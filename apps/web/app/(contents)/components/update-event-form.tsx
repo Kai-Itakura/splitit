@@ -22,28 +22,35 @@ import {
 } from '@repo/ui/components';
 import { Dispatch, SetStateAction, useActionState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { createEvent } from '../actions/create-event';
 import { FORM_STATUS } from '../actions/form-state';
+import { updateEvent } from '../actions/update-event';
 import {
-  CreateEventSchema,
-  createEventSchema,
-} from '../schema/create-event.schema';
+  updateEventSchema,
+  UpdateEventSchema,
+} from '../schema/update-event.schema';
 
-const CreateEventForm = ({
+const UpdateEventForm = ({
+  id,
+  title,
+  currency,
   setDialogOpen,
 }: {
+  id: string;
+  title: string;
+  currency: string;
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const form = useForm<CreateEventSchema>({
+  const form = useForm<UpdateEventSchema>({
     mode: 'onChange',
-    resolver: zodResolver(createEventSchema),
+    resolver: zodResolver(updateEventSchema),
     defaultValues: {
-      title: '',
-      currency: CURRENCY_TYPES[0],
+      id,
+      title,
+      currency,
     },
   });
 
-  const [state, formAction, isPending] = useActionState(createEvent, {
+  const [state, formAction, isPending] = useActionState(updateEvent, {
     status: FORM_STATUS.IDLE,
   });
 
@@ -66,12 +73,23 @@ const CreateEventForm = ({
       <form action={formAction} className="space-y-8">
         <FormField
           control={form.control}
+          name="id"
+          render={({ field }) => (
+            <FormItem className="m-0">
+              <FormControl>
+                <Input {...field} type="hidden" />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="title"
           render={({ field }) => (
             <FormItem>
               <FormLabel>イベント名</FormLabel>
               <FormControl>
-                <Input placeholder="イベント名を入力してください" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -85,6 +103,7 @@ const CreateEventForm = ({
               <FormLabel>通貨</FormLabel>
               <FormControl>
                 <Select
+                  defaultValue={field.value}
                   onValueChange={(value) => {
                     field.onChange(value);
                     form.setValue('currency', value);
@@ -122,4 +141,4 @@ const CreateEventForm = ({
   );
 };
 
-export default CreateEventForm;
+export default UpdateEventForm;

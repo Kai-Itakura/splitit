@@ -2,7 +2,7 @@
 
 import { client } from '@/openapi.config';
 import { revalidatePath } from 'next/cache';
-import { createEventSchema } from '../create-event.schema';
+import { createEventSchema } from '../schema/create-event.schema';
 import { FORM_STATUS, FormActionState } from './form-state';
 
 export const createEvent = async (

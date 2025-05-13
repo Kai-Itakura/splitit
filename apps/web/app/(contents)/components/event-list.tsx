@@ -8,7 +8,7 @@ import { MouseEventHandler } from 'react';
 import { formatDate } from '../../lib/format-date';
 
 type EventListProps = {
-  event: components['schemas']['EventGroupDto'];
+  event: components['schemas']['ReturnGroupDto'];
 };
 
 const EventList = ({ event }: EventListProps) => {

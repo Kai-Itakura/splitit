@@ -10,6 +10,7 @@ import { DeleteEventGroupUseCase } from './application/use-cases/delete-event-gr
 import { DeleteMemberUseCase } from './application/use-cases/delete-member.use-case.dto';
 import { GetAllGroupsUseCase } from './application/use-cases/get-all-groups.use-case';
 import { getGroupUseCase } from './application/use-cases/get-group.use-case';
+import { UpdateEventGroupUseCase } from './application/use-cases/update-event-group.use-case';
 import { UpdateExpenseUseCase } from './application/use-cases/update-expense.use-case';
 import { EventGroupRepositoryToken } from './domain/repositories/event-group.repository.interface';
 import { EventGroupUserService } from './domain/services/event-group-user.service';
@@ -34,6 +35,7 @@ import { EventGroupController } from './presentation/event-group.controller';
       useClass: EventGroupQueryService,
     },
     CreateEventGroupUseCase,
+    UpdateEventGroupUseCase,
     getGroupUseCase,
     GetAllGroupsUseCase,
     DeleteMemberUseCase,

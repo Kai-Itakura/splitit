@@ -15,9 +15,9 @@ import { Settlement } from './settlement.entity';
 export class EventGroup {
   private constructor(
     private readonly _id: Id,
-    private readonly _title: string,
+    private _title: string,
     private readonly _memberIds: string[],
-    private readonly _currency: Currency,
+    private _currency: Currency,
     private readonly _createdAt: Date,
     private readonly _expenses: Expense[] = [],
     private readonly _settlements: Settlement[] = [],
@@ -53,6 +53,10 @@ export class EventGroup {
 
   get settlements(): Settlement[] {
     return [...this._settlements];
+  }
+
+  set title(title: string) {
+    this._title = title;
   }
 
   static create(title: string, userId: string, currency: string = 'JPY') {
@@ -111,6 +115,10 @@ export class EventGroup {
         ),
       ),
     );
+  }
+
+  changeCurrency(currency: string): void {
+    this._currency = Currency.create(currency);
   }
 
   addMemberId(userId: string): void {
