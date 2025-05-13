@@ -40,7 +40,7 @@ const SearchUserForm = () => {
   const [state, formAction, isPending] = useActionState(searchUser, {
     status: FORM_STATUS.IDLE,
   });
-  // console.log('🔥 ~ SearchUserForm ~ state:', state);
+  console.log('🔥 ~ SearchUserForm ~ state:', state);
 
   return (
     <>
@@ -58,18 +58,20 @@ const SearchUserForm = () => {
                     onValueChange={(value: SearchType) => {
                       setSearchType(value);
                       form.setValue('type', value);
-                      form.reset();
+                      form.setValue('value', '');
+                      form.clearErrors();
                     }}
+                    {...field}
                   >
                     <FormItem className="flex items-center gap-1">
                       <FormControl>
-                        <RadioGroupItem value={SEARCH_TYPE.EMAIL} />
+                        <RadioGroupItem {...field} value={SEARCH_TYPE.EMAIL} />
                       </FormControl>
                       <FormLabel>email</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center gap-1">
                       <FormControl>
-                        <RadioGroupItem value={SEARCH_TYPE.ID} />
+                        <RadioGroupItem {...field} value={SEARCH_TYPE.ID} />
                       </FormControl>
                       <FormLabel>ID</FormLabel>
                     </FormItem>

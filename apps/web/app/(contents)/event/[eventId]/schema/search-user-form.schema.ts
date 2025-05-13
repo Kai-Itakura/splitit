@@ -19,7 +19,7 @@ const searchUserByEmailSchema = z
 const searchUserByIdSchema = z
   .object({
     type: z.literal(SEARCH_TYPE.ID),
-    value: z.string(),
+    value: z.string().min(1, '１文字以上入力してください。'),
   })
   .brand('search-user-by-id-schema');
 
