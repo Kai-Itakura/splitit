@@ -47,7 +47,7 @@ const EventDetail = async ({ params }: EventDetailProps) => {
         </div>
         <p>
           {data.member.map(({ id, name }, index) => {
-            const withSeparator = index === 0 ? name : ` | ${name}`;
+            const withSeparator = index === 0 ? name : `・${name}`;
             return <span key={id}>{withSeparator}</span>;
           })}
         </p>
@@ -56,13 +56,17 @@ const EventDetail = async ({ params }: EventDetailProps) => {
           {data.totalExpense ? formatNumber(data.totalExpense) : 0}
         </p>
       </div>
-      <div className="mt-6">
+      <div className="my-6">
         {data.expenses.length > 0 ? (
           <>
             <ul className="space-y-4">
               {data.expenses.map((expense) => (
                 <li key={expense.id}>
-                  <UpdateExpenseDialog expense={expense} member={data.member}>
+                  <UpdateExpenseDialog
+                    eventId={eventId}
+                    expense={expense}
+                    member={data.member}
+                  >
                     <div>
                       <ExpenseList
                         expense={expense}
@@ -73,7 +77,7 @@ const EventDetail = async ({ params }: EventDetailProps) => {
                 </li>
               ))}
             </ul>
-            <CreateExpenseDialog members={data.member}>
+            <CreateExpenseDialog eventId={eventId} members={data.member}>
               <Plus className="fixed bottom-5 right-5 z-50 rounded-full shadow-xl p-1 w-10 h-10 bg-foreground hover:opacity-85 text-background cursor-pointer" />
             </CreateExpenseDialog>
           </>
@@ -83,7 +87,7 @@ const EventDetail = async ({ params }: EventDetailProps) => {
             src="/expense.jpg"
             message="立て替え記録がありません。"
           >
-            <CreateExpenseDialog members={data.member}>
+            <CreateExpenseDialog eventId={eventId} members={data.member}>
               <Button
                 variant="outline"
                 className="flex mx-auto mt-6 cursor-pointer"

@@ -13,10 +13,12 @@ import { Expense } from '../types/expense.type';
 import UpdateExpenseForm from './update-expense-form';
 
 const UpdateExpenseDialog = ({
+  eventId,
   expense,
   member,
   children,
 }: Readonly<{
+  eventId: string;
   expense: Expense;
   member: EventMember;
   children: React.ReactNode;
@@ -30,7 +32,12 @@ const UpdateExpenseDialog = ({
         <DialogHeader>
           <DialogTitle>立て替え記録更新</DialogTitle>
         </DialogHeader>
-        <UpdateExpenseForm expense={expense} member={member} />
+        <UpdateExpenseForm
+          eventId={eventId}
+          expense={expense}
+          member={member}
+          setDialogOpen={setOpen}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -12,9 +12,14 @@ import { EventMember } from '../types/event-member';
 import CreateExpenseForm from './create-expense-form';
 
 const CreateExpenseDialog = ({
-  children,
+  eventId,
   members,
-}: Readonly<{ children: React.ReactNode; members: EventMember }>) => {
+  children,
+}: Readonly<{
+  eventId: string;
+  members: EventMember;
+  children: React.ReactNode;
+}>) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -24,7 +29,11 @@ const CreateExpenseDialog = ({
         <DialogHeader>
           <DialogTitle>立て替え記録作成</DialogTitle>
         </DialogHeader>
-        <CreateExpenseForm members={members} />
+        <CreateExpenseForm
+          eventId={eventId}
+          members={members}
+          setDialogOpen={setOpen}
+        />
       </DialogContent>
     </Dialog>
   );

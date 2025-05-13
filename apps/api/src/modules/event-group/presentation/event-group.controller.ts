@@ -112,6 +112,11 @@ export class EventGroupController {
     return { message: 'Successfully delete member!' };
   }
 
+  @ApiException(() => [
+    UnauthorizedException,
+    NotFoundException,
+    BadRequestException,
+  ])
   @Post(':groupId/expense-record')
   async addExpense(
     @Body() dto: ExpenseDto,
@@ -121,6 +126,11 @@ export class EventGroupController {
     return { message: 'Successfully add expense record!' };
   }
 
+  @ApiException(() => [
+    UnauthorizedException,
+    NotFoundException,
+    BadRequestException,
+  ])
   @Put(':groupId/expense-record/:expenseId')
   async updateExpense(
     @Body() dto: ExpenseDto,
