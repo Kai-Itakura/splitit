@@ -6,8 +6,9 @@ import { client } from '@/openapi.config';
 import { components } from '@/openapi/schema';
 import { CurrencyType } from '@repo/types';
 import { Button } from '@repo/ui/components';
-import { Plus } from '@repo/ui/components/icons';
+import { EditIcon, Plus } from '@repo/ui/components/icons';
 import NoItems from '../../components/no-items';
+import UpdateEventDialog from '../../components/update-event-dialog';
 import EditExpenseDialog from './components/edit-expense-dialog';
 import ExpenseList from './components/expense-list';
 
@@ -30,7 +31,16 @@ const EventDetail = async ({ params }: EventDetailProps) => {
     <>
       <BackButton>一覧へ戻る</BackButton>
       <div className="space-y-2">
-        <h1 className="text-4xl font-bold">{data.title}</h1>
+        <div className="flex gap-2 items-end">
+          <h1 className="text-4xl font-bold">{data.title}</h1>
+          <UpdateEventDialog
+            id={data.id}
+            title={data.title}
+            currency={data.currency}
+          >
+            <EditIcon />
+          </UpdateEventDialog>
+        </div>
         <p>
           {data.member.map(({ id, name }, index) => {
             const withSeparator = index === 0 ? name : ` | ${name}`;

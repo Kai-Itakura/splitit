@@ -18,16 +18,13 @@ import {
   SelectValue,
 } from '@repo/ui/components';
 import { useForm } from 'react-hook-form';
-import {
-  createExpenseSchema,
-  CreateExpenseSchema,
-} from '../create-expense.schema';
+import { ExpenseSchema, expenseSchema } from '../create-expense.schema';
 import { EventMember } from '../types/event-member';
 
 const CreateExpenseForm = ({ members }: { members: EventMember }) => {
-  const form = useForm<CreateExpenseSchema>({
+  const form = useForm<ExpenseSchema>({
     mode: 'onChange',
-    resolver: zodResolver(createExpenseSchema),
+    resolver: zodResolver(expenseSchema),
     defaultValues: {
       title: '',
       amount: '',
