@@ -22,12 +22,12 @@ import {
 } from '@repo/ui/components';
 import { Dispatch, SetStateAction, useActionState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { FORM_STATUS } from '../actions/form-state';
-import { updateEvent } from '../actions/update-event';
+import { FORM_STATUS } from '../../../actions/form-state';
+import { updateEvent } from '../../../actions/update-event';
 import {
   updateEventSchema,
   UpdateEventSchema,
-} from '../schema/update-event.schema';
+} from '../../../schema/update-event.schema';
 
 const UpdateEventForm = ({
   id,

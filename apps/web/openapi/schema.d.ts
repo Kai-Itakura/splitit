@@ -68,6 +68,38 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/user/me': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['getMe'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/user/{userId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['findById'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/user': {
     parameters: {
       query?: never;
@@ -75,9 +107,9 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['getUser'];
+    get: operations['findByEmail'];
     put?: never;
-    post: operations['findByEmail'];
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -214,9 +246,6 @@ export interface components {
       id: string;
       email: string;
       name: string;
-    };
-    FindUserDTO: {
-      email: string;
     };
     EventGroupDto: {
       title: string;
@@ -438,7 +467,7 @@ export interface operations {
       };
     };
   };
-  getUser: {
+  getMe: {
     parameters: {
       query?: never;
       header?: never;
@@ -472,25 +501,104 @@ export interface operations {
       };
     };
   };
-  findByEmail: {
+  findById: {
     parameters: {
       query?: never;
       header?: never;
-      path?: never;
+      path: {
+        userId: string;
+      };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['FindUserDTO'];
-      };
-    };
+    requestBody?: never;
     responses: {
-      201: {
+      200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
           'application/json': components['schemas']['ReturnUserDTO'];
+        };
+      };
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 401 */
+            statusCode: number;
+            /** @example Unauthorized */
+            message: string;
+            /** @example Unauthorized */
+            error?: string;
+          };
+        };
+      };
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 404 */
+            statusCode: number;
+            /** @example Not Found */
+            message: string;
+            /** @example Not Found */
+            error?: string;
+          };
+        };
+      };
+    };
+  };
+  findByEmail: {
+    parameters: {
+      query: {
+        email: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ReturnUserDTO'];
+        };
+      };
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 401 */
+            statusCode: number;
+            /** @example Unauthorized */
+            message: string;
+            /** @example Unauthorized */
+            error?: string;
+          };
+        };
+      };
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 404 */
+            statusCode: number;
+            /** @example Not Found */
+            message: string;
+            /** @example Not Found */
+            error?: string;
+          };
         };
       };
     };

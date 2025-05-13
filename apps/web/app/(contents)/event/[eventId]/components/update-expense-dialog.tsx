@@ -10,9 +10,9 @@ import {
 import { useState } from 'react';
 import { EventMember } from '../types/event-member';
 import { Expense } from '../types/expense.type';
-import EditExpenseForm from './edit-expense-form';
+import UpdateExpenseForm from './update-expense-form';
 
-const EditExpenseDialog = ({
+const UpdateExpenseDialog = ({
   expense,
   member,
   children,
@@ -30,10 +30,10 @@ const EditExpenseDialog = ({
         <DialogHeader>
           <DialogTitle>立て替え記録更新</DialogTitle>
         </DialogHeader>
-        <EditExpenseForm expense={expense} member={member} />
+        <UpdateExpenseForm expense={expense} member={member} />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default EditExpenseDialog;
+export default UpdateExpenseDialog;

@@ -22,7 +22,7 @@ import { ExpenseSchema, expenseSchema } from '../create-expense.schema';
 import { EventMember } from '../types/event-member';
 import { Expense } from '../types/expense.type';
 
-const EditExpenseForm = ({
+const UpdateExpenseForm = ({
   member,
   expense,
 }: {
@@ -111,4 +111,4 @@ const EditExpenseForm = ({
   );
 };
 
-export default EditExpenseForm;
+export default UpdateExpenseForm;

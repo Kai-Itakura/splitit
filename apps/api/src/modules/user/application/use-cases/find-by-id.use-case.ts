@@ -2,11 +2,11 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import {
   IUserRepository,
   UserRepositoryToken,
-} from '../domain/repositories/user.repository.interface';
-import { ReturnUserDTO } from '../presentation/dto/return-user.dto';
+} from '../../domain/repositories/user.repository.interface';
+import { ReturnUserDTO } from '../../presentation/dto/return-user.dto';
 
 @Injectable()
-export class GetUserUseCase {
+export class FindByIdUserCase {
   constructor(
     @Inject(UserRepositoryToken)
     private readonly userRepository: IUserRepository,

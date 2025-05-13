@@ -9,8 +9,8 @@ export const createEvent = async (
   _prevState: FormActionState,
   formData: FormData,
 ): Promise<FormActionState> => {
-  const body = Object.fromEntries(formData);
-  const parsedData = createEventSchema.safeParse(body);
+  const raw = Object.fromEntries(formData);
+  const parsedData = createEventSchema.safeParse(raw);
 
   if (!parsedData.success) {
     return {
