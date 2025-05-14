@@ -13,13 +13,11 @@ import ExpenseList from './components/expense-list';
 import UpdateEventDialog from './components/update-event-dialog';
 import UpdateExpenseDialog from './components/update-expense-dialog';
 
-type EventDetailProps = {
-  params: {
-    eventId: string;
-  };
-};
-
-const EventDetail = async ({ params }: EventDetailProps) => {
+const EventDetail = async ({
+  params,
+}: {
+  params: Promise<{ eventId: string }>;
+}) => {
   const { eventId } = await params;
   const { data } = (await client.GET('/event-group/{groupId}', {
     params: { path: { groupId: eventId } },

@@ -24,6 +24,9 @@
       "persistent": true,
       "interactive": true
     },
+    "start:debug": {
+      "persistent": true
+    },
     "clean": {
       "cache": false
     },
