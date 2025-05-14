@@ -30,7 +30,7 @@ const EventDetail = async ({
     <>
       <BackButton>一覧へ戻る</BackButton>
       <div className="space-y-2">
-        <div className="flex gap-2 items-end">
+        <div className="flex gap-6 items-end">
           <h1 className="text-4xl font-bold">{data.title}</h1>
           <UpdateEventDialog
             id={data.id}
@@ -39,13 +39,13 @@ const EventDetail = async ({
           >
             <EditIcon className="hover:text-blue-400" />
           </UpdateEventDialog>
-          <AddUserDialog>
+          <AddUserDialog eventId={eventId}>
             <UserPlus2Icon className="hover:text-blue-400" />
           </AddUserDialog>
         </div>
         <p>
           {data.member.map(({ id, name }, index) => {
-            const withSeparator = index === 0 ? name : `・${name}`;
+            const withSeparator = index === 0 ? name : ` | ${name}`;
             return <span key={id}>{withSeparator}</span>;
           })}
         </p>

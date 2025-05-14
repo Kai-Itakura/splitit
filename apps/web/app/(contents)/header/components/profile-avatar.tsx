@@ -19,12 +19,14 @@ const avatarVariants = cva('hover:border-1 duration-50', {
 const ProfileAvatar = ({
   userId,
   size,
+  className,
 }: {
   userId: string;
   size?: VariantProps<typeof avatarVariants>['size'];
+  className?: string;
 }) => {
   return (
-    <Avatar className={avatarVariants({ size })}>
+    <Avatar className={avatarVariants({ size, className })}>
       <AvatarImage />
       <AvatarFallback>
         <Image

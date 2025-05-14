@@ -94,6 +94,7 @@ export class EventGroupController {
     return { message: 'Successfully deleted!' };
   }
 
+  @ApiException(() => [NotFoundException, UnauthorizedException])
   @Put(':groupId/member')
   async addMember(
     @Body() dto: MemberDto,

@@ -10,8 +10,12 @@ import {
 import { ReactNode, useState } from 'react';
 import SearchUserForm from './search-user-form';
 
-const AddUserDialog = ({ children }: { children: ReactNode }) => {
+const AddUserDialog = ({
+  eventId,
+  children,
+}: Readonly<{ eventId: string; children: ReactNode }>) => {
   const [open, setOpen] = useState(false);
+  const [key, setKey] = useState(crypto.randomUUID());
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -22,7 +26,7 @@ const AddUserDialog = ({ children }: { children: ReactNode }) => {
         <DialogHeader>
           <DialogTitle>メンバー追加</DialogTitle>
         </DialogHeader>
-        <SearchUserForm />
+        <SearchUserForm key={key} setKey={setKey} eventId={eventId} />
       </DialogContent>
     </Dialog>
   );

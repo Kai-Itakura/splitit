@@ -1,5 +1,4 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { plainToInstance } from 'class-transformer';
 import {
   IUserRepository,
   UserRepositoryToken,
@@ -16,6 +15,6 @@ export class FindByEmailUseCase {
   async execute(email: string): Promise<ReturnUserDTO> {
     const user = await this.userRepository.findByEmail(email);
     if (!user) throw new NotFoundException('User not found!');
-    return plainToInstance(ReturnUserDTO, user);
+    return { id: user.id, email: user.email, name: user.name };
   }
 }
