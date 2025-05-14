@@ -49,6 +49,7 @@ const SearchUserForm = ({
     form.setValue('type', searchType);
     form.setValue('value', '');
     form.clearErrors();
+    form.trigger('type');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchType]);
 
