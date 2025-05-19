@@ -19,7 +19,7 @@ export class EventGroup {
     private readonly _memberIds: string[],
     private _currency: Currency,
     private readonly _createdAt: Date,
-    private readonly _expenses: Expense[] = [],
+    private _expenses: Expense[] = [],
     private readonly _settlements: Settlement[] = [],
   ) {}
 
@@ -181,6 +181,7 @@ export class EventGroup {
     // 費用の更新
     expense.update(title, amount, payerId, payeeIds);
 
+    // 費用に更新があった場合
     if (
       expense.amount !== amount ||
       expense.payerId !== payerId ||
@@ -189,6 +190,21 @@ export class EventGroup {
       // 新しい精算記録作成
       this.createSettlements();
     }
+  }
+
+  deleteExpense(expenseId: string) {
+    const deletableExpense = this._expenses.find(
+      (expense) => expense.id === expenseId,
+    );
+    if (!deletableExpense)
+      new NotFoundException('立て替え記録が見つかりません。');
+
+    this._expenses = this._expenses.filter(
+      (expense) => expense.id !== expenseId,
+    );
+
+    // 新しい精算記録を作成
+    this.createSettlements();
   }
 
   private isMember(userIds: string[]) {
