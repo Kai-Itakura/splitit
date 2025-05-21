@@ -8,6 +8,7 @@ import { CurrencyType } from '@repo/types';
 import { Button } from '@repo/ui/components';
 import { EditIcon, Plus, UserPlus2Icon } from '@repo/ui/components/icons';
 import NoItems from '../../components/no-items';
+import ProfileAvatar from '../../header/components/profile-avatar';
 import AddUserDialog from './components/add-user-dialog';
 import ExpenseList from './components/expense-list';
 import UpdateEventDialog from './components/update-event-dialog';
@@ -43,12 +44,17 @@ const EventDetail = async ({
             <UserPlus2Icon className="hover:text-blue-400" />
           </AddUserDialog>
         </div>
-        <p>
+        <ul className="flex gap-2">
           {data.member.map(({ id, name }, index) => {
             const withSeparator = index === 0 ? name : ` | ${name}`;
-            return <span key={id}>{withSeparator}</span>;
+            // return <span key={id}>{withSeparator}</span>;
+            return (
+              <li key={id}>
+                <ProfileAvatar userId={id} size="sm" />
+              </li>
+            );
           })}
-        </p>
+        </ul>
         <p>
           合計金額: {currencySymbol}
           {data.totalExpense ? formatNumber(data.totalExpense) : 0}

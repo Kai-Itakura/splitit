@@ -1,5 +1,6 @@
 'use client';
 
+import DeleteButton from '@/app/components/delete-button';
 import {
   Dialog,
   DialogContent,
@@ -8,6 +9,7 @@ import {
   DialogTrigger,
 } from '@repo/ui/components';
 import { useState } from 'react';
+import { deleteExpense } from '../actions/delte-expense';
 import { EventMember } from '../types/event-member';
 import { Expense } from '../types/expense.type';
 import UpdateExpenseForm from './update-expense-form';
@@ -25,6 +27,8 @@ const UpdateExpenseDialog = ({
 }>) => {
   const [open, setOpen] = useState(false);
 
+  const actionFunction = () => deleteExpense(eventId, expense.id);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -37,6 +41,11 @@ const UpdateExpenseDialog = ({
           expense={expense}
           member={member}
           setDialogOpen={setOpen}
+        />
+        <DeleteButton
+          title={expense.title}
+          action={actionFunction}
+          setOpen={setOpen}
         />
       </DialogContent>
     </Dialog>

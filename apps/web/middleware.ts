@@ -13,13 +13,17 @@ export async function middleware(request: NextRequest) {
     const refreshCookie = request.cookies.get(REFRESH_TOKEN_COOKIE_NAME);
     if (!refreshCookie) {
       // リフレッシュトークンの有効期限切れ
-      return NextResponse.redirect(new URL('/login', request.url));
+      return NextResponse.redirect(new URL('/login', request.url), {
+        status: 303,
+      });
     }
 
     const { error, data } = await client.POST('/auth/refresh');
     if (error) {
       // トークンリフレッシュ失敗
-      return NextResponse.redirect(new URL('/login', request.url));
+      return NextResponse.redirect(new URL('/login', request.url), {
+        status: 303,
+      });
     }
 
     // リフレッシュ成功時は新しいセッション情報をcookieにセット;

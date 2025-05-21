@@ -1,5 +1,6 @@
 export * from './custom/item-card';
 export * from './custom/password-input';
+export * from './ui/alert-dialog';
 export * from './ui/avatar';
 export * from './ui/button';
 export * from './ui/card';
