@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start:debug": "next start",
     "lint": "next lint",
     "codegen": "dotenv -- bash -c 'openapi-typescript $API_URL/api-json -o ./openapi/schema.d.ts'"
   },

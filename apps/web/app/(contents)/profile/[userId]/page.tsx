@@ -3,9 +3,13 @@ import { client } from '@/openapi.config';
 import ProfileAvatar from '../../header/components/profile-avatar';
 import { User } from '../../header/types/user.type';
 
-const ProfilePage = async ({ params }: { params: { userId: string } }) => {
+const ProfilePage = async ({
+  params,
+}: {
+  params: Promise<{ userId: string }>;
+}) => {
   const { userId } = await params;
-  const { data } = (await client.GET('/user')) as { data: User };
+  const { data } = (await client.GET('/user/me')) as { data: User };
 
   return (
     <>
