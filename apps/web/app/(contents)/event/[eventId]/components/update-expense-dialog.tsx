@@ -1,5 +1,6 @@
 'use client';
 
+import DeleteButton from '@/app/components/delete-button';
 import {
   Dialog,
   DialogContent,
@@ -8,20 +9,25 @@ import {
   DialogTrigger,
 } from '@repo/ui/components';
 import { useState } from 'react';
+import { deleteExpense } from '../actions/delte-expense';
 import { EventMember } from '../types/event-member';
 import { Expense } from '../types/expense.type';
-import EditExpenseForm from './edit-expense-form';
+import UpdateExpenseForm from './update-expense-form';
 
-const EditExpenseDialog = ({
+const UpdateExpenseDialog = ({
+  eventId,
   expense,
   member,
   children,
 }: Readonly<{
+  eventId: string;
   expense: Expense;
   member: EventMember;
   children: React.ReactNode;
 }>) => {
   const [open, setOpen] = useState(false);
+
+  const actionFunction = () => deleteExpense(eventId, expense.id);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -30,10 +36,20 @@ const EditExpenseDialog = ({
         <DialogHeader>
           <DialogTitle>立て替え記録更新</DialogTitle>
         </DialogHeader>
-        <EditExpenseForm expense={expense} member={member} />
+        <UpdateExpenseForm
+          eventId={eventId}
+          expense={expense}
+          member={member}
+          setDialogOpen={setOpen}
+        />
+        <DeleteButton
+          title={expense.title}
+          action={actionFunction}
+          setOpen={setOpen}
+        />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default EditExpenseDialog;
+export default UpdateExpenseDialog;

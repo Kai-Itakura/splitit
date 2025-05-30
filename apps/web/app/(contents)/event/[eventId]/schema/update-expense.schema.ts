@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
-export const expenseSchema = z
+export const updateExpenseSchema = z
   .object({
+    eventId: z.string().min(1),
+    expenseId: z.string().min(1),
     title: z.string().min(1, { message: 'タイトルは必須です。' }),
     amount: z
       .string()
@@ -18,6 +20,6 @@ export const expenseSchema = z
       .array(z.string())
       .min(1, { message: '立て替え対象者を選択してください。' }),
   })
-  .brand('expense-schema');
+  .brand('create-expense-schema');
 
-export type ExpenseSchema = z.infer<typeof expenseSchema>;
+export type UpdateExpenseSchema = z.infer<typeof updateExpenseSchema>;

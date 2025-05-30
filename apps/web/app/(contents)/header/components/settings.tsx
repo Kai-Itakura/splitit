@@ -22,7 +22,10 @@ const Settings = ({ user }: { user: User }) => {
         <ProfileAvatar userId={user.id} size="sm" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem>
+        <DropdownMenuItem
+          className="focus:bg-inherit"
+          onSelect={(e) => e.preventDefault()}
+        >
           <MypageLink user={user} setOpen={setOpen} />
         </DropdownMenuItem>
         <DropdownMenuSeparator />

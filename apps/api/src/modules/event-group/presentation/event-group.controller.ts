@@ -22,6 +22,7 @@ import { AddExpenseUseCase } from '../application/use-cases/add-expense.use-case
 import { AddMemberUseCase } from '../application/use-cases/add-member.use-case';
 import { CreateEventGroupUseCase } from '../application/use-cases/create-event-group.use-case';
 import { DeleteEventGroupUseCase } from '../application/use-cases/delete-event-group.use-case';
+import { DeleteExpenseUseCase } from '../application/use-cases/delete-expense.use-case.ts';
 import { DeleteMemberUseCase } from '../application/use-cases/delete-member.use-case.dto';
 import { GetAllGroupsUseCase } from '../application/use-cases/get-all-groups.use-case';
 import { getGroupUseCase } from '../application/use-cases/get-group.use-case';
@@ -45,6 +46,7 @@ export class EventGroupController {
     private readonly deleteEventGroupUseCase: DeleteEventGroupUseCase,
     private readonly addExpenseUseCase: AddExpenseUseCase,
     private readonly updateExpenseUseCase: UpdateExpenseUseCase,
+    private readonly deleteExpenseUseCase: DeleteExpenseUseCase,
     private readonly addMemberUseCase: AddMemberUseCase,
   ) {}
 
@@ -94,6 +96,7 @@ export class EventGroupController {
     return { message: 'Successfully deleted!' };
   }
 
+  @ApiException(() => [NotFoundException, UnauthorizedException])
   @Put(':groupId/member')
   async addMember(
     @Body() dto: MemberDto,
@@ -112,6 +115,11 @@ export class EventGroupController {
     return { message: 'Successfully delete member!' };
   }
 
+  @ApiException(() => [
+    UnauthorizedException,
+    NotFoundException,
+    BadRequestException,
+  ])
   @Post(':groupId/expense-record')
   async addExpense(
     @Body() dto: ExpenseDto,
@@ -121,6 +129,11 @@ export class EventGroupController {
     return { message: 'Successfully add expense record!' };
   }
 
+  @ApiException(() => [
+    UnauthorizedException,
+    NotFoundException,
+    BadRequestException,
+  ])
   @Put(':groupId/expense-record/:expenseId')
   async updateExpense(
     @Body() dto: ExpenseDto,
@@ -129,5 +142,19 @@ export class EventGroupController {
   ): Promise<Message> {
     await this.updateExpenseUseCase.execute(dto, groupId, expenseId);
     return { message: 'Successfully update expense record!' };
+  }
+
+  @ApiException(() => [
+    UnauthorizedException,
+    NotFoundException,
+    BadRequestException,
+  ])
+  @Delete(':groupId/expense-record/:expenseId')
+  async deleteExpense(
+    @Param('groupId') groupId: string,
+    @Param('expenseId') expenseId: string,
+  ): Promise<Message> {
+    await this.deleteExpenseUseCase.execute(groupId, expenseId);
+    return { message: 'Successfully delete expense record' };
   }
 }

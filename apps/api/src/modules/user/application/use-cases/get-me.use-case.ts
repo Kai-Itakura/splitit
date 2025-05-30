@@ -6,15 +6,17 @@ import {
 import { ReturnUserDTO } from '../../presentation/dto/return-user.dto';
 
 @Injectable()
-export class FindByEmailUseCase {
+export class GetMeUseCase {
   constructor(
     @Inject(UserRepositoryToken)
     private readonly userRepository: IUserRepository,
   ) {}
 
-  async execute(email: string): Promise<ReturnUserDTO> {
-    const user = await this.userRepository.findByEmail(email);
+  async execute(userId: string): Promise<ReturnUserDTO> {
+    const user = await this.userRepository.findById(userId);
+
     if (!user) throw new NotFoundException('User not found!');
+
     return { id: user.id, email: user.email, name: user.name };
   }
 }

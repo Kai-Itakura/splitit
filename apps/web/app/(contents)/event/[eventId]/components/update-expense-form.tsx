@@ -1,6 +1,5 @@
 'use client';
 
-import { FORM_STATUS } from '@/app/(contents)/actions/form-state';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
@@ -20,37 +19,43 @@ import {
   SelectValue,
   toast,
 } from '@repo/ui/components';
-import { Dispatch, SetStateAction, useActionState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { createExpense } from '../actions/create-expense';
-import {
-  CreateExpenseSchema,
-  createExpenseSchema,
-} from '../schema/create-expense.schema';
-import { EventMember } from '../types/event-member';
 
-const CreateExpenseForm = ({
+import { FORM_STATUS } from '@/app/(contents)/actions/form-state';
+import { SetStateAction, useActionState, useEffect } from 'react';
+import { updateExpense } from '../actions/update-expense';
+import {
+  updateExpenseSchema,
+  UpdateExpenseSchema,
+} from '../schema/update-expense.schema';
+import { EventMember } from '../types/event-member';
+import { Expense } from '../types/expense.type';
+
+const UpdateExpenseForm = ({
   eventId,
-  members: member,
+  member,
+  expense,
   setDialogOpen,
 }: {
   eventId: string;
-  members: EventMember;
-  setDialogOpen: Dispatch<SetStateAction<boolean>>;
+  member: EventMember;
+  expense: Expense;
+  setDialogOpen: React.Dispatch<SetStateAction<boolean>>;
 }) => {
-  const form = useForm<CreateExpenseSchema>({
+  const form = useForm<UpdateExpenseSchema>({
     mode: 'onChange',
-    resolver: zodResolver(createExpenseSchema),
+    resolver: zodResolver(updateExpenseSchema),
     defaultValues: {
       eventId,
-      title: '',
-      amount: '',
-      payerId: '',
-      payeeIds: member.map((member) => member.id),
+      expenseId: expense.id,
+      title: expense.title,
+      amount: expense.amount.toString(),
+      payerId: expense.payer.id,
+      payeeIds: expense.payees?.map((payee) => payee.id),
     },
   });
 
-  const [state, formAction, isPending] = useActionState(createExpense, {
+  const [state, formAction, isPending] = useActionState(updateExpense, {
     status: FORM_STATUS.IDLE,
   });
 
@@ -74,7 +79,18 @@ const CreateExpenseForm = ({
           control={form.control}
           name="eventId"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="m-0">
+              <FormControl>
+                <Input type="hidden" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="expenseId"
+          render={({ field }) => (
+            <FormItem className="m-0">
               <FormControl>
                 <Input type="hidden" {...field} />
               </FormControl>
@@ -115,6 +131,7 @@ const CreateExpenseForm = ({
               <FormLabel>立て替えた人</FormLabel>
               <FormControl>
                 <Select
+                  defaultValue={field.value}
                   onValueChange={(value) => {
                     field.onChange(value);
                     form.setValue('payerId', value);
@@ -180,11 +197,11 @@ const CreateExpenseForm = ({
           disabled={!form.formState.isValid || isPending}
           className="w-full cursor-pointer"
         >
-          作成
+          立て替え記録更新
         </Button>
       </form>
     </Form>
   );
 };
 
-export default CreateExpenseForm;
+export default UpdateExpenseForm;
