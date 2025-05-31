@@ -7,6 +7,9 @@ import { generateAuthCookies } from './app/util/set-request-cookies';
 import { client } from './openapi.config';
 
 export async function middleware(request: NextRequest) {
+  // GETリクエストのみを処理
+  if (request.method !== 'GET') return NextResponse.next();
+
   const accessCookie = request.cookies.has(ACCESS_TOKEN_COOKIE_NAME);
   if (!accessCookie) {
     // アクセストークンの有効期限切れ
@@ -44,15 +47,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-     * - Login, Signup (authentication public routes)
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|manifest.json|android-chrome-192x192.png|android-chrome-512x512.png|favicon-16x16.png|favicon-32x32.png|login|signup).*)',
-  ],
+  matcher: ['/', '/event/:path*', '/profile/:path*'],
 };
