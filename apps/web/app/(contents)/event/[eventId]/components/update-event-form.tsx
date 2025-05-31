@@ -133,7 +133,7 @@ const UpdateEventForm = ({
             disabled={isPending || !form.formState.isValid}
             className="w-full cursor-pointer"
           >
-            作成
+            イベントを更新
           </Button>
         </div>
       </form>
