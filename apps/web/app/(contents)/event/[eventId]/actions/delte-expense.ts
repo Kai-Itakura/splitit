@@ -11,7 +11,7 @@ export const deleteExpense = async (
   eventId: string,
   expenseId: string,
 ): Promise<ButtonActionStatus> => {
-  const result = await client.DELETE(
+  const { error } = await client.DELETE(
     '/event-group/{groupId}/expense-record/{expenseId}',
     {
       params: {
@@ -20,10 +20,10 @@ export const deleteExpense = async (
     },
   );
 
-  if (result.error) {
+  if (error) {
     return {
       status: BUTTON_ACTION_STATUS.ERROR,
-      message: result.error.message,
+      message: error.message,
     };
   }
 
