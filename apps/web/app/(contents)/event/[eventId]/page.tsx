@@ -12,7 +12,6 @@ import ProfileAvatar from '../../header/components/profile-avatar';
 import AddUserDialog from './components/add-user-dialog';
 import ExpenseList from './components/expense-list';
 import UpdateEventDialog from './components/update-event-dialog';
-import UpdateExpenseDialog from './components/update-expense-dialog';
 
 const EventDetail = async ({
   params,
@@ -46,8 +45,6 @@ const EventDetail = async ({
         </div>
         <ul className="flex gap-2">
           {data.member.map(({ id, name }, index) => {
-            const withSeparator = index === 0 ? name : ` | ${name}`;
-            // return <span key={id}>{withSeparator}</span>;
             return (
               <li key={id}>
                 <ProfileAvatar userId={id} size="sm" />
@@ -66,18 +63,12 @@ const EventDetail = async ({
             <ul className="space-y-4">
               {data.expenses.map((expense) => (
                 <li key={expense.id}>
-                  <UpdateExpenseDialog
+                  <ExpenseList
                     eventId={eventId}
-                    expense={expense}
                     member={data.member}
-                  >
-                    <div>
-                      <ExpenseList
-                        expense={expense}
-                        currencySymbol={currencySymbol}
-                      />
-                    </div>
-                  </UpdateExpenseDialog>
+                    expense={expense}
+                    currencySymbol={currencySymbol}
+                  />
                 </li>
               ))}
             </ul>
