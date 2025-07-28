@@ -90,6 +90,7 @@ export class EventGroupController {
     return this.getAllGroupsUseCase.execute(user);
   }
 
+  @ApiException(() => [NotFoundException, UnauthorizedException])
   @Delete(':groupId')
   async deleteGroup(@Param('groupId') groupId: string): Promise<Message> {
     await this.deleteEventGroupUseCase.execute(groupId);
