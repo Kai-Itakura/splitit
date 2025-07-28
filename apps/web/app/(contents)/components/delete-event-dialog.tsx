@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/app/components/loading';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,39 +10,35 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-  Button,
   toast,
 } from '@repo/ui/components';
-import { SetStateAction, useTransition } from 'react';
-import {
-  BUTTON_ACTION_STATUS,
-  ButtonActionStatus,
-} from '../(contents)/event/[eventId]/actions/button-action-status';
-import Loading from './loading';
+import { Trash2 } from '@repo/ui/components/icons';
+import { useState, useTransition } from 'react';
+import { deleteEvent } from '../actions/delete-event';
 
-const DeleteButton = ({
+const DeleteEventDialog = ({
+  eventId,
   title,
-  action,
-  setOpen,
 }: {
+  eventId: string;
   title: string;
-  action: () => Promise<ButtonActionStatus>;
-  setOpen: React.Dispatch<SetStateAction<boolean>>;
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  const handleActionButtonClick = () =>
+  const handleClick = () => {
     startTransition(async () => {
-      const result = await action();
+      const result = await deleteEvent(eventId);
       toast(result.message);
-      if (result.status === BUTTON_ACTION_STATUS.SUCCESS) setOpen(false);
+      if (result.message) setIsOpen(false);
     });
+  };
 
   return (
     <>
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button className="bg-red-500 hover:bg-red-500/80">削除</Button>
+      <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+        <AlertDialogTrigger className="align-middle">
+          <Trash2 className="cursor-pointer hover:text-red-400" />
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -49,10 +46,7 @@ const DeleteButton = ({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>キャンセル</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleActionButtonClick}
-              variant="destructive"
-            >
+            <AlertDialogAction variant="destructive" onClick={handleClick}>
               削除
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -63,4 +57,4 @@ const DeleteButton = ({
   );
 };
 
-export default DeleteButton;
+export default DeleteEventDialog;

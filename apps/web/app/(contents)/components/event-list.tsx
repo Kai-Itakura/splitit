@@ -6,6 +6,7 @@ import { User } from '@repo/ui/components/icons';
 import { useRouter } from 'next/navigation';
 import { MouseEventHandler } from 'react';
 import { formatDate } from '../../lib/format-date';
+import DeleteEventDialog from './delete-event-dialog';
 
 type EventListProps = {
   event: components['schemas']['ReturnGroupDto'];
@@ -29,9 +30,14 @@ const EventList = ({ event }: EventListProps) => {
           作成日: {formatDate(new Date(event.createdAt))}
         </p>
       </div>
-      <div className="flex justify-center items-center gap-1 text-slate-500">
-        <User size={14} />
-        <span>{event.memberCount}</span>
+      <div className="flex items-center gap-2">
+        <div className="flex justify-center items-center gap-1 text-slate-500">
+          <User size={14} />
+          <span>{event.memberCount}</span>
+        </div>
+        <div onClick={(e) => e.stopPropagation()}>
+          <DeleteEventDialog eventId={event.id} title={event.title} />
+        </div>
       </div>
     </ItemCard>
   );

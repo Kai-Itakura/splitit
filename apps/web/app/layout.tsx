@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`h-screen ${mPlus2.variable}  font-m-plus-2 antialiased bg-gray-50`}
+        className={`${mPlus2.variable}  font-m-plus-2 antialiased bg-gray-50`}
       >
         {children}
         <Toaster />
