@@ -1,5 +1,7 @@
 'use client';
 
+import { deleteEvent } from '@/app/(contents)/actions/delete-event';
+import DeleteButton from '@/app/components/delete-button';
 import {
   Dialog,
   DialogContent,
@@ -7,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/components';
+import { useRouter } from 'next/navigation';
 import { ReactNode, useState } from 'react';
 import UpdateEventForm from './update-event-form';
 
@@ -22,6 +25,11 @@ const UpdateEventDialog = ({
   children: ReactNode;
 }) => {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+
+  const actionFunction = () => deleteEvent(id);
+
+  const onDelete = () => router.push('/');
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -37,6 +45,12 @@ const UpdateEventDialog = ({
           title={title}
           currency={currency}
           setDialogOpen={setOpen}
+        />
+        <DeleteButton
+          title={title}
+          action={actionFunction}
+          setOpen={setOpen}
+          onDelete={onDelete}
         />
       </DialogContent>
     </Dialog>

@@ -23,10 +23,12 @@ const DeleteButton = ({
   title,
   action,
   setOpen,
+  onDelete,
 }: {
   title: string;
   action: () => Promise<ButtonActionStatus>;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
+  onDelete?: () => void;
 }) => {
   const [isPending, startTransition] = useTransition();
 
@@ -34,7 +36,10 @@ const DeleteButton = ({
     startTransition(async () => {
       const result = await action();
       toast(result.message);
-      if (result.status === BUTTON_ACTION_STATUS.SUCCESS) setOpen(false);
+      if (result.status === BUTTON_ACTION_STATUS.SUCCESS) {
+        setOpen(false);
+        onDelete?.();
+      }
     });
 
   return (
