@@ -9,9 +9,9 @@ export default async function Home() {
   const { data } = await client.GET('/event-group');
 
   return (
-    <div className="flex justify-center min-h-svh my-6 px-4">
+    <div className="flex justify-center min-h-svh my-6">
       <div className="w-full">
-        <h1 className="font-extrabold text-center">イベント一覧</h1>
+        <h1 className="font-extrabold text-center text-base">イベント一覧</h1>
         <div className="mt-4">
           {data ? (
             <>

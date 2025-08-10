@@ -13,7 +13,7 @@ const BackButton = ({
   const router = useRouter();
 
   return (
-    <div className="sticky bg-white mb-4 -ml-6 p-2 w-dvw z-40 shadow-sm">
+    <div className="sticky bg-white mb-4 -ml-4 p-2 w-dvw z-40 shadow-sm md:-ml-10">
       <Button
         variant="ghost"
         onClick={() => router.back()}

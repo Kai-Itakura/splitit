@@ -12,8 +12,8 @@ const ItemCard = ({ children, className, ...props }: ItemCardProps) => {
     <Card
       {...props}
       className={cn([
+        'flex-row justify-between items-center px-3 py-2 gap-2 shadow-xl md:px-5 md:py-3',
         className,
-        'flex-row justify-between items-center py-4 px-4 gap-2 shadow-xl',
       ])}
     >
       {children}
