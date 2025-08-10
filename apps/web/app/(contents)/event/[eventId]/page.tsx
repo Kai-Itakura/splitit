@@ -11,6 +11,7 @@ import NoItems from '../../components/no-items';
 import ProfileAvatar from '../../header/components/profile-avatar';
 import AddUserDialog from './components/add-user-dialog';
 import ExpenseList from './components/expense-list';
+import SettlementsDrawer from './components/settlements-drawer';
 import UpdateEventDialog from './components/update-event-dialog';
 
 const EventDetail = async ({
@@ -31,17 +32,21 @@ const EventDetail = async ({
       <BackButton>一覧へ戻る</BackButton>
       <div className="space-y-2">
         <div className="flex gap-6 items-end">
-          <h1 className="text-4xl font-bold">{data.title}</h1>
-          <UpdateEventDialog
-            id={data.id}
-            title={data.title}
-            currency={data.currency}
-          >
-            <EditIcon className="hover:text-blue-400" />
-          </UpdateEventDialog>
-          <AddUserDialog eventId={eventId}>
-            <UserPlus2Icon className="hover:text-blue-400" />
-          </AddUserDialog>
+          <h1 className="text-2xl font-bold">{data.title}</h1>
+          <div className="shrink-0">
+            <UpdateEventDialog
+              id={data.id}
+              title={data.title}
+              currency={data.currency}
+            >
+              <EditIcon className="hover:text-blue-400" />
+            </UpdateEventDialog>
+          </div>
+          <div className="shrink-0">
+            <AddUserDialog eventId={eventId}>
+              <UserPlus2Icon className="hover:text-blue-400" />
+            </AddUserDialog>
+          </div>
         </div>
         <ul className="flex gap-2">
           {data.member.map(({ id, name }, index) => {
@@ -52,10 +57,18 @@ const EventDetail = async ({
             );
           })}
         </ul>
-        <p>
-          合計金額: {currencySymbol}
-          {data.totalExpense ? formatNumber(data.totalExpense) : 0}
-        </p>
+        <div className="flex items-end justify-between">
+          <p>
+            合計金額: {currencySymbol}
+            {formatNumber(data.totalExpense)}
+          </p>
+          {data.expenses.length > 0 && (
+            <SettlementsDrawer
+              settlements={data.settlements}
+              member={data.member}
+            />
+          )}
+        </div>
       </div>
       <div className="my-6">
         {data.expenses.length > 0 ? (

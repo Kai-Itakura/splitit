@@ -25,7 +25,7 @@ const EventList = ({ event }: EventListProps) => {
       className="cursor-pointer hover:bg-gray-50"
     >
       <div className="flex flex-col gap-2">
-        <h2 className="font-bold text-xl">{event.title}</h2>
+        <h2 className="font-bold text-lg">{event.title}</h2>
         <p className="text-sm text-slate-500">
           作成日: {formatDate(new Date(event.createdAt))}
         </p>
