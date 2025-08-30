@@ -1,6 +1,7 @@
 # compiled output
 **/dist
 /build
+apps/api/uploads
 node_modules
 
 .turbo
