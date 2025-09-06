@@ -640,7 +640,9 @@ export interface operations {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          'application/json': components['schemas']['Message'];
+        };
       };
       400: {
         headers: {
@@ -668,6 +670,21 @@ export interface operations {
             /** @example Unauthorized */
             message: string;
             /** @example Unauthorized */
+            error?: string;
+          };
+        };
+      };
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 422 */
+            statusCode: number;
+            /** @example Unprocessable Entity */
+            message: string;
+            /** @example Unprocessable Entity */
             error?: string;
           };
         };
