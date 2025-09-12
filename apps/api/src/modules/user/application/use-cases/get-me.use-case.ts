@@ -17,6 +17,11 @@ export class GetMeUseCase {
 
     if (!user) throw new NotFoundException('User not found!');
 
-    return { id: user.id, email: user.email, name: user.name };
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      imageUrl: user.imageFilepath,
+    };
   }
 }

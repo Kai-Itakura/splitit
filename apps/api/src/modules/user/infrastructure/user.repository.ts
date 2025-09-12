@@ -41,7 +41,20 @@ export class UserRepository implements IUserRepository {
       where: { id: userId },
     });
 
-    return user ? User.reconstruct(user.id, user.email, user.name) : null;
+    const profileImage = await this.prismaProfileImage.findUnique({
+      where: {
+        userId,
+      },
+    });
+
+    return user
+      ? User.reconstruct(
+          user.id,
+          user.email,
+          user.name,
+          profileImage ? { url: profileImage.url } : undefined,
+        )
+      : null;
   }
 
   async findByEmail(email: string): Promise<User | null> {

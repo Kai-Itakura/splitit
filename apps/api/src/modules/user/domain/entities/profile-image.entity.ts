@@ -1,16 +1,18 @@
 import path from 'path';
 
 export class ProfileImage {
-  constructor(
-    private readonly _filename: string,
-    private readonly _path: string,
-  ) {}
+  private constructor(private readonly _url: string) {}
 
   get url() {
-    return path.join(this._path, this._filename);
+    return this._url;
   }
 
-  static reconstruct(filename: string, path: string): ProfileImage {
-    return new ProfileImage(filename, path);
+  static create(filename: string, filepath: string) {
+    const url = path.join(filepath, filename);
+    return new ProfileImage(url);
+  }
+
+  static reconstruct(url: string): ProfileImage {
+    return new ProfileImage(url);
   }
 }

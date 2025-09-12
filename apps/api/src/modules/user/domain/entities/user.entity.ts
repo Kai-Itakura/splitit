@@ -32,18 +32,13 @@ export class User {
     id: string,
     email: string,
     name: string,
-    image?: {
-      filename: string;
-      url: string;
-      createdAt: Date;
-      updatedAt: Date;
-    },
+    image?: { url: string },
   ): User {
     return new User(
       Id.reconstruct(id),
       email,
       name,
-      image ? ProfileImage.reconstruct(image.filename, image.url) : undefined,
+      image ? ProfileImage.reconstruct(image.url) : undefined,
     );
   }
 
@@ -54,7 +49,7 @@ export class User {
     this._name = newName;
   }
 
-  changeProfileImage(filename: string, path: string): void {
-    this.image = new ProfileImage(filename, path);
+  changeProfileImage(filename: string, filepath: string): void {
+    this.image = ProfileImage.create(filename, filepath);
   }
 }
