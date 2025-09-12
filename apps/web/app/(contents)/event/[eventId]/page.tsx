@@ -49,10 +49,14 @@ const EventDetail = async ({
           </div>
         </div>
         <ul className="flex gap-2">
-          {data.member.map(({ id, name }, index) => {
+          {data.member.map((member) => {
             return (
-              <li key={id}>
-                <ProfileAvatar userId={id} size="sm" />
+              <li key={member.id}>
+                <ProfileAvatar
+                  userId={member.id}
+                  size="sm"
+                  imageUrl={member.profileImage?.url}
+                />
               </li>
             );
           })}

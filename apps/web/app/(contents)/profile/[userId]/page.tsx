@@ -15,7 +15,7 @@ const ProfilePage = async ({
     <>
       <BackButton>戻る</BackButton>
       <div className="flex">
-        <EditImage userId={userId} />
+        <EditImage userId={userId} imageUrl={data.imageUrl} />
         <div>
           <h1>{data.name}</h1>
           <p>{data.id}</p>

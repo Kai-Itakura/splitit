@@ -257,6 +257,7 @@ export interface components {
       id: string;
       email: string;
       name: string;
+      imageUrl?: string;
     };
     UploadImageDto: {
       /**
@@ -269,36 +270,74 @@ export interface components {
       title: string;
       currency: string;
     };
-    EventGroupDetailDto: {
+    ProfileImageDto: {
+      /** @description プロフィール画像のURL */
+      url: string;
+    };
+    EventMemberDto: {
+      /** @description メンバーID */
       id: string;
+      /** @description メンバー名 */
+      name: string;
+      /** @description プロフィール画像 */
+      profileImage: components['schemas']['ProfileImageDto'] | null;
+    };
+    PayerDto: {
+      /** @description 支払者ID */
+      id: string;
+      /** @description 支払者名 */
+      name: string;
+    };
+    PayeeDto: {
+      /** @description 支払先ID */
+      id: string;
+    };
+    EventExpenseDto: {
+      /** @description 支出ID */
+      id: string;
+      /** @description 支出タイトル */
       title: string;
-      currency: string;
-      /** Format: date-time */
+      /** @description 支出金額 */
+      amount: number;
+      /**
+       * Format: date-time
+       * @description 作成日時
+       */
       createdAt: string;
-      member: {
-        id: string;
-        name: string;
-      }[];
-      expenses: {
-        id: string;
-        title: string;
-        amount: number;
-        /** Format: date-time */
-        createdAt: string;
-        payer: {
-          id?: string;
-          name?: string;
-        };
-        payees?: {
-          id: string;
-        }[];
-      }[];
-      settlements: {
-        id: string;
-        payeeId: string;
-        payerId: string;
-        amount: number;
-      }[];
+      /** @description 支払者情報 */
+      payer: components['schemas']['PayerDto'];
+      /** @description 支払先情報 */
+      payees: components['schemas']['PayeeDto'][];
+    };
+    EventSettlementDto: {
+      /** @description 精算ID */
+      id: string;
+      /** @description 支払先ID */
+      payeeId: string;
+      /** @description 支払者ID */
+      payerId: string;
+      /** @description 精算金額 */
+      amount: number;
+    };
+    EventGroupDetailDto: {
+      /** @description イベントグループID */
+      id: string;
+      /** @description イベントグループタイトル */
+      title: string;
+      /** @description 通貨 */
+      currency: string;
+      /**
+       * Format: date-time
+       * @description 作成日時
+       */
+      createdAt: string;
+      /** @description メンバー一覧 */
+      member: components['schemas']['EventMemberDto'][];
+      /** @description 支出一覧 */
+      expenses: components['schemas']['EventExpenseDto'][];
+      /** @description 精算一覧 */
+      settlements: components['schemas']['EventSettlementDto'][];
+      /** @description 総支出額 */
       totalExpense: number;
     };
     ReturnGroupDto: {

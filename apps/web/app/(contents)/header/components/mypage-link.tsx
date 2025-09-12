@@ -12,7 +12,7 @@ const MypageLink = ({
   return (
     <div className="flex justify-center items-center gap-3">
       <Link href={`/profile/${user.id}`} onClick={() => setOpen(false)}>
-        <ProfileAvatar userId={user.id} size="lg" />
+        <ProfileAvatar userId={user.id} size="lg" imageUrl={user.imageUrl} />
       </Link>
       <div className="select-text">
         <p className="text-lg">{user.name}</p>

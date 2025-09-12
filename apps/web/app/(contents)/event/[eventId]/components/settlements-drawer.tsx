@@ -21,18 +21,25 @@ const SettlementsDrawer = ({
   settlements: Settlement[];
   member: EventMember;
 }) => {
-  const settlementInfos: SettlementInfo[] = settlements.map((settlement) => ({
-    id: settlement.id,
-    amount: settlement.amount,
-    payer: {
-      id: settlement.payerId,
-      name: member.find((user) => user.id === settlement.payerId)!.name,
-    },
-    payee: {
-      id: settlement.payerId,
-      name: member.find((user) => user.id === settlement.payeeId)!.name,
-    },
-  }));
+  const settlementInfos: SettlementInfo[] = settlements.map((settlement) => {
+    const payer = member.find((user) => user.id === settlement.payerId);
+    const payee = member.find((user) => user.id === settlement.payeeId);
+
+    return {
+      id: settlement.id,
+      amount: settlement.amount,
+      payer: {
+        id: settlement.payerId,
+        name: payer?.name ?? '不明なユーザー',
+        imageUrl: payer?.profileImage?.url,
+      },
+      payee: {
+        id: settlement.payeeId,
+        name: payee?.name ?? '不明なユーザー',
+        imageUrl: payee?.profileImage?.url,
+      },
+    };
+  });
 
   return (
     <Drawer>

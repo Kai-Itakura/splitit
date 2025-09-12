@@ -19,12 +19,18 @@ const SettlementList = ({
               <ItemCard className="py-2 shadow-xs">
                 <div className="flex items-center gap-2 md:gap-4">
                   <div className="flex flex-col items-center justify-center">
-                    <ProfileAvatar userId={settlementInfo.payer.id} />
+                    <ProfileAvatar
+                      userId={settlementInfo.payer.id}
+                      imageUrl={settlementInfo.payer.imageUrl}
+                    />
                     {settlementInfo.payer.name}
                   </div>
                   <ArrowBigRightIcon />
                   <div className="flex flex-col items-center justify-center">
-                    <ProfileAvatar userId={settlementInfo.payee.id} />
+                    <ProfileAvatar
+                      userId={settlementInfo.payee.id}
+                      imageUrl={settlementInfo.payee.imageUrl}
+                    />
                     {settlementInfo.payee.name}
                   </div>
                 </div>
