@@ -29,6 +29,11 @@ export class EventGroupQueryService implements IEventGroupQueryService {
             select: {
               id: true,
               name: true,
+              profileImage: {
+                select: {
+                  url: true,
+                },
+              },
             },
           },
           expenses: {

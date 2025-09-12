@@ -1,27 +1,27 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import {
   IUserRepository,
   UserRepositoryToken,
 } from '../../domain/repositories/user.repository.interface';
-import { ReturnUserDTO } from '../../presentation/dto/return-user.dto';
 
 @Injectable()
-export class GetMeUseCase {
+export class UploadImageUseCase {
   constructor(
     @Inject(UserRepositoryToken)
     private readonly userRepository: IUserRepository,
+    private readonly configService: ConfigService,
   ) {}
 
-  async execute(userId: string): Promise<ReturnUserDTO> {
+  async execute(userId: string, image: Express.Multer.File) {
     const user = await this.userRepository.findById(userId);
-
     if (!user) throw new NotFoundException('User not found!');
 
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      imageUrl: user.imageFilepath,
-    };
+    user.changeProfileImage(
+      image.filename,
+      this.configService.getOrThrow('UPLOAD_DEST'),
+    );
+
+    await this.userRepository.save(user);
   }
 }

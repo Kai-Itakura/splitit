@@ -1,7 +1,7 @@
 import BackButton from '@/app/components/back-button';
 import { client } from '@/openapi.config';
-import ProfileAvatar from '../../header/components/profile-avatar';
 import { User } from '../../header/types/user.type';
+import EditImage from './components/edit-image';
 
 const ProfilePage = async ({
   params,
@@ -15,7 +15,7 @@ const ProfilePage = async ({
     <>
       <BackButton>戻る</BackButton>
       <div className="flex">
-        <ProfileAvatar userId={userId} size="xl" />
+        <EditImage userId={userId} imageUrl={data.imageUrl} />
         <div>
           <h1>{data.name}</h1>
           <p>{data.id}</p>

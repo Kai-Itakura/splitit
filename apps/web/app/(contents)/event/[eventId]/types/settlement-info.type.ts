@@ -4,9 +4,11 @@ export type SettlementInfo = {
   payer: {
     id: string;
     name: string;
+    imageUrl?: string;
   };
   payee: {
     id: string;
     name: string;
+    imageUrl?: string;
   };
 };

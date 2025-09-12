@@ -6,6 +6,8 @@ model User {
   updatedAt DateTime @updatedAt()
   name      String
 
+  profileImage ProfileImage?
+
   eventGroups   EventGroup[]
   expenses      Expense[]      @relation("payer")
   refreshTokens RefreshToken[]
