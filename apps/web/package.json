@@ -7,7 +7,7 @@
     "build": "next build",
     "start:debug": "next start",
     "lint": "next lint",
-    "codegen": "dotenv -- bash -c 'openapi-typescript $API_URL/api-json -o ./openapi/schema.d.ts'"
+    "codegen": "dotenv -- bash -c 'tsx ./openapi/generate-api-types.ts'"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.0",
@@ -34,6 +34,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
     "openapi-typescript": "^7.6.1",
+    "tsx": "^4.19.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

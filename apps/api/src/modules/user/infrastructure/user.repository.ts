@@ -7,9 +7,11 @@ import { IUserRepository } from '../domain/repositories/user.repository.interfac
 @Injectable()
 export class UserRepository implements IUserRepository {
   private readonly prismaUser: Prisma.UserDelegate;
+  private readonly prismaProfileImage: Prisma.ProfileImageDelegate;
 
   constructor(prismaService: PrismaService) {
     this.prismaUser = prismaService.user;
+    this.prismaProfileImage = prismaService.profileImage;
   }
 
   async save(user: User): Promise<void> {
@@ -17,6 +19,21 @@ export class UserRepository implements IUserRepository {
       where: { id: user.id },
       data: { name: user.name },
     });
+
+    if (user.imageFilepath) {
+      await this.prismaProfileImage.upsert({
+        where: {
+          userId: user.id,
+        },
+        create: {
+          userId: user.id,
+          url: user.imageFilepath,
+        },
+        update: {
+          url: user.imageFilepath,
+        },
+      });
+    }
   }
 
   async findById(userId: string): Promise<User | null> {
@@ -24,7 +41,20 @@ export class UserRepository implements IUserRepository {
       where: { id: userId },
     });
 
-    return user ? User.reconstruct(user.id, user.email, user.name) : null;
+    const profileImage = await this.prismaProfileImage.findUnique({
+      where: {
+        userId,
+      },
+    });
+
+    return user
+      ? User.reconstruct(
+          user.id,
+          user.email,
+          user.name,
+          profileImage ? { url: profileImage.url } : undefined,
+        )
+      : null;
   }
 
   async findByEmail(email: string): Promise<User | null> {
