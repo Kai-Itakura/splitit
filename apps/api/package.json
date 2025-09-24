@@ -22,6 +22,7 @@
     "db:generate": "dotenv -e .env.db.develop -- prisma generate",
     "db:migrate": "dotenv -e .env.db.develop -- prisma migrate dev",
     "db:migrate:create-only": "dotenv -e .env.db.develop -- prisma migrate dev --name=$name --create-only",
+    "db:push": "dotenv -e .env.db.develop -- prisma db push",
     "db:deploy": "prisma migrate deploy",
     "prisma-studio": "dotenv -e .env.db.develop -- prisma studio"
   },
