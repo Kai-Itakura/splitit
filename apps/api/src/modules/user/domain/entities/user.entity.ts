@@ -52,4 +52,8 @@ export class User {
   changeProfileImage(filename: string, filepath: string): void {
     this.image = ProfileImage.create(filename, filepath);
   }
+
+  deleteProfileImage(): void {
+    this.image = undefined;
+  }
 }

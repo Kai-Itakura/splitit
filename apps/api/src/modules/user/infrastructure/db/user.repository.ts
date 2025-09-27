@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
-import { User } from '../domain/entities/user.entity';
-import { IUserRepository } from '../domain/repositories/user.repository.interface';
+import { User } from '../../domain/entities/user.entity';
+import { IUserRepository } from '../../domain/interfaces/user.repository.interface';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
@@ -31,6 +31,16 @@ export class UserRepository implements IUserRepository {
         },
         update: {
           url: user.imageFilepath,
+        },
+      });
+    } else {
+      const profileImage = await this.prismaProfileImage.findUnique({
+        where: { userId: user.id },
+      });
+      if (!profileImage) return;
+      await this.prismaProfileImage.delete({
+        where: {
+          userId: user.id,
         },
       });
     }

@@ -121,7 +121,7 @@ export interface paths {
     get?: never;
     put?: never;
     post: operations['uploadImage'];
-    delete?: never;
+    delete: operations['deleteImage'];
     options?: never;
     head?: never;
     patch?: never;
@@ -724,6 +724,57 @@ export interface operations {
             /** @example Unprocessable Entity */
             message: string;
             /** @example Unprocessable Entity */
+            error?: string;
+          };
+        };
+      };
+    };
+  };
+  deleteImage: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        userId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Message'];
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 400 */
+            statusCode: number;
+            /** @example Bad Request */
+            message: string;
+            /** @example Bad Request */
+            error?: string;
+          };
+        };
+      };
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 401 */
+            statusCode: number;
+            /** @example Unauthorized */
+            message: string;
+            /** @example Unauthorized */
             error?: string;
           };
         };

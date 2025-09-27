@@ -18,7 +18,11 @@ const openapiMiddleware: Middleware = {
 
   async onResponse({ response }) {
     // トークンリフレッシュのリクエストのみNext.jsのMiddleware内で行うので無視
-    if (response.url.includes('/auth/refresh')) return response;
+    if (
+      response.url.includes('/auth/refresh') ||
+      response.url.includes('/auth/login')
+    )
+      return response;
 
     switch (response.status) {
       case 401: {

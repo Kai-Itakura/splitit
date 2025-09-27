@@ -6,6 +6,7 @@ import {
 } from '@/app/(contents)/actions/form-state';
 import { client } from '@/openapi.config';
 import { components } from '@/openapi/schema';
+import { revalidatePath } from 'next/cache';
 import { profileImageSchema } from '../schema/profile-image.schema';
 
 export const uploadImage = async (
@@ -39,5 +40,6 @@ export const uploadImage = async (
     return { status: FORM_STATUS.ERROR, message: res.error.message };
   }
 
+  revalidatePath(`/profile/${parsed.data.userId}`);
   return { status: FORM_STATUS.SUCCESS, message: res.data.message };
 };

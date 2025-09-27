@@ -2,7 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import {
   IUserRepository,
   UserRepositoryToken,
-} from '../../domain/repositories/user.repository.interface';
+} from '../../domain/interfaces/user.repository.interface';
 import { ReturnUserDTO } from '../../presentation/dto/return-user.dto';
 
 @Injectable()
