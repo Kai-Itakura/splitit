@@ -84,8 +84,6 @@ const UploadImageForm = ({
                 <Input
                   id={inputId}
                   type="file"
-                  accept="image/png, image/jpeg, image/jpg"
-                  multiple={false}
                   onChange={(e) => {
                     const file = getImageData(e);
                     setImageFile(file);

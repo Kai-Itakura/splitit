@@ -1,5 +1,4 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import {
   IProfileImageStorage,
   ProfileImageStorageToken,
@@ -10,28 +9,22 @@ import {
 } from '../../domain/interfaces/user.repository.interface';
 
 @Injectable()
-export class UploadImageUseCase {
+export class DeleteImageUseCase {
   constructor(
     @Inject(UserRepositoryToken)
     private readonly userRepository: IUserRepository,
     @Inject(ProfileImageStorageToken)
     private readonly profileImageStorage: IProfileImageStorage,
-    private readonly configService: ConfigService,
   ) {}
 
-  async execute(userId: string, image: Express.Multer.File) {
+  async execute(userId: string) {
     const user = await this.userRepository.findById(userId);
-    if (!user) throw new NotFoundException('User not found!');
-
-    if (user.imageFilepath) {
-      this.profileImageStorage.delete(user.imageFilepath);
+    if (!user || !user.imageFilepath) {
+      throw new NotFoundException();
     }
-
-    user.changeProfileImage(
-      image.filename,
-      this.configService.getOrThrow('UPLOAD_DEST'),
-    );
-
+    const imagePath = user.imageFilepath;
+    user.deleteProfileImage();
     await this.userRepository.save(user);
+    this.profileImageStorage.delete(imagePath);
   }
 }

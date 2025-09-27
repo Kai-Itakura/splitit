@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   IUserRepository,
   UserRepositoryToken,
-} from 'src/modules/user/domain/repositories/user.repository.interface';
+} from 'src/modules/user/domain/interfaces/user.repository.interface';
 
 @Injectable()
 export class EventGroupUserService {
