@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import {
   IUserRepository,
   UserRepositoryToken,
-} from '../../domain/repositories/user.repository.interface';
+} from '../../domain/interfaces/user.repository.interface';
 
 @Injectable()
 export class UploadImageUseCase {

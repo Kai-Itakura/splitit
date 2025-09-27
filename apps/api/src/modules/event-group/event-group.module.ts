@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { UserRepositoryToken } from '../user/domain/repositories/user.repository.interface';
-import { UserRepository } from '../user/infrastructure/user.repository';
+import { UserRepositoryToken } from '../user/domain/interfaces/user.repository.interface';
+import { UserRepository } from '../user/infrastructure/db/user.repository';
 import { EventGroupQueryServiceToken } from './application/query-service/event-group-query.service.interface';
 import { AddExpenseUseCase } from './application/use-cases/add-expense.use-case';
 import { AddMemberUseCase } from './application/use-cases/add-member.use-case';

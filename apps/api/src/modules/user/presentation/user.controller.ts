@@ -4,6 +4,7 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   NotFoundException,
@@ -23,6 +24,7 @@ import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { CurrentUserType } from 'src/decorators/types/current-user.type';
 import { JWTGuard } from 'src/modules/auth/guards/jwt.guard';
 import { Message } from 'src/modules/shared/dto/message.dto';
+import { DeleteImageUseCase } from '../application/use-cases/delete-image.use-case';
 import { FindByEmailUseCase } from '../application/use-cases/find-by-email.use-case';
 import { FindByIdUserCase } from '../application/use-cases/find-by-id.use-case';
 import { GetMeUseCase } from '../application/use-cases/get-me.use-case';
@@ -40,6 +42,7 @@ export class UserController {
     private readonly findUserByIdUseCase: FindByIdUserCase,
     private readonly findUserByEmailUseCase: FindByEmailUseCase,
     private readonly uploadImageUseCase: UploadImageUseCase,
+    private readonly deleteImageUseCase: DeleteImageUseCase,
   ) {}
 
   @ApiException(() => [NotFoundException])
@@ -88,6 +91,15 @@ export class UserController {
     image: Express.Multer.File,
   ): Promise<Message> {
     await this.uploadImageUseCase.execute(userId, image);
-    return { message: 'Successfully profile image uploaded!' };
+    return { message: 'Successfully upload profile image!' };
+  }
+
+  @Delete(':userId/image')
+  @ApiException(() => [UnauthorizedException, BadRequestException])
+  async deleteImage(@Param('userId') userId: string): Promise<Message> {
+    await this.deleteImageUseCase.execute(userId);
+    return {
+      message: 'Successfully delete profile image!',
+    };
   }
 }
