@@ -14,7 +14,7 @@ const EditImageButton = ({ inputId }: { inputId: string }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <DropdownMenu open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
+    <DropdownMenu open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
       <DropdownMenuTrigger className="absolute bottom-0 right-0" asChild>
         <Button variant="outline">
           編集
@@ -31,7 +31,7 @@ const EditImageButton = ({ inputId }: { inputId: string }) => {
             e.preventDefault();
           }}
         >
-          <DeleteImageDialog setIsOpen={setIsOpen} />
+          <DeleteImageDialog setMenuIsOpen={setIsOpen} />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

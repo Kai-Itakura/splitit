@@ -10,24 +10,26 @@ import {
   toast,
 } from '@repo/ui/components';
 import { useParams } from 'next/navigation';
-import { SetStateAction } from 'react';
+import { SetStateAction, useState } from 'react';
 import deleteImage from '../actions/delete-image';
 
 export function DeleteImageDialog({
-  setIsOpen,
+  setMenuIsOpen,
 }: {
-  setIsOpen: React.Dispatch<SetStateAction<boolean>>;
+  setMenuIsOpen: React.Dispatch<SetStateAction<boolean>>;
 }) {
+  const [isOpen, setIsOpen] = useState(false);
   const { userId } = useParams<{ userId: string }>();
 
   const handleClick = async () => {
     const result = await deleteImage(userId);
     toast(result.message);
     setIsOpen(false);
+    setMenuIsOpen(false);
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
       <AlertDialogTrigger>画像を削除する</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
