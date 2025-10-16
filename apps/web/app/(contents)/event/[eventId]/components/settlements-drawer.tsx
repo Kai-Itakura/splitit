@@ -58,7 +58,9 @@ const SettlementsDrawer = ({
         </div>
         <DrawerFooter>
           <DrawerClose asChild>
-            <Button variant="outline">閉じる</Button>
+            <Button className="mx-auto max-w-96" variant="outline">
+              閉じる
+            </Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
