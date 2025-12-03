@@ -80,6 +80,7 @@ export class UserController {
       new ParseFilePipeBuilder()
         .addMaxSizeValidator({
           maxSize: 1024 * 1024,
+          message: 'ファイルのサイズは1MB以下である必要があります。',
         })
         .addFileTypeValidator({
           fileType: /(jpe?g|png)$/i,
