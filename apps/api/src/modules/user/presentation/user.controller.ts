@@ -83,6 +83,7 @@ export class UserController {
         })
         .addFileTypeValidator({
           fileType: /(jpe?g|png)$/i,
+          skipMagicNumbersValidation: true,
         })
         .build({
           errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
