@@ -12,29 +12,28 @@ import { DeleteImageDialog } from './delete-image-dialog';
 
 const EditImageButton = ({ inputId }: { inputId: string }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
-    <DropdownMenu open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
-      <DropdownMenuTrigger className="absolute bottom-0 right-0" asChild>
-        <Button variant="outline">
-          編集
-          <EditIcon />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="start">
-        <DropdownMenuItem>
-          <Label htmlFor={inputId}>画像をアップロード</Label>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onSelect={(e) => {
-            // Dropdown の自動クローズを防いで、Dialog がアンマウントされないようにする
-            e.preventDefault();
-          }}
-        >
-          <DeleteImageDialog setMenuIsOpen={setIsOpen} />
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+        <DropdownMenuTrigger className="absolute bottom-0 right-0" asChild>
+          <Button variant="outline">
+            編集
+            <EditIcon />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          <DropdownMenuItem>
+            <Label htmlFor={inputId}>画像をアップロード</Label>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setIsDialogOpen(true)}>
+            画像を削除する
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <DeleteImageDialog isOpen={isDialogOpen} setIsOpen={setIsDialogOpen} />
+    </>
   );
 };
 
