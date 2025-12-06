@@ -14,13 +14,13 @@ const EditImage = ({
   const inputId = 'upload-image';
 
   return (
-    <>
+    <div>
       <div className="relative w-fit">
         <ProfileAvatar size="xl" userId={userId} imageUrl={imageUrl} />
         <EditImageButton inputId={inputId} />
       </div>
       <UploadImageForm userId={userId} inputId={inputId} />
-    </>
+    </div>
   );
 };
 
