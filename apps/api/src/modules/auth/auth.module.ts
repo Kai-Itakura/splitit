@@ -10,7 +10,6 @@ import { AuthUserRepository } from './infrastructure/repositories/auth-user.repo
 import { TokenGenerator } from './infrastructure/token/token-generator';
 import { AuthController } from './presentation/auth.controller';
 import { JwtStrategy } from './strategy/jwt.strategy';
-import { RefreshJwtStrategy } from './strategy/refresh.jwt.strategy';
 
 @Module({
   imports: [JwtModule],
@@ -26,7 +25,6 @@ import { RefreshJwtStrategy } from './strategy/refresh.jwt.strategy';
       useClass: TokenGenerator,
     },
     JwtStrategy,
-    RefreshJwtStrategy,
     SignupUseCase,
     LoginUseCase,
     RefreshTokenPairUseCase,

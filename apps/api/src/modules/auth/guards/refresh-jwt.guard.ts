@@ -12,6 +12,7 @@ import {
   AuthUserRepositoryToken,
   IAuthUserRepository,
 } from '../domain/repositories/auth-user.repository.interface';
+import { RefreshTokenDto } from '../presentation/dto/refresh-token.dto';
 import { JwtRequestPayload } from '../strategy/type';
 
 @Injectable()
@@ -25,8 +26,7 @@ export class RefreshJwtGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
-    const refreshToken = (<{ refresh_token: string }>request.cookies)
-      .refresh_token;
+    const { refreshToken } = <RefreshTokenDto>request.body;
     if (!refreshToken) throw new UnauthorizedException('Unauthorized!');
 
     try {
