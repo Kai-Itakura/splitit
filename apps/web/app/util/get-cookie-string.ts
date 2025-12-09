@@ -4,18 +4,19 @@ import {
   REFRESH_TOKEN_COOKIE_NAME,
 } from '../(contents)/constants/token';
 
-export async function getCookieString(): Promise<string> {
+type TokenPair = {
+  accessToken: string;
+  refreshToken: string;
+};
+
+export async function getTokenPairFromCookie(): Promise<TokenPair> {
   const requestCookies = await cookies();
 
   const accessToken = requestCookies.get(ACCESS_TOKEN_COOKIE_NAME);
   const refreshToken = requestCookies.get(REFRESH_TOKEN_COOKIE_NAME);
 
-  const accessTokenString = accessToken
-    ? `${accessToken.name}=${accessToken.value}; `
-    : '';
-  const refreshTokenString = refreshToken
-    ? `${refreshToken.name}=${refreshToken.value}; `
-    : '';
-
-  return accessTokenString + refreshTokenString;
+  return {
+    accessToken: accessToken ? accessToken.value : '',
+    refreshToken: refreshToken ? refreshToken.value : '',
+  };
 }

@@ -253,6 +253,9 @@ export interface components {
         expiresAt: string;
       };
     };
+    RefreshTokenDto: {
+      refreshToken: string;
+    };
     ReturnUserDTO: {
       id: string;
       email: string;
@@ -482,7 +485,11 @@ export interface operations {
       path?: never;
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['RefreshTokenDto'];
+      };
+    };
     responses: {
       200: {
         headers: {

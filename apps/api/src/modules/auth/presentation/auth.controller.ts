@@ -19,6 +19,7 @@ import { RefreshTokenPairUseCase } from '../application/use-cases/refresh-token-
 import { SignupUseCase } from '../application/use-cases/signup.use-case';
 import { RefreshJwtGuard } from '../guards/refresh-jwt.guard';
 import { LoginAuthDto, SignupAuthDto } from './dto/auth.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { TokenPair } from './dto/token-pair.dto';
 
 @ApiTags('auth')
@@ -61,6 +62,7 @@ export class AuthController {
   @Post('refresh')
   async refresh(
     @CurrentUser() currentUser: CurrentUserType,
+    @Body() _dto: RefreshTokenDto,
   ): Promise<TokenPair> {
     const payload = { userId: currentUser.userId };
     return this.refreshTokenPairUseCase.execute(payload);
