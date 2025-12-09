@@ -3,7 +3,7 @@ import {
   ACCESS_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_COOKIE_NAME,
 } from './app/(contents)/constants/token';
-import { generateAuthCookies } from './app/util/set-request-cookies';
+import { generateAuthCookies } from './app/util/set-response-cookies';
 import { client } from './openapi.config';
 
 export async function middleware(request: NextRequest) {
@@ -21,7 +21,11 @@ export async function middleware(request: NextRequest) {
       });
     }
 
-    const { error, data } = await client.POST('/auth/refresh');
+    const { error, data } = await client.POST('/auth/refresh', {
+      body: {
+        refreshToken: refreshCookie.value,
+      },
+    });
     if (error) {
       // トークンリフレッシュ失敗
       return NextResponse.redirect(new URL('/login', request.url), {
