@@ -1,6 +1,7 @@
 @baseUrl = http://localhost:3005
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4NWQ1ZTRkYy1lZTI0LTQ5NTgtOTQ5ZS1iODVhZGQ1Y2U5NjUiLCJpYXQiOjE3NjUyNjA5NjAsImV4cCI6MTc2NTI2MTAyMH0.NLQbd2kG9CshPkAJYDnAZ21W4_918AL8w--8k2KicIE
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4NWQ1ZTRkYy1lZTI0LTQ5NTgtOTQ5ZS1iODVhZGQ1Y2U5NjUiLCJpYXQiOjE3NjUyNjQ4NDIsImV4cCI6MTc2NTI2NDkwMn0.UaOw1U6Y5uO0F2k33pEfH_8_nFDJO96HTRV6_ccAXiI
 @refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4NWQ1ZTRkYy1lZTI0LTQ5NTgtOTQ5ZS1iODVhZGQ1Y2U5NjUiLCJpYXQiOjE3NjUyNjA5NjAsImV4cCI6MTc2NTI2Mjc2MH0.kuWUqVTcawLdUeDEyB9p8w0Ksr6pr72tPdl92cvyINQ
+@userId = 85d5e4dc-ee24-4958-949e-b85add5ce965
 
 # ログイン
 POST {{baseUrl}}/auth/login
@@ -25,4 +26,17 @@ Content-Type: application/json
 
 {
   "refreshToken": "{{refreshToken}}"
+}
+
+###
+
+# パスワード変更
+PATCH {{baseUrl}}/auth/{{userId}}/password
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "newPassword": "Itakura711100",
+  "confirmPassword": "Itakura711100",
+  "oldPassword": "Itakura71110"
 }

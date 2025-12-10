@@ -1,5 +1,6 @@
 'use server';
 
+import { getTokenPairFromCookie } from '@/app/util/get-cookie-string';
 import { client } from '@/openapi.config';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -9,7 +10,12 @@ import {
 } from '../../constants/token';
 
 export const logout = async () => {
-  const { error } = await client.POST('/auth/logout');
+  const { refreshToken } = await getTokenPairFromCookie();
+  const { error } = await client.POST('/auth/logout', {
+    body: {
+      refreshToken,
+    },
+  });
 
   if (!error) {
     const requestCookies = await cookies();
