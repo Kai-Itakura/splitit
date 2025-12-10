@@ -1,3 +1,4 @@
+import { passwordSchema } from '@/app/schema/password.schema';
 import { z } from 'zod';
 
 export const signupFormSchema = z
@@ -7,13 +8,7 @@ export const signupFormSchema = z
       .string()
       .email({ message: '正しいメールアドレスの形式ではありません。' })
       .min(1, { message: 'メールアドレスは必須です。' }),
-    password: z
-      .string()
-      .min(8, { message: 'パスワードは8桁以上である必要があります。' })
-      .regex(
-        /^(?=.*?[a-z])(?=.*?\d)[a-z\d]{8,100}$/i,
-        'パスワードは半角英数字混合で入力してください',
-      ),
+    password: passwordSchema,
   })
   .brand('signup-form-schema');
 

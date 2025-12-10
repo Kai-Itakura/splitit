@@ -19,7 +19,11 @@ const Settings = ({ user }: { user: User }) => {
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger className="rounded-full cursor-pointer">
-        <ProfileAvatar userId={user.id} size="sm" imageUrl={user.imageUrl} />
+        <ProfileAvatar
+          userId={user.id}
+          size="default"
+          imageUrl={user.imageUrl}
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem

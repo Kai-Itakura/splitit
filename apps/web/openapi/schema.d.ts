@@ -63,6 +63,22 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/auth/{userId}/password': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations['updatePassword'];
+    trace?: never;
+  };
   '/user/me': {
     parameters: {
       query?: never;
@@ -255,6 +271,11 @@ export interface components {
     };
     RefreshTokenDto: {
       refreshToken: string;
+    };
+    UpdatePasswordDto: {
+      newPassword: string;
+      confirmPassword: string;
+      oldPassword: string;
     };
     ReturnUserDTO: {
       id: string;
@@ -451,7 +472,11 @@ export interface operations {
       path?: never;
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['RefreshTokenDto'];
+      };
+    };
     responses: {
       200: {
         headers: {
@@ -497,6 +522,61 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['TokenPair'];
+        };
+      };
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 401 */
+            statusCode: number;
+            /** @example Unauthorized */
+            message: string;
+            /** @example Unauthorized */
+            error?: string;
+          };
+        };
+      };
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 404 */
+            statusCode: number;
+            /** @example Not Found */
+            message: string;
+            /** @example Not Found */
+            error?: string;
+          };
+        };
+      };
+    };
+  };
+  updatePassword: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        userId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdatePasswordDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Message'];
         };
       };
       401: {

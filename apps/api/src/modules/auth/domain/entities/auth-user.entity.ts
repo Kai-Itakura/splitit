@@ -1,3 +1,4 @@
+import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { Id } from 'src/modules/shared/value-objects/id';
 import { ReconstructRefreshToken } from '../types/reconstruct-refresh-token.type';
 import { PasswordHash } from '../value-objects/password-hash';
@@ -10,9 +11,9 @@ export class AuthUser {
 
   private constructor(
     private readonly _id: Id,
-    private readonly _email: string,
-    private readonly _name: string,
-    private readonly _passwordHash: PasswordHash,
+    private _email: string,
+    private _name: string,
+    private _passwordHash: PasswordHash,
     private readonly _refreshTokens: RefreshToken[] = [],
   ) {}
 
@@ -104,5 +105,22 @@ export class AuthUser {
   }
   get removedRefreshTokenId(): string {
     return this._removedRefreshTokenId;
+  }
+
+  async updatePassword(
+    newPassword: string,
+    confirmPassword: string,
+    oldPassword: string,
+  ) {
+    const isValid = await this._passwordHash.isValid(oldPassword);
+    if (!isValid) {
+      throw new UnauthorizedException('パスワードが正しくありません。');
+    }
+
+    if (newPassword !== confirmPassword) {
+      throw new BadRequestException('確認用のパスワードが一致しません。');
+    }
+
+    this._passwordHash = await PasswordHash.create(newPassword);
   }
 }
