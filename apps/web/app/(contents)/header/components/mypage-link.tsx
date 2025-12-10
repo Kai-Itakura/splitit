@@ -1,3 +1,5 @@
+import CopyButton from '@/app/components/copy-button';
+import { Label } from '@repo/ui/components';
 import Link from 'next/link';
 import { User } from '../types/user.type';
 import ProfileAvatar from './profile-avatar';
@@ -14,11 +16,15 @@ const MypageLink = ({
       <Link href={`/profile/${user.id}`} onClick={() => setOpen(false)}>
         <ProfileAvatar userId={user.id} size="lg" imageUrl={user.imageUrl} />
       </Link>
-      <div className="select-text">
-        <p className="text-lg">{user.name}</p>
-        <p className="text-xs text-gray-500">
-          ID: <span className="select-all">{user.id}</span>
-        </p>
+      <div className="space-y-1 select-text">
+        <p className="text-lg font-bold">{user.name}</p>
+        <div>
+          <Label className="text-sm">ユーザーID</Label>
+          <p className="flex items-center text-xs text-gray-500">
+            <CopyButton label="ユーザーID" value={user.id} />
+            {user.id}
+          </p>
+        </div>
       </div>
     </div>
   );

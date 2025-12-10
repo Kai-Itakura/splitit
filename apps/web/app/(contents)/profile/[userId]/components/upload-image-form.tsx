@@ -93,7 +93,7 @@ const UploadImageForm = ({
                   {...field}
                 ></Input>
               </FormControl>
-              <FormMessage />
+              <FormMessage className="mt-2" />
             </FormItem>
           )}
         />

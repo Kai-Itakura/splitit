@@ -14,9 +14,14 @@ const EditImage = ({
   const inputId = 'upload-image';
 
   return (
-    <div className="space-y-4">
+    <div>
       <div className="relative w-fit">
-        <ProfileAvatar size="xl" userId={userId} imageUrl={imageUrl} />
+        <ProfileAvatar
+          size="xl"
+          userId={userId}
+          imageUrl={imageUrl}
+          hoverAction={false}
+        />
         <EditImageButton inputId={inputId} />
       </div>
       <UploadImageForm userId={userId} inputId={inputId} />

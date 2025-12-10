@@ -14,5 +14,6 @@ export * from './ui/label';
 export * from './ui/radio-group';
 export * from './ui/select';
 export * from './ui/sonner';
+export * from './ui/tooltip';
 
 export { toast } from 'sonner';

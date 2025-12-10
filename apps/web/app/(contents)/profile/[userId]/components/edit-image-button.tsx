@@ -18,9 +18,9 @@ const EditImageButton = ({ inputId }: { inputId: string }) => {
     <>
       <DropdownMenu open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
         <DropdownMenuTrigger className="absolute bottom-0 right-0" asChild>
-          <Button variant="outline">
-            編集
+          <Button variant="outline" className="p-1 gap-1">
             <EditIcon />
+            編集
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">

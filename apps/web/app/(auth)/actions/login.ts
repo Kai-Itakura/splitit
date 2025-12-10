@@ -1,6 +1,6 @@
 'use server';
 
-import { setRequestCookies } from '@/app/util/set-request-cookies';
+import { setResponseCookies } from '@/app/util/set-response-cookies';
 import { client } from '@/openapi.config';
 import {
   FORM_STATUS,
@@ -33,7 +33,7 @@ export async function login(
   }
 
   // Cookieをセット
-  await setRequestCookies(data);
+  await setResponseCookies(data);
 
   return {
     status: FORM_STATUS.SUCCESS,
