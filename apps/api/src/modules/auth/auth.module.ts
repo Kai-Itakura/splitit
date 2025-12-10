@@ -5,6 +5,7 @@ import { TokenGeneratorToken } from './application/interfaces/token-generator.in
 import { LoginUseCase } from './application/use-cases/login.use-case';
 import { RefreshTokenPairUseCase } from './application/use-cases/refresh-token-pair.use-case';
 import { SignupUseCase } from './application/use-cases/signup.use-case';
+import { UpdatePasswordUseCase } from './application/use-cases/update-password.use-case';
 import { AuthUserRepositoryToken } from './domain/repositories/auth-user.repository.interface';
 import { AuthUserRepository } from './infrastructure/repositories/auth-user.repository';
 import { TokenGenerator } from './infrastructure/token/token-generator';
@@ -28,6 +29,7 @@ import { JwtStrategy } from './strategy/jwt.strategy';
     SignupUseCase,
     LoginUseCase,
     RefreshTokenPairUseCase,
+    UpdatePasswordUseCase,
   ],
 })
 export class AuthModule {}

@@ -6,6 +6,8 @@ import {
   HttpCode,
   HttpStatus,
   NotFoundException,
+  Param,
+  Patch,
   Post,
   UnauthorizedException,
   UseGuards,
@@ -17,10 +19,13 @@ import { Message } from '../../shared/dto/message.dto';
 import { LoginUseCase } from '../application/use-cases/login.use-case';
 import { RefreshTokenPairUseCase } from '../application/use-cases/refresh-token-pair.use-case';
 import { SignupUseCase } from '../application/use-cases/signup.use-case';
+import { UpdatePasswordUseCase } from '../application/use-cases/update-password.use-case';
+import { JWTGuard } from '../guards/jwt.guard';
 import { RefreshJwtGuard } from '../guards/refresh-jwt.guard';
 import { LoginAuthDto, SignupAuthDto } from './dto/auth.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { TokenPair } from './dto/token-pair.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -29,6 +34,7 @@ export class AuthController {
     private readonly signupUseCase: SignupUseCase,
     private readonly loginUseCase: LoginUseCase,
     private readonly refreshTokenPairUseCase: RefreshTokenPairUseCase,
+    private readonly updatePasswordUseCase: UpdatePasswordUseCase,
   ) {}
 
   @ApiException(() => [ConflictException])
@@ -49,7 +55,7 @@ export class AuthController {
   @UseGuards(RefreshJwtGuard)
   @HttpCode(HttpStatus.OK)
   @Post('logout')
-  logout(): TokenPair {
+  logout(@Body() _dto: RefreshTokenDto): TokenPair {
     return {
       accessToken: { value: '', expiresAt: new Date() },
       refreshToken: { value: '', expiresAt: new Date() },
@@ -66,5 +72,17 @@ export class AuthController {
   ): Promise<TokenPair> {
     const payload = { userId: currentUser.userId };
     return this.refreshTokenPairUseCase.execute(payload);
+  }
+
+  @ApiException(() => [UnauthorizedException, NotFoundException])
+  @UseGuards(JWTGuard)
+  @HttpCode(HttpStatus.OK)
+  @Patch(':userId/password')
+  async updatePassword(
+    @Param('userId') userId: string,
+    @Body() dto: UpdatePasswordDto,
+  ): Promise<Message> {
+    await this.updatePasswordUseCase.execute(userId, dto);
+    return { message: '🔑 Successfully change password!' };
   }
 }
