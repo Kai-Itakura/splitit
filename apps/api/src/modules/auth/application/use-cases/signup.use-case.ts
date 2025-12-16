@@ -1,4 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
+import {
+  DomainEventPublisherToken,
+  IDomainEventPublisher,
+} from 'src/shared/application/event/domain-event.publisher.interface';
 import { AuthUser } from '../../domain/entities/auth-user.entity';
 import {
   AuthUserRepositoryToken,
@@ -15,11 +19,18 @@ export class SignupUseCase {
   constructor(
     @Inject(AuthUserRepositoryToken)
     private readonly authUserRepository: IAuthUserRepository,
+    @Inject(DomainEventPublisherToken)
+    private readonly domainEventPublisher: IDomainEventPublisher,
   ) {}
 
   async execute(dto: SignupAuthDto): Promise<void> {
     // ユーザーの新規作成
     const authUser = await AuthUser.create(dto.email, dto.password, dto.name);
     await this.authUserRepository.create(authUser);
+
+    const domainEvents = authUser.pullEvents();
+    domainEvents.forEach((event) => {
+      this.domainEventPublisher.publish(event);
+    });
   }
 }
