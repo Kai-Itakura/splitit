@@ -1,10 +1,12 @@
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
-import { Id } from 'src/modules/shared/value-objects/id';
+import { DomainEventStorable } from 'src/shared/domain/event/domain-event-storable';
+import { Id } from 'src/shared/domain/value-objects/id';
+import { CreateUserDomainEvent } from '../event/create-user.domain-event';
 import { ReconstructRefreshToken } from '../types/reconstruct-refresh-token.type';
 import { PasswordHash } from '../value-objects/password-hash';
 import { RefreshToken } from './refresh-token.entity';
 
-export class AuthUser {
+export class AuthUser extends DomainEventStorable {
   private _newRefreshToken: RefreshToken;
   private _allRefreshTokensRemoved: boolean;
   private _removedRefreshTokenId: string;
@@ -15,15 +17,30 @@ export class AuthUser {
     private _name: string,
     private _passwordHash: PasswordHash,
     private readonly _refreshTokens: RefreshToken[] = [],
-  ) {}
+  ) {
+    super();
+  }
 
-  static async create(email: string, password: string, name: string) {
-    return new AuthUser(
+  static async create(
+    email: string,
+    password: string,
+    name: string,
+  ): Promise<AuthUser> {
+    const authUser = new AuthUser(
       Id.create(),
       email,
       name,
       await PasswordHash.create(password),
     );
+
+    authUser.addEvent(
+      new CreateUserDomainEvent({
+        userName: authUser._name,
+        email: authUser._email,
+      }),
+    );
+
+    return authUser;
   }
 
   get id(): string {

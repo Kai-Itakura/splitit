@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../../shared/infrastructure/database/prisma/prisma.service';
 import { TokenGeneratorToken } from './application/interfaces/token-generator.interface';
 import { LoginUseCase } from './application/use-cases/login.use-case';
 import { RefreshTokenPairUseCase } from './application/use-cases/refresh-token-pair.use-case';

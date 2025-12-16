@@ -1,4 +1,4 @@
-import { Id } from 'src/modules/shared/value-objects/id';
+import { Id } from 'src/shared/domain/value-objects/id';
 
 export class RefreshToken {
   private constructor(
