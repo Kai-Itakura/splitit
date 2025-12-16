@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../../shared/infrastructure/database/prisma/prisma.service';
 import { UserRepositoryToken } from '../user/domain/interfaces/user.repository.interface';
 import { UserRepository } from '../user/infrastructure/db/user.repository';
 import { EventGroupQueryServiceToken } from './application/query-service/event-group-query.service.interface';

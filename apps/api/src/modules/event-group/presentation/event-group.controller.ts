@@ -16,7 +16,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { CurrentUserType } from 'src/decorators/types/current-user.type';
 import { JWTGuard } from 'src/modules/auth/guards/jwt.guard';
-import { Message } from 'src/modules/shared/dto/message.dto';
+import { Message } from 'src/shared/presentation/dto/message.dto';
 import { EventGroupDetailDto } from '../application/query-service/dto/event-group-detail.dto';
 import { AddExpenseUseCase } from '../application/use-cases/add-expense.use-case';
 import { AddMemberUseCase } from '../application/use-cases/add-member.use-case';

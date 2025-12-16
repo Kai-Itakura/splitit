@@ -1,4 +1,4 @@
-import { Id } from 'src/modules/shared/value-objects/id';
+import { Id } from 'src/shared/domain/value-objects/id';
 import { ProfileImage } from './profile-image.entity';
 
 export class User {
