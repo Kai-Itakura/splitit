@@ -23,7 +23,7 @@ import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { CurrentUserType } from 'src/decorators/types/current-user.type';
 import { JWTGuard } from 'src/modules/auth/guards/jwt.guard';
-import { Message } from 'src/modules/shared/dto/message.dto';
+import { Message } from 'src/shared/presentation/dto/message.dto';
 import { DeleteImageUseCase } from '../application/use-cases/delete-image.use-case';
 import { FindByEmailUseCase } from '../application/use-cases/find-by-email.use-case';
 import { FindByIdUserCase } from '../application/use-cases/find-by-id.use-case';

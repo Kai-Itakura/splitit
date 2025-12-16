@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { PrismaService } from 'src/shared/infrastructure/database/prisma/prisma.service';
 import { EventGroup } from '../../domain/entities/event-group.entity';
 import { Expense } from '../../domain/entities/expense.entity';
 import { Settlement } from '../../domain/entities/settlement.entity';

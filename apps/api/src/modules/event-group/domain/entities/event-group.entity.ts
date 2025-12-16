@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CurrencyType } from '@repo/types/currency.type';
-import { Id } from 'src/modules/shared/value-objects/id';
+import { Id } from 'src/shared/domain/value-objects/id';
 import { isSameArray } from 'src/util/is-same-array';
 import { Balance } from '../model/balance.model';
 import { SettlementCalculatorService } from '../services/settlement-calculator.service';

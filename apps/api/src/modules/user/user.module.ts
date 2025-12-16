@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { PrismaService } from 'src/shared/infrastructure/database/prisma/prisma.service';
 import { DeleteImageUseCase } from './application/use-cases/delete-image.use-case';
 import { FindByEmailUseCase } from './application/use-cases/find-by-email.use-case';
 import { FindByIdUserCase } from './application/use-cases/find-by-id.use-case';
