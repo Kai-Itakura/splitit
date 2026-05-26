@@ -2,101 +2,101 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Repository layout
+## リポジトリ構成
 
-pnpm + Turborepo monorepo (`pnpm-workspace.yaml`, `turbo.json`). The project is a 割り勘 (dutch-treat / bill-splitting) app.
+pnpm + Turborepo のモノレポ（`pnpm-workspace.yaml`, `turbo.json`）。割り勘（dutch-treat）アプリ。
 
-- `apps/api` — NestJS 11 backend, Prisma 6 (PostgreSQL), JWT auth, Swagger at `/api`.
-- `apps/web` — Next.js 15 App Router frontend (Tailwind v4, react-hook-form + zod).
-- `packages/ui` — Shared React 19 component library (`@repo/ui`, shadcn-style on Radix + Tailwind). Consumed via `transpilePackages` in `apps/web`.
-- `packages/types` — Shared TS types (`@repo/types`, e.g. `CurrencyType`).
-- `packages/eslint-config`, `packages/typescript-config` — Shared configs.
+- `apps/api` — NestJS 11 バックエンド、Prisma 6（PostgreSQL）、JWT 認証、Swagger は `/api` で公開。
+- `apps/web` — Next.js 15 App Router フロントエンド（Tailwind v4、react-hook-form + zod）。
+- `packages/ui` — 共有 React 19 コンポーネントライブラリ（`@repo/ui`、Radix + Tailwind ベースの shadcn 風）。`apps/web` 側で `transpilePackages` 経由で利用。
+- `packages/types` — 共有 TS 型（`@repo/types`、例：`CurrencyType`）。
+- `packages/eslint-config`, `packages/typescript-config` — 共通設定。
 
-## Common commands
+## よく使うコマンド
 
-Run from the repo root unless noted — Turbo fans the task out to every workspace that defines it.
+特記がない限りリポジトリルートから実行する。Turbo が各ワークスペースにタスクを配信する。
 
-| Task | Command |
+| 用途 | コマンド |
 | --- | --- |
-| Install | `pnpm install` |
-| Dev (all apps) | `pnpm dev` |
-| Build | `pnpm build` |
+| インストール | `pnpm install` |
+| 開発（全アプリ） | `pnpm dev` |
+| ビルド | `pnpm build` |
 | Lint | `pnpm lint` |
-| Tests | `pnpm test` |
-| Format | `pnpm format` |
-| Regenerate web's OpenAPI types from running API | `pnpm codegen` |
-| Generate Prisma client | `pnpm db:generate` |
-| Generate Prisma typed SQL | `pnpm sql:generate` |
-| Create/apply dev migrations | `pnpm db:migrate` |
-| Push schema (no migration) | `pnpm db:push` |
-| Apply migrations (prod) | `pnpm db:deploy` |
+| テスト | `pnpm test` |
+| フォーマット | `pnpm format` |
+| web の OpenAPI 型を再生成（API 起動が必要） | `pnpm codegen` |
+| Prisma クライアント生成 | `pnpm db:generate` |
+| Prisma typed SQL 生成 | `pnpm sql:generate` |
+| 開発用マイグレーション作成・適用 | `pnpm db:migrate` |
+| スキーマを push（マイグレーションなし） | `pnpm db:push` |
+| マイグレーション適用（本番） | `pnpm db:deploy` |
 | Prisma Studio | `pnpm prisma-studio` |
 
-### API-only (inside `apps/api`)
+### API 限定（`apps/api` 内で実行）
 
-- Single Jest spec: `pnpm jest path/to/file.spec.ts` (add `-t "test name"` to filter).
-- E2E: `pnpm test:e2e`.
-- Watch / debug: `pnpm test:watch`, `pnpm test:debug`.
-- Create a named migration without applying: `name=<migration-name> pnpm db:migrate:create-only`.
+- 単一の Jest spec を実行: `pnpm jest path/to/file.spec.ts`（`-t "テスト名"` で絞り込み可）。
+- E2E: `pnpm test:e2e`。
+- ウォッチ / デバッグ: `pnpm test:watch`、`pnpm test:debug`。
+- 名前付きマイグレーションを適用せずに作成: `name=<migration-name> pnpm db:migrate:create-only`。
 
-### Local infrastructure
+### ローカルインフラ
 
-- DB only (dev): `docker compose -f compose.db.dev.yml up -d --build` — Postgres on host `:5453`, env from `apps/api/.env.db.develop`.
-- Full stack (prod-like): `docker compose -f compose.db.yml -f compose.yml up -d --build` — API on `:3005`, Prisma Studio on `:5555`, Postgres on `:5432`.
+- DB のみ（開発用）: `docker compose -f compose.db.dev.yml up -d --build` — ホストの `:5453` で Postgres を起動、env は `apps/api/.env.db.develop`。
+- フルスタック（本番相当）: `docker compose -f compose.db.yml -f compose.yml up -d --build` — API は `:3005`、Prisma Studio は `:5555`、Postgres は `:5432`。
 
-## Conventions
+## コーディング規約
 
-- Package manager is pinned (`packageManager: pnpm@8.6.8`); don't switch to npm/yarn.
-- Prettier: `singleQuote`, `trailingComma: all`, `endOfLine: auto` (`.prettierrc`).
-- Husky `pre-commit` runs `lint-staged`, which is configured per-app (`apps/api/.lintstagedrc`, `apps/web/.lintstagedrc`) to run `prettier --write` then `eslint --fix`.
-- Comments and identifiers in `apps/api` and `apps/web` are frequently in Japanese — match the surrounding style.
+- パッケージマネージャーは固定（`packageManager: pnpm@8.6.8`）。npm/yarn に切り替えないこと。
+- Prettier: `singleQuote`、`trailingComma: all`、`endOfLine: auto`（`.prettierrc`）。
+- Husky の `pre-commit` で `lint-staged` が走る。設定はアプリ単位（`apps/api/.lintstagedrc`, `apps/web/.lintstagedrc`）で、`prettier --write` → `eslint --fix` の順に実行される。
+- `apps/api`・`apps/web` のコメントや識別子は日本語で書かれていることが多い。周囲のスタイルに合わせること。
 
-## API architecture (`apps/api`)
+## API アーキテクチャ（`apps/api`）
 
-DDD-style layering per feature module. Modules live in `src/modules/{auth,user,event-group,mail}` and each contains:
+機能モジュールごとに DDD 風のレイヤリングを採用。`src/modules/{auth,user,event-group,mail}` に各モジュールがあり、それぞれ以下を含む。
 
-- `domain/` — `entities/`, `value-objects/`, `repositories/` (interfaces only), domain `services/`, and `model/`. Entities are constructed via `static create(...)` (new aggregate) or `static reconstruct(...)` (rehydrated from persistence) and expose behavior, not setters. See `event-group/domain/entities/event-group.entity.ts` for the canonical pattern: balance/settlement recalculation lives on the aggregate.
-- `application/use-cases/` — One class per use case (`*.use-case.ts`) with an `execute(...)` method that loads via a repository, calls aggregate methods, then saves. Read paths use `application/query-service/` interfaces backed by `infrastructure/query-service/`.
-- `infrastructure/repositories/` — Prisma-backed implementations of the domain repository interfaces.
-- `presentation/` — Nest controllers + DTOs (class-validator). Controllers are typically guarded by `JWTGuard` and decorated with `@ApiTags` / `@ApiException` so the generated Swagger doc is accurate.
+- `domain/` — `entities/`、`value-objects/`、`repositories/`（インターフェースのみ）、ドメイン `services/`、`model/`。エンティティは `static create(...)`（新規作成）または `static reconstruct(...)`（永続化からの復元）で生成し、setter ではなく振る舞いを公開する。代表例は `event-group/domain/entities/event-group.entity.ts` — 残高・精算の再計算は集約に閉じている。
+- `application/use-cases/` — ユースケース 1 つにつき 1 クラス（`*.use-case.ts`）。`execute(...)` でリポジトリから取得 → 集約のメソッド呼び出し → 保存、という流れ。参照系は `application/query-service/` のインターフェースを使い、実装は `infrastructure/query-service/` に置く。
+- `infrastructure/repositories/` — ドメインのリポジトリインターフェースを Prisma で実装。
+- `presentation/` — Nest のコントローラ + DTO（class-validator）。コントローラは基本的に `JWTGuard` でガードし、`@ApiTags` / `@ApiException` を付けて Swagger の生成結果が正確になるようにする。
 
-Repository and query-service bindings use DI **tokens** (e.g. `EventGroupRepositoryToken`, `UserRepositoryToken`, `EventGroupQueryServiceToken`) wired in each module's `*.module.ts`. When adding a new repository/query-service, add it to the module's `providers` via `{ provide: Token, useClass: Impl }`.
+リポジトリやクエリサービスの DI は **トークン**（例：`EventGroupRepositoryToken`、`UserRepositoryToken`、`EventGroupQueryServiceToken`）でバインドし、各モジュールの `*.module.ts` で配線する。新規追加時は `providers` に `{ provide: Token, useClass: Impl }` を加える。
 
-Cross-cutting infrastructure lives in `src/shared/`:
+横断的なインフラは `src/shared/` 配下。
 
-- `infrastructure/database/prisma/prisma.service.ts` — Prisma client wrapper, provided per module that needs it.
-- `infrastructure/event/domain-event.{module,publisher}.ts` — Domain event bus (global `DomainEventModule` in `AppModule`). Entities raise events; subscribers (e.g. mail) react via NestJS `@nestjs/event-emitter`.
-- `domain/value-objects/id.ts` — UUID-backed `Id` value object used by aggregates.
-- `presentation/dto/message.dto.ts` — Standard `{ message: string }` controller response.
+- `infrastructure/database/prisma/prisma.service.ts` — Prisma クライアントのラッパー。必要なモジュールで `providers` に追加する。
+- `infrastructure/event/domain-event.{module,publisher}.ts` — ドメインイベントバス（`AppModule` でグローバルに `DomainEventModule` を読み込む）。エンティティがイベントを発行し、購読者（mail など）が `@nestjs/event-emitter` で反応する。
+- `domain/value-objects/id.ts` — UUID ベースの `Id` 値オブジェクト。集約で使用。
+- `presentation/dto/message.dto.ts` — `{ message: string }` 形式の共通コントローラレスポンス。
 
-`src/main.ts` manually loads the DB env file (`.env.db.develop` in development, `.env.db` otherwise) **before** creating the Nest app — Prisma reads `DATABASE_URL` from `process.env` at construction time, so don't move this.
+`src/main.ts` では Nest アプリ生成 **前** に DB の env ファイル（開発時は `.env.db.develop`、それ以外は `.env.db`）を手動でロードしている。Prisma は構築時に `process.env.DATABASE_URL` を読むため、この順序を変えないこと。
 
-## Web architecture (`apps/web`)
+## Web アーキテクチャ（`apps/web`）
 
-Next.js App Router with route groups:
+Next.js App Router のルートグループ構成。
 
-- `app/(auth)/` — login/signup, public.
-- `app/(contents)/` — authenticated app shell (`/`, `/event/[eventId]`, `/profile`).
-- `app/components/`, `app/lib/`, `app/util/` — shared client helpers.
+- `app/(auth)/` — ログイン / サインアップ。未認証で利用可。
+- `app/(contents)/` — 認証後のアプリ本体（`/`、`/event/[eventId]`、`/profile`）。
+- `app/components/`、`app/lib/`、`app/util/` — 共通クライアントヘルパー。
 
-`middleware.ts` runs on `/`, `/event/:path*`, `/profile/:path*` for GET requests. If the access-token cookie is missing it calls `POST /auth/refresh` with the refresh-token cookie, sets new cookies on the response, and otherwise redirects to `/login`.
+`middleware.ts` は `/`、`/event/:path*`、`/profile/:path*` の GET リクエストで動作する。アクセストークン Cookie がない場合は、リフレッシュトークン Cookie を使って `POST /auth/refresh` を叩き、レスポンスに新しい Cookie をセットする。失敗時は `/login` にリダイレクトする。
 
-API access goes through a typed `openapi-fetch` client in `openapi.config.ts`:
+API アクセスは型付きの `openapi-fetch` クライアント（`openapi.config.ts`）経由。
 
-- The middleware injects `Authorization: Bearer <accessToken>` from cookies, caches the request, and on `401` retries once after refreshing tokens (or redirects to `/login`).
-- Types come from `openapi/schema.d.ts`, generated by `pnpm codegen` (`openapi/generate-api-types.ts`) hitting the API's Swagger JSON at `${API_URL}/api-json`. **The API must be running** when you run `pnpm codegen`. Re-run it whenever API DTOs or controller shapes change.
+- ミドルウェアが Cookie から `Authorization: Bearer <accessToken>` を付与し、リクエストをキャッシュ。`401` の場合は一度だけトークンをリフレッシュして再実行する（失敗時は `/login` へリダイレクト）。
+- 型は `openapi/schema.d.ts` から取得し、`pnpm codegen`（`openapi/generate-api-types.ts`）で API の Swagger JSON（`${API_URL}/api-json`）から生成する。**`pnpm codegen` 実行時は API が起動している必要がある**。API の DTO やコントローラの形を変えたら必ず再生成すること。
 
 ## Prisma
 
-- `prisma/schema/` uses the `prismaSchemaFolder` preview feature — schema is split across `event-group.prisma`, `expense.prisma`, `user.prisma`, etc. The base `schema.prisma` only declares generator/datasource.
-- `prisma/sql/` holds typed SQL queries (`typedSql` preview feature); regenerate with `pnpm sql:generate`.
-- All `db:*` scripts load `apps/api/.env.db.develop` via `dotenv-cli`; the deploy-only `db:deploy` script expects `DATABASE_URL` already in the environment.
+- `prisma/schema/` は `prismaSchemaFolder` プレビュー機能を使用。スキーマは `event-group.prisma`、`expense.prisma`、`user.prisma` などに分割されており、ベースの `schema.prisma` は generator / datasource のみを宣言する。
+- `prisma/sql/` は typed SQL クエリ（`typedSql` プレビュー機能）。`pnpm sql:generate` で再生成する。
+- `db:*` スクリプトは `dotenv-cli` 経由で `apps/api/.env.db.develop` をロードする。デプロイ専用の `db:deploy` だけは `DATABASE_URL` が環境に設定済みであることを前提とする。
 
-## Turborepo tasks
+## Turborepo タスク
 
-`turbo.json` defines task graph + caching. Notable:
+`turbo.json` でタスクグラフとキャッシュを定義。主な点：
 
-- `build` depends on `^build`; `lint` also depends on `^build` (so internal packages must build before downstream lint runs).
-- `dev`, `db:migrate`, `prisma-studio`, `start:debug` are `persistent` (long-running).
-- `sql:generate`, `db:*`, `clean`, `codegen` are uncached.
-- Global env declared for Turbo: `API_URL`, `ACCESS_TOKEN_COOKIE_NAME`, `REFRESH_TOKEN_COOKIE_NAME`. `build` additionally sees `NEXT_PUBLIC_API_HOST`.
+- `build` は `^build` に依存。`lint` も `^build` に依存（内部パッケージのビルドが下流の lint より先に必要）。
+- `dev`、`db:migrate`、`prisma-studio`、`start:debug` は `persistent`（長時間プロセス）。
+- `sql:generate`、`db:*`、`clean`、`codegen` はキャッシュ無効。
+- グローバル env: `API_URL`、`ACCESS_TOKEN_COOKIE_NAME`、`REFRESH_TOKEN_COOKIE_NAME`。`build` ではさらに `NEXT_PUBLIC_API_HOST` も参照される。
