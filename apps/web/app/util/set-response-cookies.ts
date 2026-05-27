@@ -3,8 +3,11 @@ import {
   REFRESH_TOKEN_COOKIE_NAME,
 } from '@/app/(contents)/constants/token';
 import { TokenPair } from '@/openapi/response.type';
-import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { cookies } from 'next/headers';
+
+type ResponseCookieOptions = NonNullable<
+  Parameters<Awaited<ReturnType<typeof cookies>>['set']>[2]
+>;
 
 type SessionCookies = {
   accessToken: Cookie;
@@ -14,7 +17,7 @@ type SessionCookies = {
 type Cookie = {
   name: string;
   value: string;
-  options?: Partial<ResponseCookie>;
+  options?: ResponseCookieOptions;
 };
 
 export const generateAuthCookies = (session: TokenPair): SessionCookies => {

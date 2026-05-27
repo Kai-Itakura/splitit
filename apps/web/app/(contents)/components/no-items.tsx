@@ -1,5 +1,4 @@
-import { StaticImport } from 'next/dist/shared/lib/get-img-props';
-import Image from 'next/image';
+import Image, { ImageProps } from 'next/image';
 
 const NoItems = ({
   children,
@@ -9,7 +8,7 @@ const NoItems = ({
 }: Readonly<{
   children: React.ReactNode;
   alt: string;
-  src: string | StaticImport;
+  src: ImageProps['src'];
   message: string;
 }>) => {
   return (
