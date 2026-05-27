@@ -79,11 +79,11 @@ Next.js App Router のルートグループ構成。
 - `app/(contents)/` — 認証後のアプリ本体（`/`、`/event/[eventId]`、`/profile`）。
 - `app/components/`、`app/lib/`、`app/util/` — 共通クライアントヘルパー。
 
-`middleware.ts` は `/`、`/event/:path*`、`/profile/:path*` の GET リクエストで動作する。アクセストークン Cookie がない場合は、リフレッシュトークン Cookie を使って `POST /auth/refresh` を叩き、レスポンスに新しい Cookie をセットする。失敗時は `/login` にリダイレクトする。
+`proxy.ts`（Next.js 16 の Proxy 規約）は `/`、`/event/:path*`、`/profile/:path*` の GET リクエストで動作する。アクセストークン Cookie がない場合は、リフレッシュトークン Cookie を使って `POST /auth/refresh` を叩き、レスポンスに新しい Cookie をセットする。失敗時は `/login` にリダイレクトする。
 
 API アクセスは型付きの `openapi-fetch` クライアント（`openapi.config.ts`）経由。
 
-- ミドルウェアが Cookie から `Authorization: Bearer <accessToken>` を付与し、リクエストをキャッシュ。`401` の場合は一度だけトークンをリフレッシュして再実行する（失敗時は `/login` へリダイレクト）。
+- openapi-fetch のミドルウェアが Cookie から `Authorization: Bearer <accessToken>` を付与し、リクエストをキャッシュ。`401` の場合は一度だけトークンをリフレッシュして再実行する（失敗時は `/login` へリダイレクト）。
 - 型は `openapi/schema.d.ts` から取得し、`pnpm codegen`（`openapi/generate-api-types.ts`）で API の Swagger JSON（`${API_URL}/api-json`）から生成する。**`pnpm codegen` 実行時は API が起動している必要がある**。API の DTO やコントローラの形を変えたら必ず再生成すること。
 
 ## Prisma

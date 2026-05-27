@@ -6,7 +6,7 @@ import {
 import { generateAuthCookies } from './app/util/set-response-cookies';
 import { client } from './openapi.config';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // GETリクエストのみを処理
   if (request.method !== 'GET') return NextResponse.next();
 
